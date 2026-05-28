@@ -10750,9 +10750,248 @@
       "produtoNome": "VIP 71 - FEMININO",
       "qtdReservada": 4000,
       "importadoEm": "2026-05-28T10:58:43.641Z"
+    },
+    {
+      "id": "AND-1779976957832-4154",
+      "produtoSku": 4154,
+      "produtoNome": "MY SOUL  100ML",
+      "qtdReservada": 1928,
+      "importadoEm": "2026-05-28T14:02:37.832Z"
+    },
+    {
+      "id": "AND-1779976957832-1581",
+      "produtoSku": 1581,
+      "produtoNome": "VIP 04 - MASCULINO",
+      "qtdReservada": 9520,
+      "importadoEm": "2026-05-28T14:02:37.832Z"
+    },
+    {
+      "id": "AND-1779976957832-2483",
+      "produtoSku": 2483,
+      "produtoNome": "VIP 17 - FEMININO",
+      "qtdReservada": 5000,
+      "importadoEm": "2026-05-28T14:02:37.832Z"
+    },
+    {
+      "id": "AND-1779976957832-2491",
+      "produtoSku": 2491,
+      "produtoNome": "VIP 65 - FEMININO",
+      "qtdReservada": 6000,
+      "importadoEm": "2026-05-28T14:02:37.832Z"
+    },
+    {
+      "id": "AND-1779976957832-2489",
+      "produtoSku": 2489,
+      "produtoNome": "VIP 63 - FEMININO",
+      "qtdReservada": 4000,
+      "importadoEm": "2026-05-28T14:02:37.832Z"
+    },
+    {
+      "id": "AND-1779976957832-3109",
+      "produtoSku": 3109,
+      "produtoNome": "LUX EDIMBURGO  - MASCULINO",
+      "qtdReservada": 6000,
+      "importadoEm": "2026-05-28T14:02:37.832Z"
+    },
+    {
+      "id": "AND-1779976957832-3315",
+      "produtoSku": 3315,
+      "produtoNome": "VIP 84 - MASCULINO",
+      "qtdReservada": 7500,
+      "importadoEm": "2026-05-28T14:02:37.832Z"
+    },
+    {
+      "id": "AND-1779976957832-1605",
+      "produtoSku": 1605,
+      "produtoNome": "VIP 26 - MASCULINO",
+      "qtdReservada": 6000,
+      "importadoEm": "2026-05-28T14:02:37.832Z"
+    },
+    {
+      "id": "AND-1779976957832-1564",
+      "produtoSku": 1564,
+      "produtoNome": "VIP 19 - FEMININO",
+      "qtdReservada": 4000,
+      "importadoEm": "2026-05-28T14:02:37.832Z"
+    },
+    {
+      "id": "AND-1779976957832-2494",
+      "produtoSku": 2494,
+      "produtoNome": "VIP 71 - FEMININO",
+      "qtdReservada": 4000,
+      "importadoEm": "2026-05-28T14:02:37.832Z"
     }
   ],
-  "comprasEmAndamento": [],
+  "comprasEmAndamento": [
+    {
+      "id": "COMP-1779977064373-3329",
+      "essenciaSku": 3329,
+      "essenciaNome": "WINNING",
+      "qtdComprada": 50000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-28",
+      "dataPrevistaEntrega": "2026-06-27",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-28T14:04:24.373Z"
+    },
+    {
+      "id": "COMP-1779977076222-5181",
+      "essenciaSku": 5181,
+      "essenciaNome": "CELEBRIDADE MOD I",
+      "qtdComprada": 25000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-28",
+      "dataPrevistaEntrega": "2026-06-27",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-28T14:04:36.222Z"
+    },
+    {
+      "id": "COMP-1779977091332-3330",
+      "essenciaSku": 3330,
+      "essenciaNome": "SYMBOLIC",
+      "qtdComprada": 50000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-28",
+      "dataPrevistaEntrega": "2026-06-27",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-28T14:04:51.333Z"
+    },
+    {
+      "id": "COMP-1779977125556-5181",
+      "essenciaSku": 5181,
+      "essenciaNome": "CELEBRIDADE MOD I",
+      "qtdComprada": 50000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-28",
+      "dataPrevistaEntrega": "2026-06-27",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-28T14:05:25.556Z"
+    },
+    {
+      "id": "COMP-1779977163650-2739",
+      "essenciaSku": 2739,
+      "essenciaNome": "UNO",
+      "qtdComprada": 100000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-28",
+      "dataPrevistaEntrega": "2026-06-27",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-28T14:06:03.650Z"
+    },
+    {
+      "id": "COMP-1779977189364-4072",
+      "essenciaSku": 4072,
+      "essenciaNome": "OVER RED",
+      "qtdComprada": 60000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-28",
+      "dataPrevistaEntrega": "2026-06-27",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-28T14:06:29.364Z"
+    },
+    {
+      "id": "COMP-1779977197853-2126",
+      "essenciaSku": 2126,
+      "essenciaNome": "MAJESTIC LPV",
+      "qtdComprada": 100000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-28",
+      "dataPrevistaEntrega": "2026-06-27",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-28T14:06:37.853Z"
+    },
+    {
+      "id": "COMP-1779977208586-5180",
+      "essenciaSku": 5180,
+      "essenciaNome": "SEXY IFR III",
+      "qtdComprada": 60000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-28",
+      "dataPrevistaEntrega": "2026-06-27",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-28T14:06:48.586Z"
+    },
+    {
+      "id": "COMP-1779977215995-3332",
+      "essenciaSku": 3332,
+      "essenciaNome": "FAME LPV",
+      "qtdComprada": 60000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-28",
+      "dataPrevistaEntrega": "2026-06-27",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-28T14:06:55.995Z"
+    },
+    {
+      "id": "COMP-1779977223690-1269",
+      "essenciaSku": 1269,
+      "essenciaNome": "TWO ONE TO MEN POWER",
+      "qtdComprada": 60000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-28",
+      "dataPrevistaEntrega": "2026-06-27",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-28T14:07:03.690Z"
+    },
+    {
+      "id": "COMP-1779977236791-3937",
+      "essenciaSku": 3937,
+      "essenciaNome": "VOLL PARFUM PROVOCATIVE YOUH",
+      "qtdComprada": 60000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-28",
+      "dataPrevistaEntrega": "2026-06-27",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-28T14:07:16.791Z"
+    },
+    {
+      "id": "COMP-1779977244120-2778",
+      "essenciaSku": 2778,
+      "essenciaNome": "BELLE FEME LPV",
+      "qtdComprada": 60000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-28",
+      "dataPrevistaEntrega": "2026-06-27",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-28T14:07:24.120Z"
+    },
+    {
+      "id": "COMP-1779977262218-1098",
+      "essenciaSku": 1098,
+      "essenciaNome": "DUBAI PRIVE LPV",
+      "qtdComprada": 60000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-28",
+      "dataPrevistaEntrega": "2026-06-27",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-28T14:07:42.218Z"
+    },
+    {
+      "id": "COMP-1779977280845-4851",
+      "essenciaSku": 4851,
+      "essenciaNome": "DIORELA NEW LPV II",
+      "qtdComprada": 60000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-28",
+      "dataPrevistaEntrega": "2026-06-27",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-28T14:08:00.845Z"
+    }
+  ],
   "snapshots": [
     {
       "timestamp": "2026-05-26T12:16:23.817Z",
@@ -50436,5 +50675,5 @@
     "essencias": "2026-05-28T10:42:15.023Z",
     "insumos": "2026-05-28T10:42:19.312Z"
   },
-  "exportedAt": "2026-05-28T12:26:42.072Z"
+  "exportedAt": "2026-05-28T14:08:48.121Z"
 }
