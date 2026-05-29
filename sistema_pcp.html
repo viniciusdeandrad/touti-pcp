@@ -539,6 +539,9 @@
 
   .editable { background: transparent; border: 1px solid transparent; color: var(--text); padding: 4px 6px; border-radius: 3px; font-family: inherit; font-size: 13px; width: 100%; }
 
+  .sim-days-btn { transition: all 0.15s; }
+  .sim-days-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+
   /* MODO SOMENTE-LEITURA — desabilita botões de edição */
   body.read-only .btn-primary,
   body.read-only .btn-gold,
@@ -1014,6 +1017,7 @@
         <option value="m1">Último mês</option>
       </select>
     </div>
+    <button class="btn btn-gold" id="btnSimularCobertura" style="margin-left: 14px;">🔮 Simular cobertura</button>
     <div style="flex: 1;"></div>
     <div style="font-size: 12px; color: var(--text-muted); max-width: 420px; text-align: right;">
       💡 Considera: <b>estoque essência + pedido aberto + estoque PA convertido</b> (PE+SP × g/un).<br>
@@ -1129,6 +1133,53 @@
       </div>
     </div>
   </div><!-- /compraTab-andamento -->
+</div>
+
+<!-- MODAL: SIMULAR COBERTURA -->
+<div class="modal-backdrop" id="modalSimular">
+  <div class="modal" style="max-width: 1100px;">
+    <div class="modal-title">🔮 Simulação de Cobertura</div>
+    <div class="modal-sub">Calcula quanto você precisaria comprar de cada essência pra cobrir um período determinado de venda. Considera estoque atual + pedidos abertos + compras em andamento + PA equivalente.</div>
+
+    <div style="display: flex; gap: 8px; align-items: center; margin: 18px 0 12px; flex-wrap: wrap;">
+      <span style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-right: 8px;">Cobertura desejada:</span>
+      <button class="btn btn-sm sim-days-btn" data-sim-days="30">30 dias</button>
+      <button class="btn btn-sm sim-days-btn" data-sim-days="60">60 dias</button>
+      <button class="btn btn-sm sim-days-btn active" data-sim-days="90">90 dias</button>
+      <button class="btn btn-sm sim-days-btn" data-sim-days="120">120 dias</button>
+      <button class="btn btn-sm sim-days-btn" data-sim-days="150">150 dias</button>
+      <button class="btn btn-sm sim-days-btn" data-sim-days="180">180 dias</button>
+      <div style="display: flex; align-items: center; gap: 6px; margin-left: 12px;">
+        <input type="number" id="simDaysCustom" placeholder="custom" style="width: 80px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text); padding: 5px 8px; border-radius: 5px; font-size: 12px;">
+        <span style="font-size: 11px; color: var(--text-muted);">dias</span>
+      </div>
+    </div>
+
+    <div id="simKpis" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px;"></div>
+
+    <div id="simTableWrap" style="max-height: 480px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px;">
+      <table style="width: 100%;">
+        <thead style="position: sticky; top: 0; background: #000; z-index: 1;">
+          <tr>
+            <th class="right" style="width: 70px;">SKU</th>
+            <th>Essência</th>
+            <th style="width: 110px;">Fornecedor</th>
+            <th class="right" style="width: 100px;">Disponível (kg)</th>
+            <th class="right" style="width: 100px;">Demanda (kg)</th>
+            <th class="right" style="width: 100px;">Comprar (kg)</th>
+            <th class="right" style="width: 100px;">USD/kg</th>
+            <th class="right" style="width: 100px;">Total USD</th>
+          </tr>
+        </thead>
+        <tbody id="simTbody"></tbody>
+      </table>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal('modalSimular')">Fechar</button>
+      <button class="btn" id="btnExportarSimulacao">📥 Exportar Excel</button>
+    </div>
+  </div>
 </div>
 
 <!-- MODAL: NOVA COMPRA -->
@@ -3661,6 +3712,144 @@ function renderMudancas() {
 //   - Soma a quantidade ao estoqueG da essência
 //   - Marca a compra como 'entregue' e mantém no histórico
 
+// ===== SIMULAÇÃO DE COBERTURA =====
+//
+// Mostra quanto comprar de cada essência pra cobrir N dias de venda.
+// Diferente da Sugestão de compra (que usa lead+produção+cobertura individual),
+// aqui o usuário define N dias e o sistema calcula uniformemente:
+//
+//   DEMANDA = Σ (giro_mensal_produto × g_por_un × N / 30) pra todos produtos que usam essa essência
+//   DISPONÍVEL = estoque + pedido_aberto + compras_em_andamento + PA_equivalente
+//   COMPRAR = max(0, DEMANDA - DISPONÍVEL)
+//
+// O total em USD é calculado pra dar uma noção de investimento.
+
+let _simDiasAtual = 90;
+
+function calcularSimulacaoCobertura(dias) {
+  // Estratégia de demanda: usa a mesma do select atual da página
+  const vendaCol = document.getElementById('paramVenda')?.value || 'm3';
+  const calcGiro = (v) => {
+    if (!v) return 0;
+    if (vendaCol === 'pico6_m3') return Math.max(v.m3 || 0, v.pico6 || 0);
+    return v[vendaCol] || 0;
+  };
+
+  const resultados = [];
+  state.essencias.forEach(ess => {
+    // Soma demanda mensal de todos os produtos que usam essa essência
+    let demandaMensalG = 0;
+    let paEquivG = 0;
+    let produtosUsando = 0;
+    state.produtos.forEach(p => {
+      if (p.skuEssencia !== ess.sku) return;
+      const giro = calcGiro(state.venda[p.sku]);
+      if (giro <= 0) return;
+      const gramasPorUn = p.gramasPorUn || 0;
+      if (gramasPorUn <= 0) return;
+      demandaMensalG += giro * gramasPorUn;
+      const est = state.estoque[p.sku] || { pe: 0, sp: 0 };
+      paEquivG += ((est.pe || 0) + (est.sp || 0)) * gramasPorUn;
+      produtosUsando++;
+    });
+
+    if (demandaMensalG <= 0) return; // pula essências sem demanda
+
+    const demandaPeriodoG = (demandaMensalG / 30) * dias;
+    const estoqueG = ess.estoqueG || 0;
+    const pedidoG = ess.pedidoAbertoG || 0;
+    const comprasAtivasG = getComprasAtivasPorEss(ess.sku);
+    const disponivelG = estoqueG + pedidoG + comprasAtivasG + paEquivG;
+    const comprarG = Math.max(0, demandaPeriodoG - disponivelG);
+    const comprarKg = comprarG / 1000;
+    const usdKg = ess.precoUSD || 0;
+    const totalUSD = comprarKg * usdKg;
+
+    resultados.push({
+      sku: ess.sku,
+      nome: ess.nome,
+      fornecedor: ess.fornecedor || '',
+      produtosUsando,
+      estoqueG, pedidoG, comprasAtivasG, paEquivG, disponivelG,
+      demandaPeriodoG,
+      comprarG, comprarKg,
+      usdKg, totalUSD,
+    });
+  });
+
+  // Ordena: quem precisa comprar mais primeiro
+  resultados.sort((a, b) => b.comprarKg - a.comprarKg);
+  return resultados;
+}
+
+function renderSimulacao(dias) {
+  _simDiasAtual = dias;
+  const resultados = calcularSimulacaoCobertura(dias);
+
+  // KPIs
+  const precisamComprar = resultados.filter(r => r.comprarKg > 0);
+  const totalKg = precisamComprar.reduce((s, r) => s + r.comprarKg, 0);
+  const totalUSD = precisamComprar.reduce((s, r) => s + r.totalUSD, 0);
+  const semPreco = precisamComprar.filter(r => !r.usdKg).length;
+
+  document.getElementById('simKpis').innerHTML = `
+    <div class="kpi"><div class="kpi-label">Período simulado</div><div class="kpi-value">${dias}d</div><div class="kpi-sub">~${(dias / 30).toFixed(1)} meses</div></div>
+    <div class="kpi"><div class="kpi-label">Essências a comprar</div><div class="kpi-value">${precisamComprar.length}</div><div class="kpi-sub">De ${resultados.length} com demanda</div></div>
+    <div class="kpi ok"><div class="kpi-label">Volume total</div><div class="kpi-value" style="font-size: 24px;">${totalKg.toFixed(1)} kg</div><div class="kpi-sub">Soma a comprar</div></div>
+    <div class="kpi warn"><div class="kpi-label">Investimento</div><div class="kpi-value" style="font-size: 24px;">US$ ${totalUSD.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}</div><div class="kpi-sub">${semPreco > 0 ? semPreco + ' sem preço cadastrado' : 'Todas com preço'}</div></div>
+  `;
+
+  // Tabela
+  const tbody = document.getElementById('simTbody');
+  if (resultados.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-dim); padding:30px;">Nenhuma essência com demanda. Verifique se há produtos com venda e gramas por unidade cadastrados.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = resultados.map(r => `
+    <tr>
+      <td class="right">${refSku(r.sku, 'essencia')}</td>
+      <td>${refNome(r.sku, r.nome, 'essencia')} <span style="color:var(--text-dim); font-size:11px">(${r.produtosUsando} prod)</span></td>
+      <td style="font-size:12px; color:var(--text-muted)">${r.fornecedor || '—'}</td>
+      <td class="right mono" style="color:${r.disponivelG > 0 ? 'var(--text)' : 'var(--text-dim)'}">${(r.disponivelG / 1000).toFixed(1)}</td>
+      <td class="right mono">${(r.demandaPeriodoG / 1000).toFixed(1)}</td>
+      <td class="right mono buy-val">${r.comprarKg > 0 ? r.comprarKg.toFixed(1) : '<span style="color:var(--ok)">✓</span>'}</td>
+      <td class="right mono" style="color:${r.usdKg > 0 ? 'var(--text-muted)' : 'var(--text-dim)'}">${r.usdKg > 0 ? r.usdKg.toFixed(2) : '—'}</td>
+      <td class="right mono" style="color:${r.totalUSD > 0 ? 'var(--accent)' : 'var(--text-dim)'}; font-weight: ${r.totalUSD > 0 ? '600' : '400'}">${r.totalUSD > 0 ? r.totalUSD.toLocaleString('pt-BR', { maximumFractionDigits: 0 }) : '—'}</td>
+    </tr>
+  `).join('');
+}
+
+function exportarSimulacao() {
+  const resultados = calcularSimulacaoCobertura(_simDiasAtual);
+  const precisamComprar = resultados.filter(r => r.comprarKg > 0);
+  const rows = [
+    ['SIMULAÇÃO DE COBERTURA — ' + _simDiasAtual + ' DIAS'],
+    ['Gerado em: ' + new Date().toLocaleString('pt-BR')],
+    [],
+    ['SKU', 'Essência', 'Fornecedor', 'Produtos que usam', 'Disponível (kg)', 'Demanda período (kg)', 'Comprar (kg)', 'USD/kg', 'Total USD'],
+  ];
+  precisamComprar.forEach(r => {
+    rows.push([
+      r.sku, r.nome, r.fornecedor, r.produtosUsando,
+      (r.disponivelG / 1000).toFixed(1),
+      (r.demandaPeriodoG / 1000).toFixed(1),
+      r.comprarKg.toFixed(1),
+      r.usdKg.toFixed(2),
+      r.totalUSD.toFixed(2),
+    ]);
+  });
+  rows.push([]);
+  const totalKg = precisamComprar.reduce((s, r) => s + r.comprarKg, 0);
+  const totalUSD = precisamComprar.reduce((s, r) => s + r.totalUSD, 0);
+  rows.push(['', '', '', 'TOTAL', '', '', totalKg.toFixed(1), '', totalUSD.toFixed(2)]);
+
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{ wch: 8 }, { wch: 30 }, { wch: 14 }, { wch: 16 }, { wch: 16 }, { wch: 18 }, { wch: 14 }, { wch: 10 }, { wch: 14 }];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, `Simulação ${_simDiasAtual}d`);
+  XLSX.writeFile(wb, `simulacao_cobertura_${_simDiasAtual}dias.xlsx`);
+}
+
 function renderComprasAndamento() {
   const lista = state.comprasEmAndamento || [];
   const ativas = lista.filter(c => c.status !== 'entregue');
@@ -5209,6 +5398,38 @@ function abrirModalNovaCompra(skuPreselect, qtdKgPreselect) {
 }
 
 document.getElementById('btnNovaCompra').onclick = () => abrirModalNovaCompra();
+
+// ===== HANDLERS: SIMULAÇÃO DE COBERTURA =====
+document.getElementById('btnSimularCobertura').onclick = () => {
+  // Reset estado: 90 dias por padrão
+  _simDiasAtual = 90;
+  document.querySelectorAll('.sim-days-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.simDays) === 90);
+  });
+  document.getElementById('simDaysCustom').value = '';
+  renderSimulacao(90);
+  openModal('modalSimular');
+};
+
+document.querySelectorAll('.sim-days-btn').forEach(btn => {
+  btn.onclick = () => {
+    const dias = parseInt(btn.dataset.simDays);
+    document.querySelectorAll('.sim-days-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('simDaysCustom').value = '';
+    renderSimulacao(dias);
+  };
+});
+
+document.getElementById('simDaysCustom').oninput = (e) => {
+  const dias = parseInt(e.target.value);
+  if (isNaN(dias) || dias < 1 || dias > 999) return;
+  document.querySelectorAll('.sim-days-btn').forEach(b => b.classList.remove('active'));
+  renderSimulacao(dias);
+};
+
+document.getElementById('btnExportarSimulacao').onclick = exportarSimulacao;
+
 
 document.getElementById('modalCompraSalvar').onclick = async () => {
   const sku = parseInt(document.getElementById('compraEssSku').value);
