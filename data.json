@@ -157,7 +157,7 @@
       "leadTime": 20,
       "producao": 15,
       "cobertura": 30,
-      "estoqueG": 54000,
+      "estoqueG": 0,
       "pedidoAbertoG": 146000
     },
     {
@@ -207,7 +207,7 @@
       "leadTime": 20,
       "producao": 15,
       "cobertura": 30,
-      "estoqueG": 60000,
+      "estoqueG": 20000,
       "pedidoAbertoG": 0
     },
     {
@@ -277,7 +277,7 @@
       "leadTime": 20,
       "producao": 15,
       "cobertura": 30,
-      "estoqueG": 60000,
+      "estoqueG": 0,
       "pedidoAbertoG": 0
     },
     {
@@ -387,7 +387,7 @@
       "leadTime": 20,
       "producao": 15,
       "cobertura": 30,
-      "estoqueG": 60000,
+      "estoqueG": 0,
       "pedidoAbertoG": 0
     },
     {
@@ -427,7 +427,7 @@
       "leadTime": 20,
       "producao": 15,
       "cobertura": 30,
-      "estoqueG": 75000,
+      "estoqueG": 25000,
       "pedidoAbertoG": 0
     },
     {
@@ -497,7 +497,7 @@
       "leadTime": 20,
       "producao": 15,
       "cobertura": 30,
-      "estoqueG": 60000,
+      "estoqueG": 20000,
       "pedidoAbertoG": 0
     },
     {
@@ -717,7 +717,7 @@
       "leadTime": 20,
       "producao": 15,
       "cobertura": 30,
-      "estoqueG": 107200,
+      "estoqueG": 116200,
       "pedidoAbertoG": 0
     },
     {
@@ -727,7 +727,7 @@
       "leadTime": 20,
       "producao": 15,
       "cobertura": 30,
-      "estoqueG": 60000,
+      "estoqueG": 20000,
       "pedidoAbertoG": 0
     },
     {
@@ -797,7 +797,7 @@
       "leadTime": 20,
       "producao": 15,
       "cobertura": 30,
-      "estoqueG": 5000,
+      "estoqueG": 0,
       "pedidoAbertoG": 0
     },
     {
@@ -827,7 +827,7 @@
       "leadTime": 20,
       "producao": 15,
       "cobertura": 30,
-      "estoqueG": 95200,
+      "estoqueG": 0,
       "pedidoAbertoG": 1000000
     },
     {
@@ -857,7 +857,7 @@
       "leadTime": 20,
       "producao": 15,
       "cobertura": 30,
-      "estoqueG": 75000,
+      "estoqueG": 0,
       "pedidoAbertoG": 0
     },
     {
@@ -937,7 +937,7 @@
       "leadTime": 20,
       "producao": 15,
       "cobertura": 30,
-      "estoqueG": 60000,
+      "estoqueG": 0,
       "pedidoAbertoG": 0
     },
     {
@@ -8830,13 +8830,13 @@
     "3588": {
       "nome": "MARINA FERRARI TAMPA",
       "categoria": "TAMPA",
-      "estoque": 36000,
+      "estoque": 29000,
       "unidade": "UN"
     },
     "3589": {
       "nome": "MARINA FERRARI DIA VIDRO 90ML ROSA",
       "categoria": "VIDRO",
-      "estoque": 36240,
+      "estoque": 35640,
       "unidade": "UN"
     },
     "3590": {
@@ -8848,13 +8848,13 @@
     "3591": {
       "nome": "MARINA FERRARI VALVULA SHINY SILVER",
       "categoria": "VÁLVULA",
-      "estoque": 36000,
+      "estoque": 29000,
       "unidade": "UN"
     },
     "3806": {
       "nome": "MARINA FERRARI DIA CARTONAGEM ROSA",
       "categoria": "CARTONAGEM",
-      "estoque": 32650,
+      "estoque": 32050,
       "unidade": "UN"
     },
     "3850": {
@@ -8866,19 +8866,19 @@
     "3903": {
       "nome": "VIDRO 30 ML",
       "categoria": "VIDRO",
-      "estoque": 335580,
+      "estoque": 334080,
       "unidade": "UN"
     },
     "3904": {
       "nome": "TAMPA 30ML ALUMINIO",
       "categoria": "TAMPA",
-      "estoque": 342720,
+      "estoque": 240720,
       "unidade": "UN"
     },
     "3905": {
       "nome": "VALVULA 30ML DOURADA",
       "categoria": "VÁLVULA",
-      "estoque": 297000,
+      "estoque": 296000,
       "unidade": "UN"
     },
     "3947": {
@@ -9076,7 +9076,7 @@
     "4112": {
       "nome": "BARÇA VISCA EL ROTULO 30 ML",
       "categoria": "ROTULO",
-      "estoque": 195875,
+      "estoque": 194300,
       "unidade": "UN"
     },
     "4113": {
@@ -9160,7 +9160,7 @@
     "4204": {
       "nome": "MY SOUL VIDRO",
       "categoria": "VIDRO",
-      "estoque": 35000,
+      "estoque": 27559,
       "unidade": "UN"
     },
     "4205": {
@@ -9196,7 +9196,7 @@
     "4211": {
       "nome": "MY SOUL TAMPA",
       "categoria": "TAMPA",
-      "estoque": 36700,
+      "estoque": 29259,
       "unidade": "UN"
     },
     "4212": {
@@ -9232,7 +9232,7 @@
     "4217": {
       "nome": "MY SOUL VALVULA SHINY GOLD",
       "categoria": "VÁLVULA",
-      "estoque": 36000,
+      "estoque": 28559,
       "unidade": "UN"
     },
     "4218": {
@@ -9262,7 +9262,7 @@
     "4231": {
       "nome": "MY SOUL CARTONAGEM",
       "categoria": "CARTONAGEM",
-      "estoque": 32400,
+      "estoque": 24959,
       "unidade": "UN"
     },
     "4243": {
@@ -9562,7 +9562,7 @@
     "4768": {
       "nome": "CARTONAGEM DESODORANTE COLONIA BELISSIMA YES 100ml",
       "categoria": "CARTONAGEM",
-      "estoque": 7044.02,
+      "estoque": 6104.02,
       "unidade": "UN"
     },
     "4769": {
@@ -9574,11 +9574,11 @@
     "4770": {
       "nome": "CARTONAGEM DESODORANTE COLONIA RADIANTE YES 100ml",
       "categoria": "CARTONAGEM",
-      "estoque": 4773,
+      "estoque": 4087,
       "unidade": "UN"
     },
     "4771": {
-      "nome": "CARTONAGEM DESODORANTE COLONIA RENASCENÇA YES 100ml",
+      "nome": "CARTONAGEM DESODORANTE COLONIA RENASCENCA YES 100ml",
       "categoria": "CARTONAGEM",
       "estoque": 8647.18,
       "unidade": "UN"
@@ -9592,7 +9592,7 @@
     "4773": {
       "nome": "CARTONAGEM DESODORANTE COLONIA LUMINOSA YES 100ml",
       "categoria": "CARTONAGEM",
-      "estoque": 3446.47,
+      "estoque": 2066.47,
       "unidade": "UN"
     },
     "4774": {
@@ -9616,7 +9616,7 @@
     "4777": {
       "nome": "CARTONAGEM DESODORANTE COLONIA INSTINTO YES 100ml",
       "categoria": "CARTONAGEM",
-      "estoque": 7057.13,
+      "estoque": 6363.13,
       "unidade": "UN"
     },
     "4778": {
@@ -9664,13 +9664,13 @@
     "4785": {
       "nome": "CARTONAGEM DESODORANTE COLONIA AUDACIOSA YES 100ml",
       "categoria": "CARTONAGEM",
-      "estoque": 6636.5,
+      "estoque": 6299.5,
       "unidade": "UN"
     },
     "4786": {
       "nome": "CARTONAGEM DESODORANTE COLONIA CAPRI YES 100ml",
       "categoria": "CARTONAGEM",
-      "estoque": 5307,
+      "estoque": 4714,
       "unidade": "UN"
     },
     "4787": {
@@ -9692,7 +9692,7 @@
       "unidade": "UN"
     },
     "4790": {
-      "nome": "CARTONAGEM DESODORANTE COLONIA SUSSURO YES 100ml",
+      "nome": "CARTONAGEM DESODORANTE COLONIA SUSSURRO YES 100ml",
       "categoria": "CARTONAGEM",
       "estoque": 7087.5,
       "unidade": "UN"
@@ -9700,7 +9700,7 @@
     "4791": {
       "nome": "CARTONAGEM DESODORANTE COLONIA INDOMAVEL YES 100ml",
       "categoria": "CARTONAGEM",
-      "estoque": 6652.56,
+      "estoque": 4916.56,
       "unidade": "UN"
     },
     "4797": {
@@ -9734,183 +9734,183 @@
       "unidade": "UN"
     },
     "4802": {
-      "nome": "RÓTULO DESODORANTE COLONIA ARDENTE YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA ARDENTE YES 100ml",
       "categoria": "ROTULO",
-      "estoque": 10711,
+      "estoque": 9688,
       "unidade": "UN"
     },
     "4803": {
-      "nome": "RÓTULO DESODORANTE COLONIA AUDACIOSA YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA AUDACIOSA YES 100ml",
       "categoria": "ROTULO",
-      "estoque": 10993,
+      "estoque": 10656,
       "unidade": "UN"
     },
     "4804": {
-      "nome": "RÓTULO DESODORANTE COLONIA BELISSIMA YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA BELISSIMA YES 100ml",
       "categoria": "ROTULO",
-      "estoque": 11950,
+      "estoque": 11012,
       "unidade": "UN"
     },
     "4805": {
-      "nome": "RÓTULO DESODORANTE COLONIA CAPRI YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA CAPRI YES 100ml",
       "categoria": "ROTULO",
-      "estoque": 7068,
+      "estoque": 6476,
       "unidade": "UN"
     },
     "4806": {
-      "nome": "RÓTULO DESODORANTE COLONIA CLARA YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA CLARA YES 100ml",
       "categoria": "ROTULO",
       "estoque": 7554.4,
       "unidade": "UN"
     },
     "4807": {
-      "nome": "RÓTULO DESODORANTE COLONIA COSMOPOLITAN YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA COSMOPOLITAN YES 100ml",
       "categoria": "ROTULO",
       "estoque": 9495,
       "unidade": "UN"
     },
     "4808": {
-      "nome": "RÓTULO DESODORANTE COLONIA COSTA AZUL YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA COSTA AZUL YES 100ml",
       "categoria": "ROTULO",
       "estoque": 11918.4,
       "unidade": "UN"
     },
     "4809": {
-      "nome": "RÓTULO DESODORANTE COLONIA DELICADA YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA DELICADA YES 100ml",
       "categoria": "ROTULO",
       "estoque": 13143.03,
       "unidade": "UN"
     },
     "4810": {
-      "nome": "RÓTULO DESODORANTE COLONIA DOCE FORCA YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA DOCE FORCA YES 100ml",
       "categoria": "ROTULO",
       "estoque": 7444,
       "unidade": "UN"
     },
     "4811": {
-      "nome": "RÓTULO DESODORANTE COLONIA ENCANTO YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA ENCANTO YES 100ml",
       "categoria": "ROTULO",
       "estoque": 8288.07,
       "unidade": "UN"
     },
     "4812": {
-      "nome": "RÓTULO DESODORANTE COLONIA EPIFANIA YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA EPIFANIA YES 100ml",
       "categoria": "ROTULO",
       "estoque": 12345,
       "unidade": "UN"
     },
     "4813": {
-      "nome": "RÓTULO DESODORANTE COLONIA FEMME FATALE YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA FEMME FATALE YES 100ml",
       "categoria": "ROTULO",
       "estoque": 10507,
       "unidade": "UN"
     },
     "4814": {
-      "nome": "RÓTULO DESODORANTE COLONIA FLOR DE LIS YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA FLOR DE LIS YES 100ml",
       "categoria": "ROTULO",
       "estoque": 13124,
       "unidade": "UN"
     },
     "4815": {
-      "nome": "RÓTULO DESODORANTE COLONIA ICONE YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA ICONE YES 100ml",
       "categoria": "ROTULO",
       "estoque": 8985,
       "unidade": "UN"
     },
     "4816": {
-      "nome": "RÓTULO DESODORANTE COLONIA INDOMAVEL YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA INDOMAVEL YES 100ml",
       "categoria": "ROTULO",
-      "estoque": 10406,
+      "estoque": 8671,
       "unidade": "UN"
     },
     "4817": {
-      "nome": "RÓTULO DESODORANTE COLONIA LUMINOSA YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA LUMINOSA YES 100ml",
       "categoria": "ROTULO",
-      "estoque": 10463,
+      "estoque": 9089,
       "unidade": "UN"
     },
     "4818": {
-      "nome": "RÓTULO DESODORANTE COLONIA RADIANTE YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA RADIANTE YES 100ml",
       "categoria": "ROTULO",
-      "estoque": 6809,
+      "estoque": 6126,
       "unidade": "UN"
     },
     "4819": {
-      "nome": "RÓTULO DESODORANTE COLONIA RARIDADE YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA RARIDADE YES 100ml",
       "categoria": "ROTULO",
       "estoque": 10342,
       "unidade": "UN"
     },
     "4820": {
-      "nome": "RÓTULO DESODORANTE COLONIA RENASCENÇA YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA RENASCENCA YES 100ml",
       "categoria": "ROTULO",
       "estoque": 9082,
       "unidade": "UN"
     },
     "4821": {
-      "nome": "RÓTULO DESODORANTE COLONIA SOBERANA YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA SOBERANA YES 100ml",
       "categoria": "ROTULO",
       "estoque": 9113,
       "unidade": "UN"
     },
     "4822": {
-      "nome": "RÓTULO DESODORANTE COLONIA SUSSURO YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA SUSSURRO YES 100ml",
       "categoria": "ROTULO",
       "estoque": 8932.4,
       "unidade": "UN"
     },
     "4823": {
-      "nome": "RÓTULO DESODORANTE COLONIA VERTIGEM YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA VERTIGEM YES 100ml",
       "categoria": "ROTULO",
       "estoque": 10496.39,
       "unidade": "UN"
     },
     "4824": {
-      "nome": "RÓTULO DESODORANTE COLONIA VIRTUDE YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA VIRTUDE YES 100ml",
       "categoria": "ROTULO",
       "estoque": 10679,
       "unidade": "UN"
     },
     "4825": {
-      "nome": "RÓTULO DESODORANTE COLONIA VISIONARIA YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA VISIONARIA YES 100ml",
       "categoria": "ROTULO",
       "estoque": 11781.42,
       "unidade": "UN"
     },
     "4826": {
-      "nome": "RÓTULO DESODORANTE COLONIA INESQUECIVEL YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA INESQUECIVEL YES 100ml",
       "categoria": "ROTULO",
       "estoque": 6766,
       "unidade": "UN"
     },
     "4845": {
-      "nome": "RÓTULO DESODORANTE COLONIA MAGNIFICO YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA MAGNIFICO YES 100ml",
       "categoria": "ROTULO",
-      "estoque": 10934,
+      "estoque": 9447,
       "unidade": "UN"
     },
     "4846": {
-      "nome": "RÓTULO DESODORANTE COLONIA ARTIFICE YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA ARTIFICE YES 100ml",
       "categoria": "ROTULO",
-      "estoque": 9863,
+      "estoque": 9275,
       "unidade": "UN"
     },
     "4847": {
-      "nome": "RÓTULO DESODORANTE COLONIA INSTINTO YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA INSTINTO YES 100ml",
       "categoria": "ROTULO",
-      "estoque": 7970,
+      "estoque": 7278,
       "unidade": "UN"
     },
     "4937": {
       "nome": "CARTONAGEM DESODORANTE COLONIA MAGNIFICO YES 100ml",
       "categoria": "CARTONAGEM",
-      "estoque": 1977,
+      "estoque": 483,
       "unidade": "UN"
     },
     "4938": {
       "nome": "CARTONAGEM DESODORANTE COLONIA ARTIFICE YES 100ml",
       "categoria": "CARTONAGEM",
-      "estoque": 606,
+      "estoque": 20,
       "unidade": "UN"
     },
     "4939": {
@@ -9994,7 +9994,7 @@
     "5416": {
       "nome": "CARTONAGEM DESODORANTE COLONIA ARDENTE YES 100ml",
       "categoria": "CARTONAGEM",
-      "estoque": 5351,
+      "estoque": 4343,
       "unidade": "UN"
     },
     "5417": {
@@ -10006,7 +10006,7 @@
     "5418": {
       "nome": "CARTONAGEM DESODORANTE COLONIA VALENTE YES 100ml",
       "categoria": "CARTONAGEM",
-      "estoque": 2412,
+      "estoque": 721,
       "unidade": "UN"
     },
     "5419": {
@@ -10060,13 +10060,13 @@
     "5427": {
       "nome": "CARTONAGEM DESODORANTE COLONIA ENIGMA YES 100ml",
       "categoria": "CARTONAGEM",
-      "estoque": 1028,
+      "estoque": 311,
       "unidade": "UN"
     },
     "5428": {
       "nome": "CARTONAGEM DESODORANTE COLONIA LIBERTAD YES 100ml",
       "categoria": "CARTONAGEM",
-      "estoque": 2993,
+      "estoque": 2389,
       "unidade": "UN"
     },
     "5429": {
@@ -10126,7 +10126,7 @@
     "7081": {
       "nome": "VIDRO SANDALO",
       "categoria": "VIDRO",
-      "estoque": 2736,
+      "estoque": 88,
       "unidade": "UN"
     },
     "7106": {
@@ -10138,11 +10138,11 @@
     "7131": {
       "nome": "TAMPA SANDALO (FORUM 2 PRETA)",
       "categoria": "TAMPA",
-      "estoque": 4633,
+      "estoque": 4340,
       "unidade": "UN"
     },
     "7132": {
-      "nome": "CARTONAGEM SANDALO NOIR PARFUM DESODORANTE 100ML",
+      "nome": "CARTONAGEM SANDALO NOIR PARFUM DESODORANTE 100ml",
       "categoria": "CARTONAGEM",
       "estoque": 3471,
       "unidade": "UN"
@@ -10172,79 +10172,79 @@
       "unidade": "UN"
     },
     "7155": {
-      "nome": "RÓTULO DESODORANTE COLONIA HONORIS YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA HONORIS YES 100ml",
       "categoria": "ROTULO",
       "estoque": 10381.999,
       "unidade": "UN"
     },
     "7156": {
-      "nome": "RÓTULO DESODORANTE COLONIA VALENTE YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA VALENTE YES 100ml",
       "categoria": "ROTULO",
-      "estoque": 9350.002,
+      "estoque": 7668.002,
       "unidade": "UN"
     },
     "7157": {
-      "nome": "RÓTULO DESODORANTE COLONIA DOMINUS YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA DOMINUS YES 100ml",
       "categoria": "ROTULO",
       "estoque": 11662,
       "unidade": "UN"
     },
     "7158": {
-      "nome": "RÓTULO DESODORANTE COLONIA FLORESCER YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA FLORESCER YES 100ml",
       "categoria": "ROTULO",
       "estoque": 7256,
       "unidade": "UN"
     },
     "7159": {
-      "nome": "RÓTULO DESODORANTE COLONIA PARADOXO YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA PARADOXO YES 100ml",
       "categoria": "ROTULO",
       "estoque": 10532,
       "unidade": "UN"
     },
     "7160": {
-      "nome": "RÓTULO DESODORANTE COLONIA MINIMALISTA YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA MINIMALISTA YES 100ml",
       "categoria": "ROTULO",
       "estoque": 10481,
       "unidade": "UN"
     },
     "7161": {
-      "nome": "RÓTULO DESODORANTE COLONIA NUIT CLAIRE YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA NUIT CLAIRE YES 100ml",
       "categoria": "ROTULO",
       "estoque": 7934,
       "unidade": "UN"
     },
     "7162": {
-      "nome": "RÓTULO DESODORANTE COLONIA FASHIONISTA YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA FASHIONISTA YES 100ml",
       "categoria": "ROTULO",
       "estoque": 6367,
       "unidade": "UN"
     },
     "7163": {
-      "nome": "RÓTULO DESODORANTE COLONIA HORIZON YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA HORIZON YES 100ml",
       "categoria": "ROTULO",
       "estoque": 13258.997,
       "unidade": "UN"
     },
     "7164": {
-      "nome": "RÓTULO DESODORANTE COLONIA AURORA YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA AURORA YES 100ml",
       "categoria": "ROTULO",
       "estoque": 10775,
       "unidade": "UN"
     },
     "7165": {
-      "nome": "RÓTULO DESODORANTE COLONIA ENIGMA YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA ENIGMA YES 100ml",
       "categoria": "ROTULO",
-      "estoque": 11142.001,
+      "estoque": 10430.001,
       "unidade": "UN"
     },
     "7166": {
-      "nome": "RÓTULO DESODORANTE COLONIA LIBERTAD YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA LIBERTAD YES 100ml",
       "categoria": "ROTULO",
-      "estoque": 9527,
+      "estoque": 8924,
       "unidade": "UN"
     },
     "7167": {
-      "nome": "RÓTULO DESODORANTE COLONIA OUSADIA YES 100ml",
+      "nome": "ROTULO DESODORANTE COLONIA OUSADIA YES 100ml",
       "categoria": "ROTULO",
       "estoque": 8560,
       "unidade": "UN"
@@ -10258,7 +10258,7 @@
     "7268": {
       "nome": "VALVULA SANDALO",
       "categoria": "VÁLVULA",
-      "estoque": 2332,
+      "estoque": 2316,
       "unidade": "UN"
     },
     "7276": {
@@ -10820,6 +10820,118 @@
       "produtoNome": "VIP 71 - FEMININO",
       "qtdReservada": 4000,
       "importadoEm": "2026-05-28T14:02:37.832Z"
+    },
+    {
+      "id": "AND-1780077643390-1599",
+      "produtoSku": 1599,
+      "produtoNome": "VIP 12 - MASCULINO",
+      "qtdReservada": 10230,
+      "importadoEm": "2026-05-29T18:00:43.390Z"
+    },
+    {
+      "id": "AND-1780077643390-1569",
+      "produtoSku": 1569,
+      "produtoNome": "VIP 29 - FEMININO",
+      "qtdReservada": 6450,
+      "importadoEm": "2026-05-29T18:00:43.390Z"
+    },
+    {
+      "id": "AND-1780077643390-2483",
+      "produtoSku": 2483,
+      "produtoNome": "VIP 17 - FEMININO",
+      "qtdReservada": 2500,
+      "importadoEm": "2026-05-29T18:00:43.390Z"
+    },
+    {
+      "id": "AND-1780077643390-1564",
+      "produtoSku": 1564,
+      "produtoNome": "VIP 19 - FEMININO",
+      "qtdReservada": 2000,
+      "importadoEm": "2026-05-29T18:00:43.390Z"
+    },
+    {
+      "id": "AND-1780077643390-2489",
+      "produtoSku": 2489,
+      "produtoNome": "VIP 63 - FEMININO",
+      "qtdReservada": 2000,
+      "importadoEm": "2026-05-29T18:00:43.390Z"
+    },
+    {
+      "id": "AND-1780077643390-2494",
+      "produtoSku": 2494,
+      "produtoNome": "VIP 71 - FEMININO",
+      "qtdReservada": 2000,
+      "importadoEm": "2026-05-29T18:00:43.390Z"
+    },
+    {
+      "id": "AND-1780077643390-1615",
+      "produtoSku": 1615,
+      "produtoNome": "VIP 46 - MASCULINO",
+      "qtdReservada": 1000,
+      "importadoEm": "2026-05-29T18:00:43.390Z"
+    },
+    {
+      "id": "AND-1780077643390-5382",
+      "produtoSku": 5382,
+      "produtoNome": "VIP 75 - FEMININO",
+      "qtdReservada": 176,
+      "importadoEm": "2026-05-29T18:00:43.390Z"
+    },
+    {
+      "id": "AND-1780079257782-1599",
+      "produtoSku": 1599,
+      "produtoNome": "VIP 12 - MASCULINO",
+      "qtdReservada": 10230,
+      "importadoEm": "2026-05-29T18:27:37.782Z"
+    },
+    {
+      "id": "AND-1780079257782-1569",
+      "produtoSku": 1569,
+      "produtoNome": "VIP 29 - FEMININO",
+      "qtdReservada": 6450,
+      "importadoEm": "2026-05-29T18:27:37.782Z"
+    },
+    {
+      "id": "AND-1780079257782-2483",
+      "produtoSku": 2483,
+      "produtoNome": "VIP 17 - FEMININO",
+      "qtdReservada": 2500,
+      "importadoEm": "2026-05-29T18:27:37.782Z"
+    },
+    {
+      "id": "AND-1780079257782-1564",
+      "produtoSku": 1564,
+      "produtoNome": "VIP 19 - FEMININO",
+      "qtdReservada": 2000,
+      "importadoEm": "2026-05-29T18:27:37.782Z"
+    },
+    {
+      "id": "AND-1780079257782-2489",
+      "produtoSku": 2489,
+      "produtoNome": "VIP 63 - FEMININO",
+      "qtdReservada": 2000,
+      "importadoEm": "2026-05-29T18:27:37.782Z"
+    },
+    {
+      "id": "AND-1780079257783-2494",
+      "produtoSku": 2494,
+      "produtoNome": "VIP 71 - FEMININO",
+      "qtdReservada": 2000,
+      "importadoEm": "2026-05-29T18:27:37.783Z"
+    },
+    {
+      "id": "AND-1780079257783-1615",
+      "produtoSku": 1615,
+      "produtoNome": "VIP 46 - MASCULINO",
+      "qtdReservada": 1000,
+      "importadoEm": "2026-05-29T18:27:37.783Z"
+    },
+    {
+      "id": "AND-1780079257783-5382",
+      "produtoSku": 5382,
+      "produtoNome": "VIP 75 - FEMININO",
+      "qtdReservada": 176,
+      "importadoEm": "2026-05-29T18:27:37.783Z"
     }
   ],
   "comprasEmAndamento": [
@@ -50667,13 +50779,8117 @@
         "8383": 3034,
         "8436": 11860
       }
+    },
+    {
+      "timestamp": "2026-05-29T17:57:27.061Z",
+      "origem": "estoque",
+      "essencias": [
+        {
+          "sku": 4076,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2476,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4041,
+          "estoqueG": 0,
+          "pedidoAbertoG": 60000
+        },
+        {
+          "sku": 3849,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 834,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 392,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 835,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 836,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2777,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7710,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1942,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 668,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2778,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7265,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1179,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4274,
+          "estoqueG": 54000,
+          "pedidoAbertoG": 146000
+        },
+        {
+          "sku": 4374,
+          "estoqueG": 22400,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3225,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 5181,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3930,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2454,
+          "estoqueG": 60000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3965,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1294,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4851,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1270,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1098,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4042,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 502,
+          "estoqueG": 60000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 438,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4945,
+          "estoqueG": 14700,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3332,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 484,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1911,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4275,
+          "estoqueG": 4000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2768,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 8298,
+          "estoqueG": 91850,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3034,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 636,
+          "estoqueG": 0,
+          "pedidoAbertoG": 500000
+        },
+        {
+          "sku": 3136,
+          "estoqueG": 60000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3931,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 617,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 5182,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3328,
+          "estoqueG": 75000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 8067,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 669,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2160,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 439,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4591,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3989,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3035,
+          "estoqueG": 60000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7507,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 572,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1295,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 840,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2779,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2318,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2126,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4392,
+          "estoqueG": 35650,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 540,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3036,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 861,
+          "estoqueG": 64500,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 841,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1912,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7890,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2736,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7264,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4072,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3966,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4355,
+          "estoqueG": 126350,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4637,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4960,
+          "estoqueG": 85000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 905,
+          "estoqueG": 107200,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 440,
+          "estoqueG": 60000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 670,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 393,
+          "estoqueG": 102300,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4043,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1271,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3137,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4044,
+          "estoqueG": 77250,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 503,
+          "estoqueG": 5000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 5180,
+          "estoqueG": 1500,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 568,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 394,
+          "estoqueG": 95200,
+          "pedidoAbertoG": 1000000
+        },
+        {
+          "sku": 842,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2737,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3327,
+          "estoqueG": 75000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3330,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7530,
+          "estoqueG": 16350.000000000002,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7536,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4071,
+          "estoqueG": 3500,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1269,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2738,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2739,
+          "estoqueG": 100000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2478,
+          "estoqueG": 60000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3336,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3333,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3335,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3777,
+          "estoqueG": 0,
+          "pedidoAbertoG": 100000
+        },
+        {
+          "sku": 3937,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3337,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 843,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7711,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3329,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2928,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 5531,
+          "estoqueG": 20000,
+          "pedidoAbertoG": 0
+        }
+      ],
+      "estoque": {
+        "1555": {
+          "pe": 5724,
+          "sp": 50
+        },
+        "1557": {
+          "pe": 1569,
+          "sp": 2010
+        },
+        "1559": {
+          "pe": 8240,
+          "sp": 6039
+        },
+        "1560": {
+          "pe": 33557,
+          "sp": 17630
+        },
+        "1561": {
+          "pe": 19705,
+          "sp": 14608
+        },
+        "1562": {
+          "pe": 4767,
+          "sp": 101
+        },
+        "1564": {
+          "pe": 2903,
+          "sp": 1297
+        },
+        "1566": {
+          "pe": 33008,
+          "sp": 28130
+        },
+        "1567": {
+          "pe": 5571,
+          "sp": 2837
+        },
+        "1568": {
+          "pe": 2405,
+          "sp": 1173
+        },
+        "1569": {
+          "pe": 36836,
+          "sp": 20775
+        },
+        "1570": {
+          "pe": 1649,
+          "sp": 1976
+        },
+        "1571": {
+          "pe": 37927,
+          "sp": 25130
+        },
+        "1576": {
+          "pe": 2107,
+          "sp": 314
+        },
+        "1577": {
+          "pe": 97,
+          "sp": 100
+        },
+        "1581": {
+          "pe": 39801,
+          "sp": 30336
+        },
+        "1596": {
+          "pe": 3340,
+          "sp": 3186
+        },
+        "1597": {
+          "pe": 14264,
+          "sp": 10728
+        },
+        "1599": {
+          "pe": 37302,
+          "sp": 11245
+        },
+        "1600": {
+          "pe": 22972,
+          "sp": 16785
+        },
+        "1602": {
+          "pe": 24748,
+          "sp": 28301
+        },
+        "1603": {
+          "pe": 3461,
+          "sp": 1560
+        },
+        "1604": {
+          "pe": 7834,
+          "sp": 5627
+        },
+        "1605": {
+          "pe": 2601,
+          "sp": 759
+        },
+        "1610": {
+          "pe": 34716,
+          "sp": 9494
+        },
+        "1611": {
+          "pe": 4013,
+          "sp": 3418
+        },
+        "1612": {
+          "pe": 13582,
+          "sp": 14678
+        },
+        "1614": {
+          "pe": 7450,
+          "sp": 100
+        },
+        "1615": {
+          "pe": 30546,
+          "sp": 11880
+        },
+        "1616": {
+          "pe": 26081,
+          "sp": 9096
+        },
+        "1617": {
+          "pe": 43151,
+          "sp": 20675
+        },
+        "1622": {
+          "pe": 1194,
+          "sp": 104
+        },
+        "1653": {
+          "pe": 5388,
+          "sp": 3268
+        },
+        "1995": {
+          "pe": 2142,
+          "sp": 783
+        },
+        "1996": {
+          "pe": 7945,
+          "sp": 100
+        },
+        "2179": {
+          "pe": 0,
+          "sp": 11
+        },
+        "2180": {
+          "pe": 170,
+          "sp": 200
+        },
+        "2181": {
+          "pe": 3540,
+          "sp": 101
+        },
+        "2182": {
+          "pe": 2746,
+          "sp": 1359
+        },
+        "2441": {
+          "pe": 2514,
+          "sp": 1448
+        },
+        "2483": {
+          "pe": 100,
+          "sp": 88
+        },
+        "2484": {
+          "pe": 2000,
+          "sp": 479
+        },
+        "2485": {
+          "pe": 301,
+          "sp": 821
+        },
+        "2486": {
+          "pe": 1956,
+          "sp": 1365
+        },
+        "2489": {
+          "pe": 373,
+          "sp": 218
+        },
+        "2491": {
+          "pe": 186,
+          "sp": 100
+        },
+        "2493": {
+          "pe": 3530,
+          "sp": 1962
+        },
+        "2494": {
+          "pe": 3281,
+          "sp": 1066
+        },
+        "2495": {
+          "pe": 2853,
+          "sp": 1581
+        },
+        "2497": {
+          "pe": 2433,
+          "sp": 707
+        },
+        "2498": {
+          "pe": 21746,
+          "sp": 8610
+        },
+        "2705": {
+          "pe": 3563,
+          "sp": 2520
+        },
+        "2706": {
+          "pe": 7373,
+          "sp": 4915
+        },
+        "2707": {
+          "pe": 1471,
+          "sp": 1538
+        },
+        "2708": {
+          "pe": 17813,
+          "sp": 16781
+        },
+        "2709": {
+          "pe": 1424,
+          "sp": 2241
+        },
+        "2853": {
+          "pe": 1056,
+          "sp": 240
+        },
+        "2854": {
+          "pe": 1548,
+          "sp": 101
+        },
+        "3104": {
+          "pe": 87,
+          "sp": 101
+        },
+        "3109": {
+          "pe": 839,
+          "sp": 101
+        },
+        "3112": {
+          "pe": 1016,
+          "sp": 148
+        },
+        "3113": {
+          "pe": 592,
+          "sp": 100
+        },
+        "3153": {
+          "pe": 1720,
+          "sp": 1386
+        },
+        "3315": {
+          "pe": 954,
+          "sp": 100
+        },
+        "3316": {
+          "pe": 2781,
+          "sp": 4267
+        },
+        "3317": {
+          "pe": 2885,
+          "sp": 2547
+        },
+        "3318": {
+          "pe": 5684,
+          "sp": 93
+        },
+        "3319": {
+          "pe": 2984,
+          "sp": 200
+        },
+        "3449": {
+          "pe": 77,
+          "sp": 100
+        },
+        "3453": {
+          "pe": 3301,
+          "sp": 146
+        },
+        "3851": {
+          "pe": 1233,
+          "sp": 1419
+        },
+        "3852": {
+          "pe": 1907,
+          "sp": 797
+        },
+        "3853": {
+          "pe": 948,
+          "sp": 477
+        },
+        "3854": {
+          "pe": 2512,
+          "sp": 1454
+        },
+        "3855": {
+          "pe": 99,
+          "sp": 101
+        },
+        "3856": {
+          "pe": 1630,
+          "sp": 345
+        },
+        "3857": {
+          "pe": 5238,
+          "sp": 2393
+        },
+        "3972": {
+          "pe": 2636,
+          "sp": 1212
+        },
+        "3973": {
+          "pe": 4049,
+          "sp": 2090
+        },
+        "3974": {
+          "pe": 1607,
+          "sp": 910
+        },
+        "3976": {
+          "pe": 589,
+          "sp": 403
+        },
+        "4145": {
+          "pe": 0,
+          "sp": 100
+        },
+        "4149": {
+          "pe": 4298,
+          "sp": 1976
+        },
+        "4150": {
+          "pe": 3,
+          "sp": 2
+        },
+        "4152": {
+          "pe": 762,
+          "sp": 935
+        },
+        "4153": {
+          "pe": 125,
+          "sp": 123
+        },
+        "4154": {
+          "pe": 0,
+          "sp": 0
+        },
+        "4155": {
+          "pe": 2384,
+          "sp": 1466
+        },
+        "4340": {
+          "pe": 831,
+          "sp": 1038
+        },
+        "4341": {
+          "pe": 1952,
+          "sp": 679
+        },
+        "5209": {
+          "pe": 1940,
+          "sp": 101
+        },
+        "5381": {
+          "pe": 775,
+          "sp": 432
+        },
+        "5382": {
+          "pe": 649,
+          "sp": 1024
+        },
+        "5383": {
+          "pe": 218,
+          "sp": 101
+        },
+        "5447": {
+          "pe": 5281,
+          "sp": 1402
+        },
+        "6248": {
+          "pe": 1844,
+          "sp": 1273
+        },
+        "6249": {
+          "pe": 666,
+          "sp": 374
+        },
+        "6250": {
+          "pe": 2610,
+          "sp": 1500
+        },
+        "6251": {
+          "pe": 3341,
+          "sp": 1086
+        },
+        "6252": {
+          "pe": 3207,
+          "sp": 1235
+        },
+        "6253": {
+          "pe": 2989,
+          "sp": 1514
+        },
+        "6254": {
+          "pe": 506,
+          "sp": 358
+        },
+        "6255": {
+          "pe": 840,
+          "sp": 316
+        },
+        "6256": {
+          "pe": 6277,
+          "sp": 2682
+        },
+        "6257": {
+          "pe": 864,
+          "sp": 781
+        },
+        "6258": {
+          "pe": 1169,
+          "sp": 418
+        },
+        "6260": {
+          "pe": 950,
+          "sp": 1227
+        },
+        "6261": {
+          "pe": 3690,
+          "sp": 2057
+        },
+        "6262": {
+          "pe": 1163,
+          "sp": 1069
+        },
+        "6263": {
+          "pe": 699,
+          "sp": 790
+        },
+        "6264": {
+          "pe": 897,
+          "sp": 1234
+        },
+        "6265": {
+          "pe": 1664,
+          "sp": 1113
+        },
+        "6266": {
+          "pe": 1001,
+          "sp": 783
+        },
+        "6267": {
+          "pe": 1568,
+          "sp": 567
+        },
+        "6268": {
+          "pe": 472,
+          "sp": 475
+        },
+        "6269": {
+          "pe": 2869,
+          "sp": 424
+        },
+        "6270": {
+          "pe": 579,
+          "sp": 435
+        },
+        "6271": {
+          "pe": 2008,
+          "sp": 1017
+        },
+        "6272": {
+          "pe": 2910,
+          "sp": 874
+        },
+        "6273": {
+          "pe": 4041,
+          "sp": 1944
+        },
+        "6274": {
+          "pe": 3206,
+          "sp": 1318
+        },
+        "6275": {
+          "pe": 1843,
+          "sp": 941
+        },
+        "6276": {
+          "pe": 1357,
+          "sp": 294
+        },
+        "6277": {
+          "pe": 424,
+          "sp": 485
+        },
+        "6278": {
+          "pe": 818,
+          "sp": 1077
+        },
+        "6279": {
+          "pe": 1840,
+          "sp": 899
+        },
+        "6280": {
+          "pe": 559,
+          "sp": 815
+        },
+        "6281": {
+          "pe": 1595,
+          "sp": 859
+        },
+        "6282": {
+          "pe": 297,
+          "sp": 780
+        },
+        "6283": {
+          "pe": 1965,
+          "sp": 97
+        },
+        "6284": {
+          "pe": 3533,
+          "sp": 888
+        },
+        "6285": {
+          "pe": 146,
+          "sp": 347
+        },
+        "6286": {
+          "pe": 191,
+          "sp": 262
+        },
+        "6287": {
+          "pe": 1857,
+          "sp": 2072
+        },
+        "6288": {
+          "pe": 1289,
+          "sp": 413
+        },
+        "7615": {
+          "pe": 9766,
+          "sp": 4010
+        },
+        "7616": {
+          "pe": 8505,
+          "sp": 4166
+        }
+      },
+      "venda": {
+        "1555": {
+          "m3": 2986.6666666666665,
+          "pico6": 6681
+        },
+        "1557": {
+          "m3": 2109.6666666666665,
+          "pico6": 5001
+        },
+        "1559": {
+          "m3": 2300,
+          "pico6": 4161
+        },
+        "1560": {
+          "m3": 9121.333333333334,
+          "pico6": 17062
+        },
+        "1561": {
+          "m3": 8373.333333333334,
+          "pico6": 14599
+        },
+        "1562": {
+          "m3": 2581.3333333333335,
+          "pico6": 4583
+        },
+        "1564": {
+          "m3": 2523.6666666666665,
+          "pico6": 5226
+        },
+        "1566": {
+          "m3": 26789.666666666668,
+          "pico6": 49923
+        },
+        "1567": {
+          "m3": 4946,
+          "pico6": 8523
+        },
+        "1568": {
+          "m3": 1872.6666666666667,
+          "pico6": 4023
+        },
+        "1569": {
+          "m3": 16257.666666666666,
+          "pico6": 29663
+        },
+        "1570": {
+          "m3": 1425.3333333333333,
+          "pico6": 2588
+        },
+        "1571": {
+          "m3": 10061.333333333334,
+          "pico6": 16552
+        },
+        "1576": {
+          "m3": 2646,
+          "pico6": 4199
+        },
+        "1577": {
+          "m3": 49.333333333333336,
+          "pico6": 1163
+        },
+        "1581": {
+          "m3": 84396.66666666667,
+          "pico6": 147511
+        },
+        "1596": {
+          "m3": 3042.6666666666665,
+          "pico6": 6477
+        },
+        "1597": {
+          "m3": 6518.666666666667,
+          "pico6": 12381
+        },
+        "1599": {
+          "m3": 12282,
+          "pico6": 21295
+        },
+        "1600": {
+          "m3": 3375.6666666666665,
+          "pico6": 5384
+        },
+        "1602": {
+          "m3": 6705.666666666667,
+          "pico6": 11846
+        },
+        "1603": {
+          "m3": 1165.6666666666667,
+          "pico6": 2644
+        },
+        "1604": {
+          "m3": 11833.333333333334,
+          "pico6": 21480
+        },
+        "1605": {
+          "m3": 2591.6666666666665,
+          "pico6": 4819
+        },
+        "1610": {
+          "m3": 7378,
+          "pico6": 13328
+        },
+        "1611": {
+          "m3": 3779.6666666666665,
+          "pico6": 7062
+        },
+        "1612": {
+          "m3": 4974.333333333333,
+          "pico6": 7578
+        },
+        "1614": {
+          "m3": 3427.6666666666665,
+          "pico6": 6546
+        },
+        "1615": {
+          "m3": 15178,
+          "pico6": 28435
+        },
+        "1616": {
+          "m3": 7409,
+          "pico6": 12960
+        },
+        "1617": {
+          "m3": 13773,
+          "pico6": 22532
+        },
+        "1622": {
+          "m3": 2180.3333333333335,
+          "pico6": 3886
+        },
+        "1653": {
+          "m3": 5613,
+          "pico6": 9991
+        },
+        "1995": {
+          "m3": 1960.6666666666667,
+          "pico6": 3332
+        },
+        "1996": {
+          "m3": 5796.333333333333,
+          "pico6": 9733
+        },
+        "2179": {
+          "m3": 52,
+          "pico6": 156
+        },
+        "2180": {
+          "m3": 188,
+          "pico6": 2520
+        },
+        "2181": {
+          "m3": 2062.3333333333335,
+          "pico6": 4742
+        },
+        "2182": {
+          "m3": 1108,
+          "pico6": 2093
+        },
+        "2441": {
+          "m3": 5397.666666666667,
+          "pico6": 8874
+        },
+        "2483": {
+          "m3": 3196.6666666666665,
+          "pico6": 5542
+        },
+        "2484": {
+          "m3": 1588,
+          "pico6": 3062
+        },
+        "2485": {
+          "m3": 2346.3333333333335,
+          "pico6": 3833
+        },
+        "2486": {
+          "m3": 3175.3333333333335,
+          "pico6": 7171
+        },
+        "2489": {
+          "m3": 2176,
+          "pico6": 2657
+        },
+        "2491": {
+          "m3": 2251.3333333333335,
+          "pico6": 3494
+        },
+        "2493": {
+          "m3": 2953.3333333333335,
+          "pico6": 6713
+        },
+        "2494": {
+          "m3": 5189.666666666667,
+          "pico6": 8022
+        },
+        "2495": {
+          "m3": 1937,
+          "pico6": 4339
+        },
+        "2497": {
+          "m3": 2194.3333333333335,
+          "pico6": 4286
+        },
+        "2498": {
+          "m3": 5883,
+          "pico6": 9996
+        },
+        "2705": {
+          "m3": 1282.6666666666667,
+          "pico6": 2820
+        },
+        "2706": {
+          "m3": 22247.333333333332,
+          "pico6": 44163
+        },
+        "2707": {
+          "m3": 1270.3333333333333,
+          "pico6": 2629
+        },
+        "2708": {
+          "m3": 15699,
+          "pico6": 31156
+        },
+        "2709": {
+          "m3": 1895.3333333333333,
+          "pico6": 3200
+        },
+        "2853": {
+          "m3": 1650.3333333333333,
+          "pico6": 2701
+        },
+        "2854": {
+          "m3": 1578,
+          "pico6": 3232
+        },
+        "3104": {
+          "m3": 25,
+          "pico6": 64
+        },
+        "3109": {
+          "m3": 1942,
+          "pico6": 2322
+        },
+        "3112": {
+          "m3": 3561,
+          "pico6": 5872
+        },
+        "3113": {
+          "m3": 1157.6666666666667,
+          "pico6": 1914
+        },
+        "3153": {
+          "m3": 341.3333333333333,
+          "pico6": 728
+        },
+        "3315": {
+          "m3": 3495,
+          "pico6": 4669
+        },
+        "3316": {
+          "m3": 1426.6666666666667,
+          "pico6": 2650
+        },
+        "3317": {
+          "m3": 987.6666666666666,
+          "pico6": 1522
+        },
+        "3318": {
+          "m3": 2513.3333333333335,
+          "pico6": 3618
+        },
+        "3319": {
+          "m3": 1973.3333333333333,
+          "pico6": 2525
+        },
+        "3449": {
+          "m3": 1517,
+          "pico6": 3143
+        },
+        "3453": {
+          "m3": 1808.6666666666667,
+          "pico6": 4786
+        },
+        "3851": {
+          "m3": 201.33333333333334,
+          "pico6": 1262
+        },
+        "3852": {
+          "m3": 394.6666666666667,
+          "pico6": 659
+        },
+        "3853": {
+          "m3": 344,
+          "pico6": 927
+        },
+        "3854": {
+          "m3": 1173,
+          "pico6": 2473
+        },
+        "3855": {
+          "m3": 591.6666666666666,
+          "pico6": 962
+        },
+        "3856": {
+          "m3": 844,
+          "pico6": 1428
+        },
+        "3857": {
+          "m3": 1615.3333333333333,
+          "pico6": 2064
+        },
+        "3972": {
+          "m3": 1467,
+          "pico6": 2330
+        },
+        "3973": {
+          "m3": 2255,
+          "pico6": 3590
+        },
+        "3974": {
+          "m3": 1146.6666666666667,
+          "pico6": 1538
+        },
+        "3976": {
+          "m3": 1080.6666666666667,
+          "pico6": 1916
+        },
+        "4145": {
+          "m3": 347.3333333333333,
+          "pico6": 569
+        },
+        "4149": {
+          "m3": 1130.6666666666667,
+          "pico6": 1493
+        },
+        "4150": {
+          "m3": 246.66666666666666,
+          "pico6": 1273
+        },
+        "4152": {
+          "m3": 728.6666666666666,
+          "pico6": 2641
+        },
+        "4153": {
+          "m3": 655,
+          "pico6": 4293
+        },
+        "4154": {
+          "m3": 63,
+          "pico6": 8120
+        },
+        "4155": {
+          "m3": 967.3333333333334,
+          "pico6": 1218
+        },
+        "4340": {
+          "m3": 770.3333333333334,
+          "pico6": 1012
+        },
+        "4341": {
+          "m3": 1042.6666666666667,
+          "pico6": 1368
+        },
+        "4630": {
+          "m3": 1572.6666666666667,
+          "pico6": 2615
+        },
+        "5209": {
+          "m3": 1662,
+          "pico6": 4084
+        },
+        "5381": {
+          "m3": 2248.6666666666665,
+          "pico6": 3308
+        },
+        "5382": {
+          "m3": 2316,
+          "pico6": 3619
+        },
+        "5383": {
+          "m3": 2613.3333333333335,
+          "pico6": 4213
+        },
+        "5447": {
+          "m3": 1463.6666666666667,
+          "pico6": 2152
+        },
+        "6136": {
+          "m3": 503.6666666666667,
+          "pico6": 1704
+        },
+        "6248": {
+          "m3": 424.6666666666667,
+          "pico6": 776
+        },
+        "6249": {
+          "m3": 389.6666666666667,
+          "pico6": 659
+        },
+        "6250": {
+          "m3": 549,
+          "pico6": 975
+        },
+        "6251": {
+          "m3": 908,
+          "pico6": 1170
+        },
+        "6252": {
+          "m3": 529.3333333333334,
+          "pico6": 744
+        },
+        "6253": {
+          "m3": 445.6666666666667,
+          "pico6": 836
+        },
+        "6254": {
+          "m3": 632,
+          "pico6": 915
+        },
+        "6255": {
+          "m3": 581.3333333333334,
+          "pico6": 874
+        },
+        "6256": {
+          "m3": 596,
+          "pico6": 1804
+        },
+        "6257": {
+          "m3": 728,
+          "pico6": 1884
+        },
+        "6258": {
+          "m3": 567.3333333333334,
+          "pico6": 734
+        },
+        "6260": {
+          "m3": 427.6666666666667,
+          "pico6": 1631
+        },
+        "6261": {
+          "m3": 723.3333333333334,
+          "pico6": 849
+        },
+        "6262": {
+          "m3": 489,
+          "pico6": 974
+        },
+        "6263": {
+          "m3": 557.3333333333334,
+          "pico6": 805
+        },
+        "6264": {
+          "m3": 1226.6666666666667,
+          "pico6": 1762
+        },
+        "6265": {
+          "m3": 451.3333333333333,
+          "pico6": 801
+        },
+        "6266": {
+          "m3": 464.6666666666667,
+          "pico6": 1049
+        },
+        "6267": {
+          "m3": 585.6666666666666,
+          "pico6": 1099
+        },
+        "6268": {
+          "m3": 439.6666666666667,
+          "pico6": 669
+        },
+        "6269": {
+          "m3": 1071.3333333333333,
+          "pico6": 1490
+        },
+        "6270": {
+          "m3": 1005.6666666666666,
+          "pico6": 1287
+        },
+        "6271": {
+          "m3": 1014.6666666666666,
+          "pico6": 1462
+        },
+        "6272": {
+          "m3": 943,
+          "pico6": 1257
+        },
+        "6273": {
+          "m3": 716,
+          "pico6": 1152
+        },
+        "6274": {
+          "m3": 819.6666666666666,
+          "pico6": 1130
+        },
+        "6275": {
+          "m3": 424,
+          "pico6": 592
+        },
+        "6276": {
+          "m3": 361,
+          "pico6": 510
+        },
+        "6277": {
+          "m3": 642.3333333333334,
+          "pico6": 916
+        },
+        "6278": {
+          "m3": 1021,
+          "pico6": 1365
+        },
+        "6279": {
+          "m3": 709,
+          "pico6": 1086
+        },
+        "6280": {
+          "m3": 235,
+          "pico6": 910
+        },
+        "6281": {
+          "m3": 200.33333333333334,
+          "pico6": 1504
+        },
+        "6282": {
+          "m3": 354.3333333333333,
+          "pico6": 757
+        },
+        "6283": {
+          "m3": 275.6666666666667,
+          "pico6": 543
+        },
+        "6284": {
+          "m3": 770.6666666666666,
+          "pico6": 1003
+        },
+        "6285": {
+          "m3": 495.6666666666667,
+          "pico6": 795
+        },
+        "6286": {
+          "m3": 673.6666666666666,
+          "pico6": 1839
+        },
+        "6287": {
+          "m3": 269.3333333333333,
+          "pico6": 549
+        },
+        "6288": {
+          "m3": 503.6666666666667,
+          "pico6": 797
+        },
+        "7615": {
+          "m3": 202,
+          "pico6": 1188
+        },
+        "7616": {
+          "m3": 167.33333333333334,
+          "pico6": 1136
+        }
+      },
+      "insumos": {
+        "391": 259200,
+        "866": 59903,
+        "956": 1285000,
+        "1034": 107000,
+        "1035": 105000,
+        "1037": 113000,
+        "1038": 127000,
+        "1039": 108000,
+        "1041": 78000,
+        "1044": 62000,
+        "1045": 27500,
+        "1046": 102000,
+        "1047": 81000,
+        "1048": 122000,
+        "1051": 132000,
+        "1052": 128000,
+        "1053": 109000,
+        "1055": 420300,
+        "1056": 45000,
+        "1058": 142000,
+        "1059": 115000,
+        "1060": 97000,
+        "1062": 242000,
+        "1064": 108000,
+        "1066": 80400,
+        "1069": 85400,
+        "1071": 85400,
+        "1073": 83500,
+        "1076": 114000,
+        "1077": 184000,
+        "1078": 125000,
+        "1079": 1000,
+        "1083": 153000,
+        "1085": 9000,
+        "1316": 123000,
+        "1325": 6600000,
+        "1327": 25,
+        "1362": 450000,
+        "1376": 129000,
+        "2056": 126000,
+        "2057": 155000,
+        "2172": 90000,
+        "2174": 166700,
+        "2201": 60000,
+        "2202": 41000,
+        "2203": 32000,
+        "2204": 42900,
+        "2205": 23250,
+        "2206": 29800,
+        "2207": 22910,
+        "2208": 17600,
+        "2289": 45000,
+        "2417": 118,
+        "2421": 175200,
+        "2422": 127000,
+        "2423": 32900,
+        "2424": 23000,
+        "2425": 101000,
+        "2426": 109000,
+        "2427": 106000,
+        "2428": 100000,
+        "2429": 94000,
+        "2430": 122000,
+        "2431": 132000,
+        "2432": 177000,
+        "2433": 108000,
+        "2434": 55000,
+        "2435": 132000,
+        "2436": 35200,
+        "2455": 219600,
+        "2740": 22000,
+        "2741": 209000,
+        "2742": 45000,
+        "2743": 175000,
+        "2744": 32000,
+        "2745": 16000,
+        "2782": 17000,
+        "2783": 6000,
+        "2785": 0,
+        "2786": 17400,
+        "2818": 920,
+        "2837": 119237,
+        "2866": 25000,
+        "2916": 84300,
+        "2948": 1712000,
+        "3095": 46200,
+        "3096": 22650,
+        "3097": 122000,
+        "3098": 112000,
+        "3099": 52000,
+        "3100": 47000,
+        "3101": 107000,
+        "3102": 130000,
+        "3103": 104000,
+        "3120": 35500,
+        "3121": 65000,
+        "3123": 68200,
+        "3128": 2750,
+        "3221": 37300,
+        "3338": 38000,
+        "3339": 45180,
+        "3340": 35500,
+        "3341": 24000,
+        "3342": 25000,
+        "3343": 16000,
+        "3526": 41366,
+        "3527": 20000,
+        "3528": 20000,
+        "3529": 147000,
+        "3530": 37000,
+        "3531": 46533,
+        "3588": 36000,
+        "3589": 36240,
+        "3590": 0,
+        "3591": 36000,
+        "3806": 32650,
+        "3850": 25458,
+        "3903": 335580,
+        "3904": 342720,
+        "3905": 297000,
+        "3947": 0,
+        "3967": 100000,
+        "3968": 100500,
+        "3969": 100000,
+        "3994": 19000,
+        "3998": 5380,
+        "3999": 0,
+        "4000": 9600,
+        "4001": 8400,
+        "4002": 6720,
+        "4003": 2100,
+        "4004": 7000,
+        "4010": 2500,
+        "4011": 17500,
+        "4012": 7500,
+        "4013": 12988,
+        "4014": 17382,
+        "4015": 13780,
+        "4031": 2880,
+        "4032": 7210,
+        "4033": 390,
+        "4034": 5090,
+        "4035": 10212,
+        "4036": 6160,
+        "4037": 5660,
+        "4074": 43000,
+        "4075": 24183,
+        "4080": 19600,
+        "4081": 17850,
+        "4106": 50,
+        "4107": 50,
+        "4111": 7420,
+        "4112": 195875,
+        "4113": 9970,
+        "4114": 8970,
+        "4121": 6600,
+        "4122": 12620,
+        "4123": 4900,
+        "4124": 200,
+        "4174": 10700,
+        "4175": 1500,
+        "4176": 20000,
+        "4177": 0,
+        "4201": 720,
+        "4202": 42,
+        "4203": 8960,
+        "4204": 35000,
+        "4205": 7290,
+        "4206": 9960,
+        "4208": 80,
+        "4209": 9074,
+        "4210": 10000,
+        "4211": 36700,
+        "4212": 0,
+        "4213": 800,
+        "4214": 0,
+        "4215": 0,
+        "4216": 0,
+        "4217": 36000,
+        "4218": 0,
+        "4219": 10000,
+        "4229": 13750,
+        "4230": 150,
+        "4231": 32400,
+        "4243": 9744,
+        "4245": 112,
+        "4246": 7500,
+        "4247": 3560,
+        "4248": 9900,
+        "4250": 200,
+        "4251": 7480,
+        "4252": 3520,
+        "4253": 0,
+        "4254": 10000,
+        "4255": 7000,
+        "4256": 900,
+        "4366": 10000,
+        "4369": 29000,
+        "4370": 19800,
+        "4371": 27818,
+        "4372": 9900,
+        "4373": 19910,
+        "4388": 22000,
+        "4389": 16740,
+        "4428": 5348,
+        "4433": 0,
+        "4474": 4950,
+        "4475": 3860,
+        "4476": 3150,
+        "4553": 11200,
+        "4560": 12350,
+        "4565": 400,
+        "4620": 11616,
+        "4621": 7910,
+        "4622": 20980,
+        "4623": 18000,
+        "4624": 8950,
+        "4636": 12400,
+        "4638": 9000,
+        "4644": 10050,
+        "4645": 10030,
+        "4646": 20000,
+        "4648": 10400,
+        "4649": 605,
+        "4688": 19600,
+        "4690": 11560,
+        "4691": 10030,
+        "4710": 30000,
+        "4715": 63151,
+        "4717": 0,
+        "4718": 30000,
+        "4719": 41965,
+        "4761": 4500,
+        "4768": 7044.02,
+        "4769": 5436.12,
+        "4770": 4773,
+        "4771": 8647.18,
+        "4772": 6619.99,
+        "4773": 3446.47,
+        "4774": 1012.5,
+        "4775": 9081.64,
+        "4776": 9005.03,
+        "4777": 7057.13,
+        "4778": 6622.59,
+        "4779": 9041.08,
+        "4780": 7692.19,
+        "4781": 6434.5,
+        "4782": 10066.15,
+        "4783": 458.11,
+        "4784": 6606.17,
+        "4785": 6636.5,
+        "4786": 5307,
+        "4787": 3612.5,
+        "4788": 570,
+        "4789": 2859.39,
+        "4790": 7087.5,
+        "4791": 6652.56,
+        "4797": 200000,
+        "4798": 11300,
+        "4799": 8800,
+        "4800": 1000,
+        "4801": 12526,
+        "4802": 10711,
+        "4803": 10993,
+        "4804": 11950,
+        "4805": 7068,
+        "4806": 7554.4,
+        "4807": 9495,
+        "4808": 11918.4,
+        "4809": 13143.03,
+        "4810": 7444,
+        "4811": 8288.07,
+        "4812": 12345,
+        "4813": 10507,
+        "4814": 13124,
+        "4815": 8985,
+        "4816": 10406,
+        "4817": 10463,
+        "4818": 6809,
+        "4819": 10342,
+        "4820": 9082,
+        "4821": 9113,
+        "4822": 8932.4,
+        "4823": 10496.39,
+        "4824": 10679,
+        "4825": 11781.42,
+        "4826": 6766,
+        "4845": 10934,
+        "4846": 9863,
+        "4847": 7970,
+        "4937": 1977,
+        "4938": 606,
+        "4939": 6942,
+        "4940": 7000,
+        "4941": 2990,
+        "4942": 2990,
+        "4994": 7382,
+        "4995": 5300,
+        "5210": 4444,
+        "5235": 9200,
+        "5236": 9600,
+        "5237": 8000,
+        "5238": 9500,
+        "5239": 12600,
+        "5278": 8000,
+        "5416": 5351,
+        "5417": 5750,
+        "5418": 2412,
+        "5419": 5883,
+        "5420": 6531,
+        "5421": 4692,
+        "5422": 5002,
+        "5423": 7093,
+        "5424": 5249,
+        "5425": 6824,
+        "5426": 4030,
+        "5427": 1028,
+        "5428": 2993,
+        "5429": 6604,
+        "5430": 7093,
+        "5915": 27648,
+        "5916": 4320,
+        "5917": 92736,
+        "5918": 3360,
+        "6289": 5170,
+        "6290": 2060,
+        "6291": 3130,
+        "7081": 2736,
+        "7106": 3930,
+        "7131": 4633,
+        "7132": 3471,
+        "7133": 30569,
+        "7137": 4648,
+        "7138": 33514,
+        "7140": 3750,
+        "7155": 10381.999,
+        "7156": 9350.002,
+        "7157": 11662,
+        "7158": 7256,
+        "7159": 10532,
+        "7160": 10481,
+        "7161": 7934,
+        "7162": 6367,
+        "7163": 13258.997,
+        "7164": 10775,
+        "7165": 11142.001,
+        "7166": 9527,
+        "7167": 8560,
+        "7168": 0,
+        "7268": 2332,
+        "7276": 3900,
+        "7277": 19500,
+        "7577": 49,
+        "7578": 0,
+        "7579": 56,
+        "7590": 50000,
+        "7591": 18000,
+        "7596": 1628,
+        "7782": 3600,
+        "7797": 2990,
+        "7798": 2990,
+        "7799": 3500,
+        "7800": 2990,
+        "7801": 7450,
+        "7802": 6460,
+        "7813": 150,
+        "7817": 4900,
+        "7839": 1000,
+        "7840": 2020,
+        "7841": 970,
+        "7855": 2880,
+        "7884": 4000,
+        "7903": 600,
+        "7930": 228000,
+        "8188": 119186,
+        "8189": 138174,
+        "8190": 66741,
+        "8191": 41184,
+        "8192": 59633,
+        "8193": 204929,
+        "8194": 105061,
+        "8381": 9250,
+        "8382": 8492,
+        "8383": 3034,
+        "8436": 11860
+      }
+    },
+    {
+      "timestamp": "2026-05-29T17:57:29.341Z",
+      "origem": "venda",
+      "essencias": [
+        {
+          "sku": 4076,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2476,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4041,
+          "estoqueG": 0,
+          "pedidoAbertoG": 60000
+        },
+        {
+          "sku": 3849,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 834,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 392,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 835,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 836,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2777,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7710,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1942,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 668,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2778,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7265,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1179,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4274,
+          "estoqueG": 54000,
+          "pedidoAbertoG": 146000
+        },
+        {
+          "sku": 4374,
+          "estoqueG": 22400,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3225,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 5181,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3930,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2454,
+          "estoqueG": 60000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3965,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1294,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4851,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1270,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1098,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4042,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 502,
+          "estoqueG": 60000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 438,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4945,
+          "estoqueG": 14700,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3332,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 484,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1911,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4275,
+          "estoqueG": 4000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2768,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 8298,
+          "estoqueG": 91850,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3034,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 636,
+          "estoqueG": 0,
+          "pedidoAbertoG": 500000
+        },
+        {
+          "sku": 3136,
+          "estoqueG": 60000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3931,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 617,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 5182,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3328,
+          "estoqueG": 75000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 8067,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 669,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2160,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 439,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4591,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3989,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3035,
+          "estoqueG": 60000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7507,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 572,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1295,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 840,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2779,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2318,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2126,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4392,
+          "estoqueG": 35650,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 540,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3036,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 861,
+          "estoqueG": 64500,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 841,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1912,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7890,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2736,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7264,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4072,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3966,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4355,
+          "estoqueG": 126350,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4637,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4960,
+          "estoqueG": 85000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 905,
+          "estoqueG": 107200,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 440,
+          "estoqueG": 60000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 670,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 393,
+          "estoqueG": 102300,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4043,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1271,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3137,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4044,
+          "estoqueG": 77250,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 503,
+          "estoqueG": 5000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 5180,
+          "estoqueG": 1500,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 568,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 394,
+          "estoqueG": 95200,
+          "pedidoAbertoG": 1000000
+        },
+        {
+          "sku": 842,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2737,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3327,
+          "estoqueG": 75000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3330,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7530,
+          "estoqueG": 16350.000000000002,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7536,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4071,
+          "estoqueG": 3500,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1269,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2738,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2739,
+          "estoqueG": 100000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2478,
+          "estoqueG": 60000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3336,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3333,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3335,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3777,
+          "estoqueG": 0,
+          "pedidoAbertoG": 100000
+        },
+        {
+          "sku": 3937,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3337,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 843,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7711,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3329,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2928,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 5531,
+          "estoqueG": 20000,
+          "pedidoAbertoG": 0
+        }
+      ],
+      "estoque": {
+        "1555": {
+          "pe": 5724,
+          "sp": 50
+        },
+        "1557": {
+          "pe": 1569,
+          "sp": 2010
+        },
+        "1559": {
+          "pe": 8240,
+          "sp": 6039
+        },
+        "1560": {
+          "pe": 33557,
+          "sp": 17630
+        },
+        "1561": {
+          "pe": 19705,
+          "sp": 14608
+        },
+        "1562": {
+          "pe": 4767,
+          "sp": 101
+        },
+        "1564": {
+          "pe": 2903,
+          "sp": 1297
+        },
+        "1566": {
+          "pe": 33008,
+          "sp": 28130
+        },
+        "1567": {
+          "pe": 5571,
+          "sp": 2837
+        },
+        "1568": {
+          "pe": 2405,
+          "sp": 1173
+        },
+        "1569": {
+          "pe": 36836,
+          "sp": 20775
+        },
+        "1570": {
+          "pe": 1649,
+          "sp": 1976
+        },
+        "1571": {
+          "pe": 37927,
+          "sp": 25130
+        },
+        "1576": {
+          "pe": 2107,
+          "sp": 314
+        },
+        "1577": {
+          "pe": 97,
+          "sp": 100
+        },
+        "1581": {
+          "pe": 39801,
+          "sp": 30336
+        },
+        "1596": {
+          "pe": 3340,
+          "sp": 3186
+        },
+        "1597": {
+          "pe": 14264,
+          "sp": 10728
+        },
+        "1599": {
+          "pe": 37302,
+          "sp": 11245
+        },
+        "1600": {
+          "pe": 22972,
+          "sp": 16785
+        },
+        "1602": {
+          "pe": 24748,
+          "sp": 28301
+        },
+        "1603": {
+          "pe": 3461,
+          "sp": 1560
+        },
+        "1604": {
+          "pe": 7834,
+          "sp": 5627
+        },
+        "1605": {
+          "pe": 2601,
+          "sp": 759
+        },
+        "1610": {
+          "pe": 34716,
+          "sp": 9494
+        },
+        "1611": {
+          "pe": 4013,
+          "sp": 3418
+        },
+        "1612": {
+          "pe": 13582,
+          "sp": 14678
+        },
+        "1614": {
+          "pe": 7450,
+          "sp": 100
+        },
+        "1615": {
+          "pe": 30546,
+          "sp": 11880
+        },
+        "1616": {
+          "pe": 26081,
+          "sp": 9096
+        },
+        "1617": {
+          "pe": 43151,
+          "sp": 20675
+        },
+        "1622": {
+          "pe": 1194,
+          "sp": 104
+        },
+        "1653": {
+          "pe": 5388,
+          "sp": 3268
+        },
+        "1995": {
+          "pe": 2142,
+          "sp": 783
+        },
+        "1996": {
+          "pe": 7945,
+          "sp": 100
+        },
+        "2179": {
+          "pe": 0,
+          "sp": 11
+        },
+        "2180": {
+          "pe": 170,
+          "sp": 200
+        },
+        "2181": {
+          "pe": 3540,
+          "sp": 101
+        },
+        "2182": {
+          "pe": 2746,
+          "sp": 1359
+        },
+        "2441": {
+          "pe": 2514,
+          "sp": 1448
+        },
+        "2483": {
+          "pe": 100,
+          "sp": 88
+        },
+        "2484": {
+          "pe": 2000,
+          "sp": 479
+        },
+        "2485": {
+          "pe": 301,
+          "sp": 821
+        },
+        "2486": {
+          "pe": 1956,
+          "sp": 1365
+        },
+        "2489": {
+          "pe": 373,
+          "sp": 218
+        },
+        "2491": {
+          "pe": 186,
+          "sp": 100
+        },
+        "2493": {
+          "pe": 3530,
+          "sp": 1962
+        },
+        "2494": {
+          "pe": 3281,
+          "sp": 1066
+        },
+        "2495": {
+          "pe": 2853,
+          "sp": 1581
+        },
+        "2497": {
+          "pe": 2433,
+          "sp": 707
+        },
+        "2498": {
+          "pe": 21746,
+          "sp": 8610
+        },
+        "2705": {
+          "pe": 3563,
+          "sp": 2520
+        },
+        "2706": {
+          "pe": 7373,
+          "sp": 4915
+        },
+        "2707": {
+          "pe": 1471,
+          "sp": 1538
+        },
+        "2708": {
+          "pe": 17813,
+          "sp": 16781
+        },
+        "2709": {
+          "pe": 1424,
+          "sp": 2241
+        },
+        "2853": {
+          "pe": 1056,
+          "sp": 240
+        },
+        "2854": {
+          "pe": 1548,
+          "sp": 101
+        },
+        "3104": {
+          "pe": 87,
+          "sp": 101
+        },
+        "3109": {
+          "pe": 839,
+          "sp": 101
+        },
+        "3112": {
+          "pe": 1016,
+          "sp": 148
+        },
+        "3113": {
+          "pe": 592,
+          "sp": 100
+        },
+        "3153": {
+          "pe": 1720,
+          "sp": 1386
+        },
+        "3315": {
+          "pe": 954,
+          "sp": 100
+        },
+        "3316": {
+          "pe": 2781,
+          "sp": 4267
+        },
+        "3317": {
+          "pe": 2885,
+          "sp": 2547
+        },
+        "3318": {
+          "pe": 5684,
+          "sp": 93
+        },
+        "3319": {
+          "pe": 2984,
+          "sp": 200
+        },
+        "3449": {
+          "pe": 77,
+          "sp": 100
+        },
+        "3453": {
+          "pe": 3301,
+          "sp": 146
+        },
+        "3851": {
+          "pe": 1233,
+          "sp": 1419
+        },
+        "3852": {
+          "pe": 1907,
+          "sp": 797
+        },
+        "3853": {
+          "pe": 948,
+          "sp": 477
+        },
+        "3854": {
+          "pe": 2512,
+          "sp": 1454
+        },
+        "3855": {
+          "pe": 99,
+          "sp": 101
+        },
+        "3856": {
+          "pe": 1630,
+          "sp": 345
+        },
+        "3857": {
+          "pe": 5238,
+          "sp": 2393
+        },
+        "3972": {
+          "pe": 2636,
+          "sp": 1212
+        },
+        "3973": {
+          "pe": 4049,
+          "sp": 2090
+        },
+        "3974": {
+          "pe": 1607,
+          "sp": 910
+        },
+        "3976": {
+          "pe": 589,
+          "sp": 403
+        },
+        "4145": {
+          "pe": 0,
+          "sp": 100
+        },
+        "4149": {
+          "pe": 4298,
+          "sp": 1976
+        },
+        "4150": {
+          "pe": 3,
+          "sp": 2
+        },
+        "4152": {
+          "pe": 762,
+          "sp": 935
+        },
+        "4153": {
+          "pe": 125,
+          "sp": 123
+        },
+        "4154": {
+          "pe": 0,
+          "sp": 0
+        },
+        "4155": {
+          "pe": 2384,
+          "sp": 1466
+        },
+        "4340": {
+          "pe": 831,
+          "sp": 1038
+        },
+        "4341": {
+          "pe": 1952,
+          "sp": 679
+        },
+        "5209": {
+          "pe": 1940,
+          "sp": 101
+        },
+        "5381": {
+          "pe": 775,
+          "sp": 432
+        },
+        "5382": {
+          "pe": 649,
+          "sp": 1024
+        },
+        "5383": {
+          "pe": 218,
+          "sp": 101
+        },
+        "5447": {
+          "pe": 5281,
+          "sp": 1402
+        },
+        "6248": {
+          "pe": 1844,
+          "sp": 1273
+        },
+        "6249": {
+          "pe": 666,
+          "sp": 374
+        },
+        "6250": {
+          "pe": 2610,
+          "sp": 1500
+        },
+        "6251": {
+          "pe": 3341,
+          "sp": 1086
+        },
+        "6252": {
+          "pe": 3207,
+          "sp": 1235
+        },
+        "6253": {
+          "pe": 2989,
+          "sp": 1514
+        },
+        "6254": {
+          "pe": 506,
+          "sp": 358
+        },
+        "6255": {
+          "pe": 840,
+          "sp": 316
+        },
+        "6256": {
+          "pe": 6277,
+          "sp": 2682
+        },
+        "6257": {
+          "pe": 864,
+          "sp": 781
+        },
+        "6258": {
+          "pe": 1169,
+          "sp": 418
+        },
+        "6260": {
+          "pe": 950,
+          "sp": 1227
+        },
+        "6261": {
+          "pe": 3690,
+          "sp": 2057
+        },
+        "6262": {
+          "pe": 1163,
+          "sp": 1069
+        },
+        "6263": {
+          "pe": 699,
+          "sp": 790
+        },
+        "6264": {
+          "pe": 897,
+          "sp": 1234
+        },
+        "6265": {
+          "pe": 1664,
+          "sp": 1113
+        },
+        "6266": {
+          "pe": 1001,
+          "sp": 783
+        },
+        "6267": {
+          "pe": 1568,
+          "sp": 567
+        },
+        "6268": {
+          "pe": 472,
+          "sp": 475
+        },
+        "6269": {
+          "pe": 2869,
+          "sp": 424
+        },
+        "6270": {
+          "pe": 579,
+          "sp": 435
+        },
+        "6271": {
+          "pe": 2008,
+          "sp": 1017
+        },
+        "6272": {
+          "pe": 2910,
+          "sp": 874
+        },
+        "6273": {
+          "pe": 4041,
+          "sp": 1944
+        },
+        "6274": {
+          "pe": 3206,
+          "sp": 1318
+        },
+        "6275": {
+          "pe": 1843,
+          "sp": 941
+        },
+        "6276": {
+          "pe": 1357,
+          "sp": 294
+        },
+        "6277": {
+          "pe": 424,
+          "sp": 485
+        },
+        "6278": {
+          "pe": 818,
+          "sp": 1077
+        },
+        "6279": {
+          "pe": 1840,
+          "sp": 899
+        },
+        "6280": {
+          "pe": 559,
+          "sp": 815
+        },
+        "6281": {
+          "pe": 1595,
+          "sp": 859
+        },
+        "6282": {
+          "pe": 297,
+          "sp": 780
+        },
+        "6283": {
+          "pe": 1965,
+          "sp": 97
+        },
+        "6284": {
+          "pe": 3533,
+          "sp": 888
+        },
+        "6285": {
+          "pe": 146,
+          "sp": 347
+        },
+        "6286": {
+          "pe": 191,
+          "sp": 262
+        },
+        "6287": {
+          "pe": 1857,
+          "sp": 2072
+        },
+        "6288": {
+          "pe": 1289,
+          "sp": 413
+        },
+        "7615": {
+          "pe": 9766,
+          "sp": 4010
+        },
+        "7616": {
+          "pe": 8505,
+          "sp": 4166
+        }
+      },
+      "venda": {
+        "1555": {
+          "m3": 2986.6666666666665,
+          "pico6": 6681
+        },
+        "1557": {
+          "m3": 2109.6666666666665,
+          "pico6": 5001
+        },
+        "1559": {
+          "m3": 2300,
+          "pico6": 4161
+        },
+        "1560": {
+          "m3": 9121.333333333334,
+          "pico6": 17062
+        },
+        "1561": {
+          "m3": 8373.333333333334,
+          "pico6": 14599
+        },
+        "1562": {
+          "m3": 2581.3333333333335,
+          "pico6": 4583
+        },
+        "1564": {
+          "m3": 2523.6666666666665,
+          "pico6": 5226
+        },
+        "1566": {
+          "m3": 26789.666666666668,
+          "pico6": 49923
+        },
+        "1567": {
+          "m3": 4946,
+          "pico6": 8523
+        },
+        "1568": {
+          "m3": 1872.6666666666667,
+          "pico6": 4023
+        },
+        "1569": {
+          "m3": 16257.666666666666,
+          "pico6": 29663
+        },
+        "1570": {
+          "m3": 1425.3333333333333,
+          "pico6": 2588
+        },
+        "1571": {
+          "m3": 10061.333333333334,
+          "pico6": 16552
+        },
+        "1576": {
+          "m3": 2646,
+          "pico6": 4199
+        },
+        "1577": {
+          "m3": 49.333333333333336,
+          "pico6": 1163
+        },
+        "1581": {
+          "m3": 84396.66666666667,
+          "pico6": 147511
+        },
+        "1596": {
+          "m3": 3042.6666666666665,
+          "pico6": 6477
+        },
+        "1597": {
+          "m3": 6518.666666666667,
+          "pico6": 12381
+        },
+        "1599": {
+          "m3": 12282,
+          "pico6": 21295
+        },
+        "1600": {
+          "m3": 3375.6666666666665,
+          "pico6": 5384
+        },
+        "1602": {
+          "m3": 6705.666666666667,
+          "pico6": 11846
+        },
+        "1603": {
+          "m3": 1165.6666666666667,
+          "pico6": 2644
+        },
+        "1604": {
+          "m3": 11833.333333333334,
+          "pico6": 21480
+        },
+        "1605": {
+          "m3": 2591.6666666666665,
+          "pico6": 4819
+        },
+        "1610": {
+          "m3": 7378,
+          "pico6": 13328
+        },
+        "1611": {
+          "m3": 3779.6666666666665,
+          "pico6": 7062
+        },
+        "1612": {
+          "m3": 4974.333333333333,
+          "pico6": 7578
+        },
+        "1614": {
+          "m3": 3427.6666666666665,
+          "pico6": 6546
+        },
+        "1615": {
+          "m3": 15178,
+          "pico6": 28435
+        },
+        "1616": {
+          "m3": 7409,
+          "pico6": 12960
+        },
+        "1617": {
+          "m3": 13773,
+          "pico6": 22532
+        },
+        "1622": {
+          "m3": 2180.3333333333335,
+          "pico6": 3886
+        },
+        "1653": {
+          "m3": 5613,
+          "pico6": 9991
+        },
+        "1995": {
+          "m3": 1960.6666666666667,
+          "pico6": 3332
+        },
+        "1996": {
+          "m3": 5796.333333333333,
+          "pico6": 9733
+        },
+        "2179": {
+          "m3": 52,
+          "pico6": 156
+        },
+        "2180": {
+          "m3": 188,
+          "pico6": 2520
+        },
+        "2181": {
+          "m3": 2062.3333333333335,
+          "pico6": 4742
+        },
+        "2182": {
+          "m3": 1108,
+          "pico6": 2093
+        },
+        "2441": {
+          "m3": 5397.666666666667,
+          "pico6": 8874
+        },
+        "2483": {
+          "m3": 3196.6666666666665,
+          "pico6": 5542
+        },
+        "2484": {
+          "m3": 1588,
+          "pico6": 3062
+        },
+        "2485": {
+          "m3": 2346.3333333333335,
+          "pico6": 3833
+        },
+        "2486": {
+          "m3": 3175.3333333333335,
+          "pico6": 7171
+        },
+        "2489": {
+          "m3": 2176,
+          "pico6": 2657
+        },
+        "2491": {
+          "m3": 2251.3333333333335,
+          "pico6": 3494
+        },
+        "2493": {
+          "m3": 2953.3333333333335,
+          "pico6": 6713
+        },
+        "2494": {
+          "m3": 5189.666666666667,
+          "pico6": 8022
+        },
+        "2495": {
+          "m3": 1937,
+          "pico6": 4339
+        },
+        "2497": {
+          "m3": 2194.3333333333335,
+          "pico6": 4286
+        },
+        "2498": {
+          "m3": 5883,
+          "pico6": 9996
+        },
+        "2705": {
+          "m3": 1282.6666666666667,
+          "pico6": 2820
+        },
+        "2706": {
+          "m3": 22247.333333333332,
+          "pico6": 44163
+        },
+        "2707": {
+          "m3": 1270.3333333333333,
+          "pico6": 2629
+        },
+        "2708": {
+          "m3": 15699,
+          "pico6": 31156
+        },
+        "2709": {
+          "m3": 1895.3333333333333,
+          "pico6": 3200
+        },
+        "2853": {
+          "m3": 1650.3333333333333,
+          "pico6": 2701
+        },
+        "2854": {
+          "m3": 1578,
+          "pico6": 3232
+        },
+        "3104": {
+          "m3": 25,
+          "pico6": 64
+        },
+        "3109": {
+          "m3": 1942,
+          "pico6": 2322
+        },
+        "3112": {
+          "m3": 3561,
+          "pico6": 5872
+        },
+        "3113": {
+          "m3": 1157.6666666666667,
+          "pico6": 1914
+        },
+        "3153": {
+          "m3": 341.3333333333333,
+          "pico6": 728
+        },
+        "3315": {
+          "m3": 3495,
+          "pico6": 4669
+        },
+        "3316": {
+          "m3": 1426.6666666666667,
+          "pico6": 2650
+        },
+        "3317": {
+          "m3": 987.6666666666666,
+          "pico6": 1522
+        },
+        "3318": {
+          "m3": 2513.3333333333335,
+          "pico6": 3618
+        },
+        "3319": {
+          "m3": 1973.3333333333333,
+          "pico6": 2525
+        },
+        "3449": {
+          "m3": 1517,
+          "pico6": 3143
+        },
+        "3453": {
+          "m3": 1808.6666666666667,
+          "pico6": 4786
+        },
+        "3851": {
+          "m3": 201.33333333333334,
+          "pico6": 1262
+        },
+        "3852": {
+          "m3": 394.6666666666667,
+          "pico6": 659
+        },
+        "3853": {
+          "m3": 344,
+          "pico6": 927
+        },
+        "3854": {
+          "m3": 1173,
+          "pico6": 2473
+        },
+        "3855": {
+          "m3": 591.6666666666666,
+          "pico6": 962
+        },
+        "3856": {
+          "m3": 844,
+          "pico6": 1428
+        },
+        "3857": {
+          "m3": 1615.3333333333333,
+          "pico6": 2064
+        },
+        "3972": {
+          "m3": 1467,
+          "pico6": 2330
+        },
+        "3973": {
+          "m3": 2255,
+          "pico6": 3590
+        },
+        "3974": {
+          "m3": 1146.6666666666667,
+          "pico6": 1538
+        },
+        "3976": {
+          "m3": 1080.6666666666667,
+          "pico6": 1916
+        },
+        "4145": {
+          "m3": 347.3333333333333,
+          "pico6": 569
+        },
+        "4149": {
+          "m3": 1130.6666666666667,
+          "pico6": 1493
+        },
+        "4150": {
+          "m3": 246.66666666666666,
+          "pico6": 1273
+        },
+        "4152": {
+          "m3": 728.6666666666666,
+          "pico6": 2641
+        },
+        "4153": {
+          "m3": 655,
+          "pico6": 4293
+        },
+        "4154": {
+          "m3": 63,
+          "pico6": 8120
+        },
+        "4155": {
+          "m3": 967.3333333333334,
+          "pico6": 1218
+        },
+        "4340": {
+          "m3": 770.3333333333334,
+          "pico6": 1012
+        },
+        "4341": {
+          "m3": 1042.6666666666667,
+          "pico6": 1368
+        },
+        "4630": {
+          "m3": 1572.6666666666667,
+          "pico6": 2615
+        },
+        "5209": {
+          "m3": 1662,
+          "pico6": 4084
+        },
+        "5381": {
+          "m3": 2248.6666666666665,
+          "pico6": 3308
+        },
+        "5382": {
+          "m3": 2316,
+          "pico6": 3619
+        },
+        "5383": {
+          "m3": 2613.3333333333335,
+          "pico6": 4213
+        },
+        "5447": {
+          "m3": 1463.6666666666667,
+          "pico6": 2152
+        },
+        "6136": {
+          "m3": 503.6666666666667,
+          "pico6": 1704
+        },
+        "6248": {
+          "m3": 424.6666666666667,
+          "pico6": 776
+        },
+        "6249": {
+          "m3": 389.6666666666667,
+          "pico6": 659
+        },
+        "6250": {
+          "m3": 549,
+          "pico6": 975
+        },
+        "6251": {
+          "m3": 908,
+          "pico6": 1170
+        },
+        "6252": {
+          "m3": 529.3333333333334,
+          "pico6": 744
+        },
+        "6253": {
+          "m3": 445.6666666666667,
+          "pico6": 836
+        },
+        "6254": {
+          "m3": 632,
+          "pico6": 915
+        },
+        "6255": {
+          "m3": 581.3333333333334,
+          "pico6": 874
+        },
+        "6256": {
+          "m3": 596,
+          "pico6": 1804
+        },
+        "6257": {
+          "m3": 728,
+          "pico6": 1884
+        },
+        "6258": {
+          "m3": 567.3333333333334,
+          "pico6": 734
+        },
+        "6260": {
+          "m3": 427.6666666666667,
+          "pico6": 1631
+        },
+        "6261": {
+          "m3": 723.3333333333334,
+          "pico6": 849
+        },
+        "6262": {
+          "m3": 489,
+          "pico6": 974
+        },
+        "6263": {
+          "m3": 557.3333333333334,
+          "pico6": 805
+        },
+        "6264": {
+          "m3": 1226.6666666666667,
+          "pico6": 1762
+        },
+        "6265": {
+          "m3": 451.3333333333333,
+          "pico6": 801
+        },
+        "6266": {
+          "m3": 464.6666666666667,
+          "pico6": 1049
+        },
+        "6267": {
+          "m3": 585.6666666666666,
+          "pico6": 1099
+        },
+        "6268": {
+          "m3": 439.6666666666667,
+          "pico6": 669
+        },
+        "6269": {
+          "m3": 1071.3333333333333,
+          "pico6": 1490
+        },
+        "6270": {
+          "m3": 1005.6666666666666,
+          "pico6": 1287
+        },
+        "6271": {
+          "m3": 1014.6666666666666,
+          "pico6": 1462
+        },
+        "6272": {
+          "m3": 943,
+          "pico6": 1257
+        },
+        "6273": {
+          "m3": 716,
+          "pico6": 1152
+        },
+        "6274": {
+          "m3": 819.6666666666666,
+          "pico6": 1130
+        },
+        "6275": {
+          "m3": 424,
+          "pico6": 592
+        },
+        "6276": {
+          "m3": 361,
+          "pico6": 510
+        },
+        "6277": {
+          "m3": 642.3333333333334,
+          "pico6": 916
+        },
+        "6278": {
+          "m3": 1021,
+          "pico6": 1365
+        },
+        "6279": {
+          "m3": 709,
+          "pico6": 1086
+        },
+        "6280": {
+          "m3": 235,
+          "pico6": 910
+        },
+        "6281": {
+          "m3": 200.33333333333334,
+          "pico6": 1504
+        },
+        "6282": {
+          "m3": 354.3333333333333,
+          "pico6": 757
+        },
+        "6283": {
+          "m3": 275.6666666666667,
+          "pico6": 543
+        },
+        "6284": {
+          "m3": 770.6666666666666,
+          "pico6": 1003
+        },
+        "6285": {
+          "m3": 495.6666666666667,
+          "pico6": 795
+        },
+        "6286": {
+          "m3": 673.6666666666666,
+          "pico6": 1839
+        },
+        "6287": {
+          "m3": 269.3333333333333,
+          "pico6": 549
+        },
+        "6288": {
+          "m3": 503.6666666666667,
+          "pico6": 797
+        },
+        "7615": {
+          "m3": 202,
+          "pico6": 1188
+        },
+        "7616": {
+          "m3": 167.33333333333334,
+          "pico6": 1136
+        }
+      },
+      "insumos": {
+        "391": 259200,
+        "866": 59903,
+        "956": 1285000,
+        "1034": 107000,
+        "1035": 105000,
+        "1037": 113000,
+        "1038": 127000,
+        "1039": 108000,
+        "1041": 78000,
+        "1044": 62000,
+        "1045": 27500,
+        "1046": 102000,
+        "1047": 81000,
+        "1048": 122000,
+        "1051": 132000,
+        "1052": 128000,
+        "1053": 109000,
+        "1055": 420300,
+        "1056": 45000,
+        "1058": 142000,
+        "1059": 115000,
+        "1060": 97000,
+        "1062": 242000,
+        "1064": 108000,
+        "1066": 80400,
+        "1069": 85400,
+        "1071": 85400,
+        "1073": 83500,
+        "1076": 114000,
+        "1077": 184000,
+        "1078": 125000,
+        "1079": 1000,
+        "1083": 153000,
+        "1085": 9000,
+        "1316": 123000,
+        "1325": 6600000,
+        "1327": 25,
+        "1362": 450000,
+        "1376": 129000,
+        "2056": 126000,
+        "2057": 155000,
+        "2172": 90000,
+        "2174": 166700,
+        "2201": 60000,
+        "2202": 41000,
+        "2203": 32000,
+        "2204": 42900,
+        "2205": 23250,
+        "2206": 29800,
+        "2207": 22910,
+        "2208": 17600,
+        "2289": 45000,
+        "2417": 118,
+        "2421": 175200,
+        "2422": 127000,
+        "2423": 32900,
+        "2424": 23000,
+        "2425": 101000,
+        "2426": 109000,
+        "2427": 106000,
+        "2428": 100000,
+        "2429": 94000,
+        "2430": 122000,
+        "2431": 132000,
+        "2432": 177000,
+        "2433": 108000,
+        "2434": 55000,
+        "2435": 132000,
+        "2436": 35200,
+        "2455": 219600,
+        "2740": 22000,
+        "2741": 209000,
+        "2742": 45000,
+        "2743": 175000,
+        "2744": 32000,
+        "2745": 16000,
+        "2782": 17000,
+        "2783": 6000,
+        "2785": 0,
+        "2786": 17400,
+        "2818": 920,
+        "2837": 119237,
+        "2866": 25000,
+        "2916": 84300,
+        "2948": 1712000,
+        "3095": 46200,
+        "3096": 22650,
+        "3097": 122000,
+        "3098": 112000,
+        "3099": 52000,
+        "3100": 47000,
+        "3101": 107000,
+        "3102": 130000,
+        "3103": 104000,
+        "3120": 35500,
+        "3121": 65000,
+        "3123": 68200,
+        "3128": 2750,
+        "3221": 37300,
+        "3338": 38000,
+        "3339": 45180,
+        "3340": 35500,
+        "3341": 24000,
+        "3342": 25000,
+        "3343": 16000,
+        "3526": 41366,
+        "3527": 20000,
+        "3528": 20000,
+        "3529": 147000,
+        "3530": 37000,
+        "3531": 46533,
+        "3588": 36000,
+        "3589": 36240,
+        "3590": 0,
+        "3591": 36000,
+        "3806": 32650,
+        "3850": 25458,
+        "3903": 335580,
+        "3904": 342720,
+        "3905": 297000,
+        "3947": 0,
+        "3967": 100000,
+        "3968": 100500,
+        "3969": 100000,
+        "3994": 19000,
+        "3998": 5380,
+        "3999": 0,
+        "4000": 9600,
+        "4001": 8400,
+        "4002": 6720,
+        "4003": 2100,
+        "4004": 7000,
+        "4010": 2500,
+        "4011": 17500,
+        "4012": 7500,
+        "4013": 12988,
+        "4014": 17382,
+        "4015": 13780,
+        "4031": 2880,
+        "4032": 7210,
+        "4033": 390,
+        "4034": 5090,
+        "4035": 10212,
+        "4036": 6160,
+        "4037": 5660,
+        "4074": 43000,
+        "4075": 24183,
+        "4080": 19600,
+        "4081": 17850,
+        "4106": 50,
+        "4107": 50,
+        "4111": 7420,
+        "4112": 195875,
+        "4113": 9970,
+        "4114": 8970,
+        "4121": 6600,
+        "4122": 12620,
+        "4123": 4900,
+        "4124": 200,
+        "4174": 10700,
+        "4175": 1500,
+        "4176": 20000,
+        "4177": 0,
+        "4201": 720,
+        "4202": 42,
+        "4203": 8960,
+        "4204": 35000,
+        "4205": 7290,
+        "4206": 9960,
+        "4208": 80,
+        "4209": 9074,
+        "4210": 10000,
+        "4211": 36700,
+        "4212": 0,
+        "4213": 800,
+        "4214": 0,
+        "4215": 0,
+        "4216": 0,
+        "4217": 36000,
+        "4218": 0,
+        "4219": 10000,
+        "4229": 13750,
+        "4230": 150,
+        "4231": 32400,
+        "4243": 9744,
+        "4245": 112,
+        "4246": 7500,
+        "4247": 3560,
+        "4248": 9900,
+        "4250": 200,
+        "4251": 7480,
+        "4252": 3520,
+        "4253": 0,
+        "4254": 10000,
+        "4255": 7000,
+        "4256": 900,
+        "4366": 10000,
+        "4369": 29000,
+        "4370": 19800,
+        "4371": 27818,
+        "4372": 9900,
+        "4373": 19910,
+        "4388": 22000,
+        "4389": 16740,
+        "4428": 5348,
+        "4433": 0,
+        "4474": 4950,
+        "4475": 3860,
+        "4476": 3150,
+        "4553": 11200,
+        "4560": 12350,
+        "4565": 400,
+        "4620": 11616,
+        "4621": 7910,
+        "4622": 20980,
+        "4623": 18000,
+        "4624": 8950,
+        "4636": 12400,
+        "4638": 9000,
+        "4644": 10050,
+        "4645": 10030,
+        "4646": 20000,
+        "4648": 10400,
+        "4649": 605,
+        "4688": 19600,
+        "4690": 11560,
+        "4691": 10030,
+        "4710": 30000,
+        "4715": 63151,
+        "4717": 0,
+        "4718": 30000,
+        "4719": 41965,
+        "4761": 4500,
+        "4768": 7044.02,
+        "4769": 5436.12,
+        "4770": 4773,
+        "4771": 8647.18,
+        "4772": 6619.99,
+        "4773": 3446.47,
+        "4774": 1012.5,
+        "4775": 9081.64,
+        "4776": 9005.03,
+        "4777": 7057.13,
+        "4778": 6622.59,
+        "4779": 9041.08,
+        "4780": 7692.19,
+        "4781": 6434.5,
+        "4782": 10066.15,
+        "4783": 458.11,
+        "4784": 6606.17,
+        "4785": 6636.5,
+        "4786": 5307,
+        "4787": 3612.5,
+        "4788": 570,
+        "4789": 2859.39,
+        "4790": 7087.5,
+        "4791": 6652.56,
+        "4797": 200000,
+        "4798": 11300,
+        "4799": 8800,
+        "4800": 1000,
+        "4801": 12526,
+        "4802": 10711,
+        "4803": 10993,
+        "4804": 11950,
+        "4805": 7068,
+        "4806": 7554.4,
+        "4807": 9495,
+        "4808": 11918.4,
+        "4809": 13143.03,
+        "4810": 7444,
+        "4811": 8288.07,
+        "4812": 12345,
+        "4813": 10507,
+        "4814": 13124,
+        "4815": 8985,
+        "4816": 10406,
+        "4817": 10463,
+        "4818": 6809,
+        "4819": 10342,
+        "4820": 9082,
+        "4821": 9113,
+        "4822": 8932.4,
+        "4823": 10496.39,
+        "4824": 10679,
+        "4825": 11781.42,
+        "4826": 6766,
+        "4845": 10934,
+        "4846": 9863,
+        "4847": 7970,
+        "4937": 1977,
+        "4938": 606,
+        "4939": 6942,
+        "4940": 7000,
+        "4941": 2990,
+        "4942": 2990,
+        "4994": 7382,
+        "4995": 5300,
+        "5210": 4444,
+        "5235": 9200,
+        "5236": 9600,
+        "5237": 8000,
+        "5238": 9500,
+        "5239": 12600,
+        "5278": 8000,
+        "5416": 5351,
+        "5417": 5750,
+        "5418": 2412,
+        "5419": 5883,
+        "5420": 6531,
+        "5421": 4692,
+        "5422": 5002,
+        "5423": 7093,
+        "5424": 5249,
+        "5425": 6824,
+        "5426": 4030,
+        "5427": 1028,
+        "5428": 2993,
+        "5429": 6604,
+        "5430": 7093,
+        "5915": 27648,
+        "5916": 4320,
+        "5917": 92736,
+        "5918": 3360,
+        "6289": 5170,
+        "6290": 2060,
+        "6291": 3130,
+        "7081": 2736,
+        "7106": 3930,
+        "7131": 4633,
+        "7132": 3471,
+        "7133": 30569,
+        "7137": 4648,
+        "7138": 33514,
+        "7140": 3750,
+        "7155": 10381.999,
+        "7156": 9350.002,
+        "7157": 11662,
+        "7158": 7256,
+        "7159": 10532,
+        "7160": 10481,
+        "7161": 7934,
+        "7162": 6367,
+        "7163": 13258.997,
+        "7164": 10775,
+        "7165": 11142.001,
+        "7166": 9527,
+        "7167": 8560,
+        "7168": 0,
+        "7268": 2332,
+        "7276": 3900,
+        "7277": 19500,
+        "7577": 49,
+        "7578": 0,
+        "7579": 56,
+        "7590": 50000,
+        "7591": 18000,
+        "7596": 1628,
+        "7782": 3600,
+        "7797": 2990,
+        "7798": 2990,
+        "7799": 3500,
+        "7800": 2990,
+        "7801": 7450,
+        "7802": 6460,
+        "7813": 150,
+        "7817": 4900,
+        "7839": 1000,
+        "7840": 2020,
+        "7841": 970,
+        "7855": 2880,
+        "7884": 4000,
+        "7903": 600,
+        "7930": 228000,
+        "8188": 119186,
+        "8189": 138174,
+        "8190": 66741,
+        "8191": 41184,
+        "8192": 59633,
+        "8193": 204929,
+        "8194": 105061,
+        "8381": 9250,
+        "8382": 8492,
+        "8383": 3034,
+        "8436": 11860
+      }
+    },
+    {
+      "timestamp": "2026-05-29T17:57:32.809Z",
+      "origem": "ess",
+      "essencias": [
+        {
+          "sku": 4076,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2476,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4041,
+          "estoqueG": 0,
+          "pedidoAbertoG": 60000
+        },
+        {
+          "sku": 3849,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 834,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 392,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 835,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 836,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2777,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7710,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1942,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 668,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2778,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7265,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1179,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4274,
+          "estoqueG": 0,
+          "pedidoAbertoG": 146000
+        },
+        {
+          "sku": 4374,
+          "estoqueG": 22400,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3225,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 5181,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3930,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2454,
+          "estoqueG": 20000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3965,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1294,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4851,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1270,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1098,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4042,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 502,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 438,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4945,
+          "estoqueG": 14700,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3332,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 484,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1911,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4275,
+          "estoqueG": 4000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2768,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 8298,
+          "estoqueG": 91850,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3034,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 636,
+          "estoqueG": 0,
+          "pedidoAbertoG": 500000
+        },
+        {
+          "sku": 3136,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3931,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 617,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 5182,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3328,
+          "estoqueG": 25000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 8067,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 669,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2160,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 439,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4591,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3989,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3035,
+          "estoqueG": 20000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7507,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 572,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1295,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 840,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2779,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2318,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2126,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4392,
+          "estoqueG": 35650,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 540,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3036,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 861,
+          "estoqueG": 64500,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 841,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1912,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7890,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2736,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7264,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4072,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3966,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4355,
+          "estoqueG": 126350,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4637,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4960,
+          "estoqueG": 85000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 905,
+          "estoqueG": 116200,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 440,
+          "estoqueG": 20000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 670,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 393,
+          "estoqueG": 102300,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4043,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1271,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3137,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4044,
+          "estoqueG": 77250,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 503,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 5180,
+          "estoqueG": 1500,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 568,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 394,
+          "estoqueG": 0,
+          "pedidoAbertoG": 1000000
+        },
+        {
+          "sku": 842,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2737,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3327,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3330,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7530,
+          "estoqueG": 16350.000000000002,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7536,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4071,
+          "estoqueG": 3500,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1269,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2738,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2739,
+          "estoqueG": 100000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2478,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3336,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3333,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3335,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3777,
+          "estoqueG": 0,
+          "pedidoAbertoG": 100000
+        },
+        {
+          "sku": 3937,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3337,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 843,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7711,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3329,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2928,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 5531,
+          "estoqueG": 20000,
+          "pedidoAbertoG": 0
+        }
+      ],
+      "estoque": {
+        "1555": {
+          "pe": 5724,
+          "sp": 50
+        },
+        "1557": {
+          "pe": 1569,
+          "sp": 2010
+        },
+        "1559": {
+          "pe": 8240,
+          "sp": 6039
+        },
+        "1560": {
+          "pe": 33557,
+          "sp": 17630
+        },
+        "1561": {
+          "pe": 19705,
+          "sp": 14608
+        },
+        "1562": {
+          "pe": 4767,
+          "sp": 101
+        },
+        "1564": {
+          "pe": 2903,
+          "sp": 1297
+        },
+        "1566": {
+          "pe": 33008,
+          "sp": 28130
+        },
+        "1567": {
+          "pe": 5571,
+          "sp": 2837
+        },
+        "1568": {
+          "pe": 2405,
+          "sp": 1173
+        },
+        "1569": {
+          "pe": 36836,
+          "sp": 20775
+        },
+        "1570": {
+          "pe": 1649,
+          "sp": 1976
+        },
+        "1571": {
+          "pe": 37927,
+          "sp": 25130
+        },
+        "1576": {
+          "pe": 2107,
+          "sp": 314
+        },
+        "1577": {
+          "pe": 97,
+          "sp": 100
+        },
+        "1581": {
+          "pe": 39801,
+          "sp": 30336
+        },
+        "1596": {
+          "pe": 3340,
+          "sp": 3186
+        },
+        "1597": {
+          "pe": 14264,
+          "sp": 10728
+        },
+        "1599": {
+          "pe": 37302,
+          "sp": 11245
+        },
+        "1600": {
+          "pe": 22972,
+          "sp": 16785
+        },
+        "1602": {
+          "pe": 24748,
+          "sp": 28301
+        },
+        "1603": {
+          "pe": 3461,
+          "sp": 1560
+        },
+        "1604": {
+          "pe": 7834,
+          "sp": 5627
+        },
+        "1605": {
+          "pe": 2601,
+          "sp": 759
+        },
+        "1610": {
+          "pe": 34716,
+          "sp": 9494
+        },
+        "1611": {
+          "pe": 4013,
+          "sp": 3418
+        },
+        "1612": {
+          "pe": 13582,
+          "sp": 14678
+        },
+        "1614": {
+          "pe": 7450,
+          "sp": 100
+        },
+        "1615": {
+          "pe": 30546,
+          "sp": 11880
+        },
+        "1616": {
+          "pe": 26081,
+          "sp": 9096
+        },
+        "1617": {
+          "pe": 43151,
+          "sp": 20675
+        },
+        "1622": {
+          "pe": 1194,
+          "sp": 104
+        },
+        "1653": {
+          "pe": 5388,
+          "sp": 3268
+        },
+        "1995": {
+          "pe": 2142,
+          "sp": 783
+        },
+        "1996": {
+          "pe": 7945,
+          "sp": 100
+        },
+        "2179": {
+          "pe": 0,
+          "sp": 11
+        },
+        "2180": {
+          "pe": 170,
+          "sp": 200
+        },
+        "2181": {
+          "pe": 3540,
+          "sp": 101
+        },
+        "2182": {
+          "pe": 2746,
+          "sp": 1359
+        },
+        "2441": {
+          "pe": 2514,
+          "sp": 1448
+        },
+        "2483": {
+          "pe": 100,
+          "sp": 88
+        },
+        "2484": {
+          "pe": 2000,
+          "sp": 479
+        },
+        "2485": {
+          "pe": 301,
+          "sp": 821
+        },
+        "2486": {
+          "pe": 1956,
+          "sp": 1365
+        },
+        "2489": {
+          "pe": 373,
+          "sp": 218
+        },
+        "2491": {
+          "pe": 186,
+          "sp": 100
+        },
+        "2493": {
+          "pe": 3530,
+          "sp": 1962
+        },
+        "2494": {
+          "pe": 3281,
+          "sp": 1066
+        },
+        "2495": {
+          "pe": 2853,
+          "sp": 1581
+        },
+        "2497": {
+          "pe": 2433,
+          "sp": 707
+        },
+        "2498": {
+          "pe": 21746,
+          "sp": 8610
+        },
+        "2705": {
+          "pe": 3563,
+          "sp": 2520
+        },
+        "2706": {
+          "pe": 7373,
+          "sp": 4915
+        },
+        "2707": {
+          "pe": 1471,
+          "sp": 1538
+        },
+        "2708": {
+          "pe": 17813,
+          "sp": 16781
+        },
+        "2709": {
+          "pe": 1424,
+          "sp": 2241
+        },
+        "2853": {
+          "pe": 1056,
+          "sp": 240
+        },
+        "2854": {
+          "pe": 1548,
+          "sp": 101
+        },
+        "3104": {
+          "pe": 87,
+          "sp": 101
+        },
+        "3109": {
+          "pe": 839,
+          "sp": 101
+        },
+        "3112": {
+          "pe": 1016,
+          "sp": 148
+        },
+        "3113": {
+          "pe": 592,
+          "sp": 100
+        },
+        "3153": {
+          "pe": 1720,
+          "sp": 1386
+        },
+        "3315": {
+          "pe": 954,
+          "sp": 100
+        },
+        "3316": {
+          "pe": 2781,
+          "sp": 4267
+        },
+        "3317": {
+          "pe": 2885,
+          "sp": 2547
+        },
+        "3318": {
+          "pe": 5684,
+          "sp": 93
+        },
+        "3319": {
+          "pe": 2984,
+          "sp": 200
+        },
+        "3449": {
+          "pe": 77,
+          "sp": 100
+        },
+        "3453": {
+          "pe": 3301,
+          "sp": 146
+        },
+        "3851": {
+          "pe": 1233,
+          "sp": 1419
+        },
+        "3852": {
+          "pe": 1907,
+          "sp": 797
+        },
+        "3853": {
+          "pe": 948,
+          "sp": 477
+        },
+        "3854": {
+          "pe": 2512,
+          "sp": 1454
+        },
+        "3855": {
+          "pe": 99,
+          "sp": 101
+        },
+        "3856": {
+          "pe": 1630,
+          "sp": 345
+        },
+        "3857": {
+          "pe": 5238,
+          "sp": 2393
+        },
+        "3972": {
+          "pe": 2636,
+          "sp": 1212
+        },
+        "3973": {
+          "pe": 4049,
+          "sp": 2090
+        },
+        "3974": {
+          "pe": 1607,
+          "sp": 910
+        },
+        "3976": {
+          "pe": 589,
+          "sp": 403
+        },
+        "4145": {
+          "pe": 0,
+          "sp": 100
+        },
+        "4149": {
+          "pe": 4298,
+          "sp": 1976
+        },
+        "4150": {
+          "pe": 3,
+          "sp": 2
+        },
+        "4152": {
+          "pe": 762,
+          "sp": 935
+        },
+        "4153": {
+          "pe": 125,
+          "sp": 123
+        },
+        "4154": {
+          "pe": 0,
+          "sp": 0
+        },
+        "4155": {
+          "pe": 2384,
+          "sp": 1466
+        },
+        "4340": {
+          "pe": 831,
+          "sp": 1038
+        },
+        "4341": {
+          "pe": 1952,
+          "sp": 679
+        },
+        "5209": {
+          "pe": 1940,
+          "sp": 101
+        },
+        "5381": {
+          "pe": 775,
+          "sp": 432
+        },
+        "5382": {
+          "pe": 649,
+          "sp": 1024
+        },
+        "5383": {
+          "pe": 218,
+          "sp": 101
+        },
+        "5447": {
+          "pe": 5281,
+          "sp": 1402
+        },
+        "6248": {
+          "pe": 1844,
+          "sp": 1273
+        },
+        "6249": {
+          "pe": 666,
+          "sp": 374
+        },
+        "6250": {
+          "pe": 2610,
+          "sp": 1500
+        },
+        "6251": {
+          "pe": 3341,
+          "sp": 1086
+        },
+        "6252": {
+          "pe": 3207,
+          "sp": 1235
+        },
+        "6253": {
+          "pe": 2989,
+          "sp": 1514
+        },
+        "6254": {
+          "pe": 506,
+          "sp": 358
+        },
+        "6255": {
+          "pe": 840,
+          "sp": 316
+        },
+        "6256": {
+          "pe": 6277,
+          "sp": 2682
+        },
+        "6257": {
+          "pe": 864,
+          "sp": 781
+        },
+        "6258": {
+          "pe": 1169,
+          "sp": 418
+        },
+        "6260": {
+          "pe": 950,
+          "sp": 1227
+        },
+        "6261": {
+          "pe": 3690,
+          "sp": 2057
+        },
+        "6262": {
+          "pe": 1163,
+          "sp": 1069
+        },
+        "6263": {
+          "pe": 699,
+          "sp": 790
+        },
+        "6264": {
+          "pe": 897,
+          "sp": 1234
+        },
+        "6265": {
+          "pe": 1664,
+          "sp": 1113
+        },
+        "6266": {
+          "pe": 1001,
+          "sp": 783
+        },
+        "6267": {
+          "pe": 1568,
+          "sp": 567
+        },
+        "6268": {
+          "pe": 472,
+          "sp": 475
+        },
+        "6269": {
+          "pe": 2869,
+          "sp": 424
+        },
+        "6270": {
+          "pe": 579,
+          "sp": 435
+        },
+        "6271": {
+          "pe": 2008,
+          "sp": 1017
+        },
+        "6272": {
+          "pe": 2910,
+          "sp": 874
+        },
+        "6273": {
+          "pe": 4041,
+          "sp": 1944
+        },
+        "6274": {
+          "pe": 3206,
+          "sp": 1318
+        },
+        "6275": {
+          "pe": 1843,
+          "sp": 941
+        },
+        "6276": {
+          "pe": 1357,
+          "sp": 294
+        },
+        "6277": {
+          "pe": 424,
+          "sp": 485
+        },
+        "6278": {
+          "pe": 818,
+          "sp": 1077
+        },
+        "6279": {
+          "pe": 1840,
+          "sp": 899
+        },
+        "6280": {
+          "pe": 559,
+          "sp": 815
+        },
+        "6281": {
+          "pe": 1595,
+          "sp": 859
+        },
+        "6282": {
+          "pe": 297,
+          "sp": 780
+        },
+        "6283": {
+          "pe": 1965,
+          "sp": 97
+        },
+        "6284": {
+          "pe": 3533,
+          "sp": 888
+        },
+        "6285": {
+          "pe": 146,
+          "sp": 347
+        },
+        "6286": {
+          "pe": 191,
+          "sp": 262
+        },
+        "6287": {
+          "pe": 1857,
+          "sp": 2072
+        },
+        "6288": {
+          "pe": 1289,
+          "sp": 413
+        },
+        "7615": {
+          "pe": 9766,
+          "sp": 4010
+        },
+        "7616": {
+          "pe": 8505,
+          "sp": 4166
+        }
+      },
+      "venda": {
+        "1555": {
+          "m3": 2986.6666666666665,
+          "pico6": 6681
+        },
+        "1557": {
+          "m3": 2109.6666666666665,
+          "pico6": 5001
+        },
+        "1559": {
+          "m3": 2300,
+          "pico6": 4161
+        },
+        "1560": {
+          "m3": 9121.333333333334,
+          "pico6": 17062
+        },
+        "1561": {
+          "m3": 8373.333333333334,
+          "pico6": 14599
+        },
+        "1562": {
+          "m3": 2581.3333333333335,
+          "pico6": 4583
+        },
+        "1564": {
+          "m3": 2523.6666666666665,
+          "pico6": 5226
+        },
+        "1566": {
+          "m3": 26789.666666666668,
+          "pico6": 49923
+        },
+        "1567": {
+          "m3": 4946,
+          "pico6": 8523
+        },
+        "1568": {
+          "m3": 1872.6666666666667,
+          "pico6": 4023
+        },
+        "1569": {
+          "m3": 16257.666666666666,
+          "pico6": 29663
+        },
+        "1570": {
+          "m3": 1425.3333333333333,
+          "pico6": 2588
+        },
+        "1571": {
+          "m3": 10061.333333333334,
+          "pico6": 16552
+        },
+        "1576": {
+          "m3": 2646,
+          "pico6": 4199
+        },
+        "1577": {
+          "m3": 49.333333333333336,
+          "pico6": 1163
+        },
+        "1581": {
+          "m3": 84396.66666666667,
+          "pico6": 147511
+        },
+        "1596": {
+          "m3": 3042.6666666666665,
+          "pico6": 6477
+        },
+        "1597": {
+          "m3": 6518.666666666667,
+          "pico6": 12381
+        },
+        "1599": {
+          "m3": 12282,
+          "pico6": 21295
+        },
+        "1600": {
+          "m3": 3375.6666666666665,
+          "pico6": 5384
+        },
+        "1602": {
+          "m3": 6705.666666666667,
+          "pico6": 11846
+        },
+        "1603": {
+          "m3": 1165.6666666666667,
+          "pico6": 2644
+        },
+        "1604": {
+          "m3": 11833.333333333334,
+          "pico6": 21480
+        },
+        "1605": {
+          "m3": 2591.6666666666665,
+          "pico6": 4819
+        },
+        "1610": {
+          "m3": 7378,
+          "pico6": 13328
+        },
+        "1611": {
+          "m3": 3779.6666666666665,
+          "pico6": 7062
+        },
+        "1612": {
+          "m3": 4974.333333333333,
+          "pico6": 7578
+        },
+        "1614": {
+          "m3": 3427.6666666666665,
+          "pico6": 6546
+        },
+        "1615": {
+          "m3": 15178,
+          "pico6": 28435
+        },
+        "1616": {
+          "m3": 7409,
+          "pico6": 12960
+        },
+        "1617": {
+          "m3": 13773,
+          "pico6": 22532
+        },
+        "1622": {
+          "m3": 2180.3333333333335,
+          "pico6": 3886
+        },
+        "1653": {
+          "m3": 5613,
+          "pico6": 9991
+        },
+        "1995": {
+          "m3": 1960.6666666666667,
+          "pico6": 3332
+        },
+        "1996": {
+          "m3": 5796.333333333333,
+          "pico6": 9733
+        },
+        "2179": {
+          "m3": 52,
+          "pico6": 156
+        },
+        "2180": {
+          "m3": 188,
+          "pico6": 2520
+        },
+        "2181": {
+          "m3": 2062.3333333333335,
+          "pico6": 4742
+        },
+        "2182": {
+          "m3": 1108,
+          "pico6": 2093
+        },
+        "2441": {
+          "m3": 5397.666666666667,
+          "pico6": 8874
+        },
+        "2483": {
+          "m3": 3196.6666666666665,
+          "pico6": 5542
+        },
+        "2484": {
+          "m3": 1588,
+          "pico6": 3062
+        },
+        "2485": {
+          "m3": 2346.3333333333335,
+          "pico6": 3833
+        },
+        "2486": {
+          "m3": 3175.3333333333335,
+          "pico6": 7171
+        },
+        "2489": {
+          "m3": 2176,
+          "pico6": 2657
+        },
+        "2491": {
+          "m3": 2251.3333333333335,
+          "pico6": 3494
+        },
+        "2493": {
+          "m3": 2953.3333333333335,
+          "pico6": 6713
+        },
+        "2494": {
+          "m3": 5189.666666666667,
+          "pico6": 8022
+        },
+        "2495": {
+          "m3": 1937,
+          "pico6": 4339
+        },
+        "2497": {
+          "m3": 2194.3333333333335,
+          "pico6": 4286
+        },
+        "2498": {
+          "m3": 5883,
+          "pico6": 9996
+        },
+        "2705": {
+          "m3": 1282.6666666666667,
+          "pico6": 2820
+        },
+        "2706": {
+          "m3": 22247.333333333332,
+          "pico6": 44163
+        },
+        "2707": {
+          "m3": 1270.3333333333333,
+          "pico6": 2629
+        },
+        "2708": {
+          "m3": 15699,
+          "pico6": 31156
+        },
+        "2709": {
+          "m3": 1895.3333333333333,
+          "pico6": 3200
+        },
+        "2853": {
+          "m3": 1650.3333333333333,
+          "pico6": 2701
+        },
+        "2854": {
+          "m3": 1578,
+          "pico6": 3232
+        },
+        "3104": {
+          "m3": 25,
+          "pico6": 64
+        },
+        "3109": {
+          "m3": 1942,
+          "pico6": 2322
+        },
+        "3112": {
+          "m3": 3561,
+          "pico6": 5872
+        },
+        "3113": {
+          "m3": 1157.6666666666667,
+          "pico6": 1914
+        },
+        "3153": {
+          "m3": 341.3333333333333,
+          "pico6": 728
+        },
+        "3315": {
+          "m3": 3495,
+          "pico6": 4669
+        },
+        "3316": {
+          "m3": 1426.6666666666667,
+          "pico6": 2650
+        },
+        "3317": {
+          "m3": 987.6666666666666,
+          "pico6": 1522
+        },
+        "3318": {
+          "m3": 2513.3333333333335,
+          "pico6": 3618
+        },
+        "3319": {
+          "m3": 1973.3333333333333,
+          "pico6": 2525
+        },
+        "3449": {
+          "m3": 1517,
+          "pico6": 3143
+        },
+        "3453": {
+          "m3": 1808.6666666666667,
+          "pico6": 4786
+        },
+        "3851": {
+          "m3": 201.33333333333334,
+          "pico6": 1262
+        },
+        "3852": {
+          "m3": 394.6666666666667,
+          "pico6": 659
+        },
+        "3853": {
+          "m3": 344,
+          "pico6": 927
+        },
+        "3854": {
+          "m3": 1173,
+          "pico6": 2473
+        },
+        "3855": {
+          "m3": 591.6666666666666,
+          "pico6": 962
+        },
+        "3856": {
+          "m3": 844,
+          "pico6": 1428
+        },
+        "3857": {
+          "m3": 1615.3333333333333,
+          "pico6": 2064
+        },
+        "3972": {
+          "m3": 1467,
+          "pico6": 2330
+        },
+        "3973": {
+          "m3": 2255,
+          "pico6": 3590
+        },
+        "3974": {
+          "m3": 1146.6666666666667,
+          "pico6": 1538
+        },
+        "3976": {
+          "m3": 1080.6666666666667,
+          "pico6": 1916
+        },
+        "4145": {
+          "m3": 347.3333333333333,
+          "pico6": 569
+        },
+        "4149": {
+          "m3": 1130.6666666666667,
+          "pico6": 1493
+        },
+        "4150": {
+          "m3": 246.66666666666666,
+          "pico6": 1273
+        },
+        "4152": {
+          "m3": 728.6666666666666,
+          "pico6": 2641
+        },
+        "4153": {
+          "m3": 655,
+          "pico6": 4293
+        },
+        "4154": {
+          "m3": 63,
+          "pico6": 8120
+        },
+        "4155": {
+          "m3": 967.3333333333334,
+          "pico6": 1218
+        },
+        "4340": {
+          "m3": 770.3333333333334,
+          "pico6": 1012
+        },
+        "4341": {
+          "m3": 1042.6666666666667,
+          "pico6": 1368
+        },
+        "4630": {
+          "m3": 1572.6666666666667,
+          "pico6": 2615
+        },
+        "5209": {
+          "m3": 1662,
+          "pico6": 4084
+        },
+        "5381": {
+          "m3": 2248.6666666666665,
+          "pico6": 3308
+        },
+        "5382": {
+          "m3": 2316,
+          "pico6": 3619
+        },
+        "5383": {
+          "m3": 2613.3333333333335,
+          "pico6": 4213
+        },
+        "5447": {
+          "m3": 1463.6666666666667,
+          "pico6": 2152
+        },
+        "6136": {
+          "m3": 503.6666666666667,
+          "pico6": 1704
+        },
+        "6248": {
+          "m3": 424.6666666666667,
+          "pico6": 776
+        },
+        "6249": {
+          "m3": 389.6666666666667,
+          "pico6": 659
+        },
+        "6250": {
+          "m3": 549,
+          "pico6": 975
+        },
+        "6251": {
+          "m3": 908,
+          "pico6": 1170
+        },
+        "6252": {
+          "m3": 529.3333333333334,
+          "pico6": 744
+        },
+        "6253": {
+          "m3": 445.6666666666667,
+          "pico6": 836
+        },
+        "6254": {
+          "m3": 632,
+          "pico6": 915
+        },
+        "6255": {
+          "m3": 581.3333333333334,
+          "pico6": 874
+        },
+        "6256": {
+          "m3": 596,
+          "pico6": 1804
+        },
+        "6257": {
+          "m3": 728,
+          "pico6": 1884
+        },
+        "6258": {
+          "m3": 567.3333333333334,
+          "pico6": 734
+        },
+        "6260": {
+          "m3": 427.6666666666667,
+          "pico6": 1631
+        },
+        "6261": {
+          "m3": 723.3333333333334,
+          "pico6": 849
+        },
+        "6262": {
+          "m3": 489,
+          "pico6": 974
+        },
+        "6263": {
+          "m3": 557.3333333333334,
+          "pico6": 805
+        },
+        "6264": {
+          "m3": 1226.6666666666667,
+          "pico6": 1762
+        },
+        "6265": {
+          "m3": 451.3333333333333,
+          "pico6": 801
+        },
+        "6266": {
+          "m3": 464.6666666666667,
+          "pico6": 1049
+        },
+        "6267": {
+          "m3": 585.6666666666666,
+          "pico6": 1099
+        },
+        "6268": {
+          "m3": 439.6666666666667,
+          "pico6": 669
+        },
+        "6269": {
+          "m3": 1071.3333333333333,
+          "pico6": 1490
+        },
+        "6270": {
+          "m3": 1005.6666666666666,
+          "pico6": 1287
+        },
+        "6271": {
+          "m3": 1014.6666666666666,
+          "pico6": 1462
+        },
+        "6272": {
+          "m3": 943,
+          "pico6": 1257
+        },
+        "6273": {
+          "m3": 716,
+          "pico6": 1152
+        },
+        "6274": {
+          "m3": 819.6666666666666,
+          "pico6": 1130
+        },
+        "6275": {
+          "m3": 424,
+          "pico6": 592
+        },
+        "6276": {
+          "m3": 361,
+          "pico6": 510
+        },
+        "6277": {
+          "m3": 642.3333333333334,
+          "pico6": 916
+        },
+        "6278": {
+          "m3": 1021,
+          "pico6": 1365
+        },
+        "6279": {
+          "m3": 709,
+          "pico6": 1086
+        },
+        "6280": {
+          "m3": 235,
+          "pico6": 910
+        },
+        "6281": {
+          "m3": 200.33333333333334,
+          "pico6": 1504
+        },
+        "6282": {
+          "m3": 354.3333333333333,
+          "pico6": 757
+        },
+        "6283": {
+          "m3": 275.6666666666667,
+          "pico6": 543
+        },
+        "6284": {
+          "m3": 770.6666666666666,
+          "pico6": 1003
+        },
+        "6285": {
+          "m3": 495.6666666666667,
+          "pico6": 795
+        },
+        "6286": {
+          "m3": 673.6666666666666,
+          "pico6": 1839
+        },
+        "6287": {
+          "m3": 269.3333333333333,
+          "pico6": 549
+        },
+        "6288": {
+          "m3": 503.6666666666667,
+          "pico6": 797
+        },
+        "7615": {
+          "m3": 202,
+          "pico6": 1188
+        },
+        "7616": {
+          "m3": 167.33333333333334,
+          "pico6": 1136
+        }
+      },
+      "insumos": {
+        "391": 259200,
+        "866": 59903,
+        "956": 1285000,
+        "1034": 107000,
+        "1035": 105000,
+        "1037": 113000,
+        "1038": 127000,
+        "1039": 108000,
+        "1041": 78000,
+        "1044": 62000,
+        "1045": 27500,
+        "1046": 102000,
+        "1047": 81000,
+        "1048": 122000,
+        "1051": 132000,
+        "1052": 128000,
+        "1053": 109000,
+        "1055": 420300,
+        "1056": 45000,
+        "1058": 142000,
+        "1059": 115000,
+        "1060": 97000,
+        "1062": 242000,
+        "1064": 108000,
+        "1066": 80400,
+        "1069": 85400,
+        "1071": 85400,
+        "1073": 83500,
+        "1076": 114000,
+        "1077": 184000,
+        "1078": 125000,
+        "1079": 1000,
+        "1083": 153000,
+        "1085": 9000,
+        "1316": 123000,
+        "1325": 6600000,
+        "1327": 25,
+        "1362": 450000,
+        "1376": 129000,
+        "2056": 126000,
+        "2057": 155000,
+        "2172": 90000,
+        "2174": 166700,
+        "2201": 60000,
+        "2202": 41000,
+        "2203": 32000,
+        "2204": 42900,
+        "2205": 23250,
+        "2206": 29800,
+        "2207": 22910,
+        "2208": 17600,
+        "2289": 45000,
+        "2417": 118,
+        "2421": 175200,
+        "2422": 127000,
+        "2423": 32900,
+        "2424": 23000,
+        "2425": 101000,
+        "2426": 109000,
+        "2427": 106000,
+        "2428": 100000,
+        "2429": 94000,
+        "2430": 122000,
+        "2431": 132000,
+        "2432": 177000,
+        "2433": 108000,
+        "2434": 55000,
+        "2435": 132000,
+        "2436": 35200,
+        "2455": 219600,
+        "2740": 22000,
+        "2741": 209000,
+        "2742": 45000,
+        "2743": 175000,
+        "2744": 32000,
+        "2745": 16000,
+        "2782": 17000,
+        "2783": 6000,
+        "2785": 0,
+        "2786": 17400,
+        "2818": 920,
+        "2837": 119237,
+        "2866": 25000,
+        "2916": 84300,
+        "2948": 1712000,
+        "3095": 46200,
+        "3096": 22650,
+        "3097": 122000,
+        "3098": 112000,
+        "3099": 52000,
+        "3100": 47000,
+        "3101": 107000,
+        "3102": 130000,
+        "3103": 104000,
+        "3120": 35500,
+        "3121": 65000,
+        "3123": 68200,
+        "3128": 2750,
+        "3221": 37300,
+        "3338": 38000,
+        "3339": 45180,
+        "3340": 35500,
+        "3341": 24000,
+        "3342": 25000,
+        "3343": 16000,
+        "3526": 41366,
+        "3527": 20000,
+        "3528": 20000,
+        "3529": 147000,
+        "3530": 37000,
+        "3531": 46533,
+        "3588": 36000,
+        "3589": 36240,
+        "3590": 0,
+        "3591": 36000,
+        "3806": 32650,
+        "3850": 25458,
+        "3903": 335580,
+        "3904": 342720,
+        "3905": 297000,
+        "3947": 0,
+        "3967": 100000,
+        "3968": 100500,
+        "3969": 100000,
+        "3994": 19000,
+        "3998": 5380,
+        "3999": 0,
+        "4000": 9600,
+        "4001": 8400,
+        "4002": 6720,
+        "4003": 2100,
+        "4004": 7000,
+        "4010": 2500,
+        "4011": 17500,
+        "4012": 7500,
+        "4013": 12988,
+        "4014": 17382,
+        "4015": 13780,
+        "4031": 2880,
+        "4032": 7210,
+        "4033": 390,
+        "4034": 5090,
+        "4035": 10212,
+        "4036": 6160,
+        "4037": 5660,
+        "4074": 43000,
+        "4075": 24183,
+        "4080": 19600,
+        "4081": 17850,
+        "4106": 50,
+        "4107": 50,
+        "4111": 7420,
+        "4112": 195875,
+        "4113": 9970,
+        "4114": 8970,
+        "4121": 6600,
+        "4122": 12620,
+        "4123": 4900,
+        "4124": 200,
+        "4174": 10700,
+        "4175": 1500,
+        "4176": 20000,
+        "4177": 0,
+        "4201": 720,
+        "4202": 42,
+        "4203": 8960,
+        "4204": 35000,
+        "4205": 7290,
+        "4206": 9960,
+        "4208": 80,
+        "4209": 9074,
+        "4210": 10000,
+        "4211": 36700,
+        "4212": 0,
+        "4213": 800,
+        "4214": 0,
+        "4215": 0,
+        "4216": 0,
+        "4217": 36000,
+        "4218": 0,
+        "4219": 10000,
+        "4229": 13750,
+        "4230": 150,
+        "4231": 32400,
+        "4243": 9744,
+        "4245": 112,
+        "4246": 7500,
+        "4247": 3560,
+        "4248": 9900,
+        "4250": 200,
+        "4251": 7480,
+        "4252": 3520,
+        "4253": 0,
+        "4254": 10000,
+        "4255": 7000,
+        "4256": 900,
+        "4366": 10000,
+        "4369": 29000,
+        "4370": 19800,
+        "4371": 27818,
+        "4372": 9900,
+        "4373": 19910,
+        "4388": 22000,
+        "4389": 16740,
+        "4428": 5348,
+        "4433": 0,
+        "4474": 4950,
+        "4475": 3860,
+        "4476": 3150,
+        "4553": 11200,
+        "4560": 12350,
+        "4565": 400,
+        "4620": 11616,
+        "4621": 7910,
+        "4622": 20980,
+        "4623": 18000,
+        "4624": 8950,
+        "4636": 12400,
+        "4638": 9000,
+        "4644": 10050,
+        "4645": 10030,
+        "4646": 20000,
+        "4648": 10400,
+        "4649": 605,
+        "4688": 19600,
+        "4690": 11560,
+        "4691": 10030,
+        "4710": 30000,
+        "4715": 63151,
+        "4717": 0,
+        "4718": 30000,
+        "4719": 41965,
+        "4761": 4500,
+        "4768": 7044.02,
+        "4769": 5436.12,
+        "4770": 4773,
+        "4771": 8647.18,
+        "4772": 6619.99,
+        "4773": 3446.47,
+        "4774": 1012.5,
+        "4775": 9081.64,
+        "4776": 9005.03,
+        "4777": 7057.13,
+        "4778": 6622.59,
+        "4779": 9041.08,
+        "4780": 7692.19,
+        "4781": 6434.5,
+        "4782": 10066.15,
+        "4783": 458.11,
+        "4784": 6606.17,
+        "4785": 6636.5,
+        "4786": 5307,
+        "4787": 3612.5,
+        "4788": 570,
+        "4789": 2859.39,
+        "4790": 7087.5,
+        "4791": 6652.56,
+        "4797": 200000,
+        "4798": 11300,
+        "4799": 8800,
+        "4800": 1000,
+        "4801": 12526,
+        "4802": 10711,
+        "4803": 10993,
+        "4804": 11950,
+        "4805": 7068,
+        "4806": 7554.4,
+        "4807": 9495,
+        "4808": 11918.4,
+        "4809": 13143.03,
+        "4810": 7444,
+        "4811": 8288.07,
+        "4812": 12345,
+        "4813": 10507,
+        "4814": 13124,
+        "4815": 8985,
+        "4816": 10406,
+        "4817": 10463,
+        "4818": 6809,
+        "4819": 10342,
+        "4820": 9082,
+        "4821": 9113,
+        "4822": 8932.4,
+        "4823": 10496.39,
+        "4824": 10679,
+        "4825": 11781.42,
+        "4826": 6766,
+        "4845": 10934,
+        "4846": 9863,
+        "4847": 7970,
+        "4937": 1977,
+        "4938": 606,
+        "4939": 6942,
+        "4940": 7000,
+        "4941": 2990,
+        "4942": 2990,
+        "4994": 7382,
+        "4995": 5300,
+        "5210": 4444,
+        "5235": 9200,
+        "5236": 9600,
+        "5237": 8000,
+        "5238": 9500,
+        "5239": 12600,
+        "5278": 8000,
+        "5416": 5351,
+        "5417": 5750,
+        "5418": 2412,
+        "5419": 5883,
+        "5420": 6531,
+        "5421": 4692,
+        "5422": 5002,
+        "5423": 7093,
+        "5424": 5249,
+        "5425": 6824,
+        "5426": 4030,
+        "5427": 1028,
+        "5428": 2993,
+        "5429": 6604,
+        "5430": 7093,
+        "5915": 27648,
+        "5916": 4320,
+        "5917": 92736,
+        "5918": 3360,
+        "6289": 5170,
+        "6290": 2060,
+        "6291": 3130,
+        "7081": 2736,
+        "7106": 3930,
+        "7131": 4633,
+        "7132": 3471,
+        "7133": 30569,
+        "7137": 4648,
+        "7138": 33514,
+        "7140": 3750,
+        "7155": 10381.999,
+        "7156": 9350.002,
+        "7157": 11662,
+        "7158": 7256,
+        "7159": 10532,
+        "7160": 10481,
+        "7161": 7934,
+        "7162": 6367,
+        "7163": 13258.997,
+        "7164": 10775,
+        "7165": 11142.001,
+        "7166": 9527,
+        "7167": 8560,
+        "7168": 0,
+        "7268": 2332,
+        "7276": 3900,
+        "7277": 19500,
+        "7577": 49,
+        "7578": 0,
+        "7579": 56,
+        "7590": 50000,
+        "7591": 18000,
+        "7596": 1628,
+        "7782": 3600,
+        "7797": 2990,
+        "7798": 2990,
+        "7799": 3500,
+        "7800": 2990,
+        "7801": 7450,
+        "7802": 6460,
+        "7813": 150,
+        "7817": 4900,
+        "7839": 1000,
+        "7840": 2020,
+        "7841": 970,
+        "7855": 2880,
+        "7884": 4000,
+        "7903": 600,
+        "7930": 228000,
+        "8188": 119186,
+        "8189": 138174,
+        "8190": 66741,
+        "8191": 41184,
+        "8192": 59633,
+        "8193": 204929,
+        "8194": 105061,
+        "8381": 9250,
+        "8382": 8492,
+        "8383": 3034,
+        "8436": 11860
+      }
+    },
+    {
+      "timestamp": "2026-05-29T17:57:34.512Z",
+      "origem": "ins",
+      "essencias": [
+        {
+          "sku": 4076,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2476,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4041,
+          "estoqueG": 0,
+          "pedidoAbertoG": 60000
+        },
+        {
+          "sku": 3849,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 834,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 392,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 835,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 836,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2777,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7710,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1942,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 668,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2778,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7265,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1179,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4274,
+          "estoqueG": 0,
+          "pedidoAbertoG": 146000
+        },
+        {
+          "sku": 4374,
+          "estoqueG": 22400,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3225,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 5181,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3930,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2454,
+          "estoqueG": 20000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3965,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1294,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4851,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1270,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1098,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4042,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 502,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 438,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4945,
+          "estoqueG": 14700,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3332,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 484,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1911,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4275,
+          "estoqueG": 4000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2768,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 8298,
+          "estoqueG": 91850,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3034,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 636,
+          "estoqueG": 0,
+          "pedidoAbertoG": 500000
+        },
+        {
+          "sku": 3136,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3931,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 617,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 5182,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3328,
+          "estoqueG": 25000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 8067,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 669,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2160,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 439,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4591,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3989,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3035,
+          "estoqueG": 20000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7507,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 572,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1295,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 840,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2779,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2318,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2126,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4392,
+          "estoqueG": 35650,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 540,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3036,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 861,
+          "estoqueG": 64500,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 841,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1912,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7890,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2736,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7264,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4072,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3966,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4355,
+          "estoqueG": 126350,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4637,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4960,
+          "estoqueG": 85000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 905,
+          "estoqueG": 116200,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 440,
+          "estoqueG": 20000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 670,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 393,
+          "estoqueG": 102300,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4043,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1271,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3137,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4044,
+          "estoqueG": 77250,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 503,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 5180,
+          "estoqueG": 1500,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 568,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 394,
+          "estoqueG": 0,
+          "pedidoAbertoG": 1000000
+        },
+        {
+          "sku": 842,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2737,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3327,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3330,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7530,
+          "estoqueG": 16350.000000000002,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7536,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 4071,
+          "estoqueG": 3500,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 1269,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2738,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2739,
+          "estoqueG": 100000,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2478,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3336,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3333,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3335,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3777,
+          "estoqueG": 0,
+          "pedidoAbertoG": 100000
+        },
+        {
+          "sku": 3937,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3337,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 843,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 7711,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 3329,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 2928,
+          "estoqueG": 0,
+          "pedidoAbertoG": 0
+        },
+        {
+          "sku": 5531,
+          "estoqueG": 20000,
+          "pedidoAbertoG": 0
+        }
+      ],
+      "estoque": {
+        "1555": {
+          "pe": 5724,
+          "sp": 50
+        },
+        "1557": {
+          "pe": 1569,
+          "sp": 2010
+        },
+        "1559": {
+          "pe": 8240,
+          "sp": 6039
+        },
+        "1560": {
+          "pe": 33557,
+          "sp": 17630
+        },
+        "1561": {
+          "pe": 19705,
+          "sp": 14608
+        },
+        "1562": {
+          "pe": 4767,
+          "sp": 101
+        },
+        "1564": {
+          "pe": 2903,
+          "sp": 1297
+        },
+        "1566": {
+          "pe": 33008,
+          "sp": 28130
+        },
+        "1567": {
+          "pe": 5571,
+          "sp": 2837
+        },
+        "1568": {
+          "pe": 2405,
+          "sp": 1173
+        },
+        "1569": {
+          "pe": 36836,
+          "sp": 20775
+        },
+        "1570": {
+          "pe": 1649,
+          "sp": 1976
+        },
+        "1571": {
+          "pe": 37927,
+          "sp": 25130
+        },
+        "1576": {
+          "pe": 2107,
+          "sp": 314
+        },
+        "1577": {
+          "pe": 97,
+          "sp": 100
+        },
+        "1581": {
+          "pe": 39801,
+          "sp": 30336
+        },
+        "1596": {
+          "pe": 3340,
+          "sp": 3186
+        },
+        "1597": {
+          "pe": 14264,
+          "sp": 10728
+        },
+        "1599": {
+          "pe": 37302,
+          "sp": 11245
+        },
+        "1600": {
+          "pe": 22972,
+          "sp": 16785
+        },
+        "1602": {
+          "pe": 24748,
+          "sp": 28301
+        },
+        "1603": {
+          "pe": 3461,
+          "sp": 1560
+        },
+        "1604": {
+          "pe": 7834,
+          "sp": 5627
+        },
+        "1605": {
+          "pe": 2601,
+          "sp": 759
+        },
+        "1610": {
+          "pe": 34716,
+          "sp": 9494
+        },
+        "1611": {
+          "pe": 4013,
+          "sp": 3418
+        },
+        "1612": {
+          "pe": 13582,
+          "sp": 14678
+        },
+        "1614": {
+          "pe": 7450,
+          "sp": 100
+        },
+        "1615": {
+          "pe": 30546,
+          "sp": 11880
+        },
+        "1616": {
+          "pe": 26081,
+          "sp": 9096
+        },
+        "1617": {
+          "pe": 43151,
+          "sp": 20675
+        },
+        "1622": {
+          "pe": 1194,
+          "sp": 104
+        },
+        "1653": {
+          "pe": 5388,
+          "sp": 3268
+        },
+        "1995": {
+          "pe": 2142,
+          "sp": 783
+        },
+        "1996": {
+          "pe": 7945,
+          "sp": 100
+        },
+        "2179": {
+          "pe": 0,
+          "sp": 11
+        },
+        "2180": {
+          "pe": 170,
+          "sp": 200
+        },
+        "2181": {
+          "pe": 3540,
+          "sp": 101
+        },
+        "2182": {
+          "pe": 2746,
+          "sp": 1359
+        },
+        "2441": {
+          "pe": 2514,
+          "sp": 1448
+        },
+        "2483": {
+          "pe": 100,
+          "sp": 88
+        },
+        "2484": {
+          "pe": 2000,
+          "sp": 479
+        },
+        "2485": {
+          "pe": 301,
+          "sp": 821
+        },
+        "2486": {
+          "pe": 1956,
+          "sp": 1365
+        },
+        "2489": {
+          "pe": 373,
+          "sp": 218
+        },
+        "2491": {
+          "pe": 186,
+          "sp": 100
+        },
+        "2493": {
+          "pe": 3530,
+          "sp": 1962
+        },
+        "2494": {
+          "pe": 3281,
+          "sp": 1066
+        },
+        "2495": {
+          "pe": 2853,
+          "sp": 1581
+        },
+        "2497": {
+          "pe": 2433,
+          "sp": 707
+        },
+        "2498": {
+          "pe": 21746,
+          "sp": 8610
+        },
+        "2705": {
+          "pe": 3563,
+          "sp": 2520
+        },
+        "2706": {
+          "pe": 7373,
+          "sp": 4915
+        },
+        "2707": {
+          "pe": 1471,
+          "sp": 1538
+        },
+        "2708": {
+          "pe": 17813,
+          "sp": 16781
+        },
+        "2709": {
+          "pe": 1424,
+          "sp": 2241
+        },
+        "2853": {
+          "pe": 1056,
+          "sp": 240
+        },
+        "2854": {
+          "pe": 1548,
+          "sp": 101
+        },
+        "3104": {
+          "pe": 87,
+          "sp": 101
+        },
+        "3109": {
+          "pe": 839,
+          "sp": 101
+        },
+        "3112": {
+          "pe": 1016,
+          "sp": 148
+        },
+        "3113": {
+          "pe": 592,
+          "sp": 100
+        },
+        "3153": {
+          "pe": 1720,
+          "sp": 1386
+        },
+        "3315": {
+          "pe": 954,
+          "sp": 100
+        },
+        "3316": {
+          "pe": 2781,
+          "sp": 4267
+        },
+        "3317": {
+          "pe": 2885,
+          "sp": 2547
+        },
+        "3318": {
+          "pe": 5684,
+          "sp": 93
+        },
+        "3319": {
+          "pe": 2984,
+          "sp": 200
+        },
+        "3449": {
+          "pe": 77,
+          "sp": 100
+        },
+        "3453": {
+          "pe": 3301,
+          "sp": 146
+        },
+        "3851": {
+          "pe": 1233,
+          "sp": 1419
+        },
+        "3852": {
+          "pe": 1907,
+          "sp": 797
+        },
+        "3853": {
+          "pe": 948,
+          "sp": 477
+        },
+        "3854": {
+          "pe": 2512,
+          "sp": 1454
+        },
+        "3855": {
+          "pe": 99,
+          "sp": 101
+        },
+        "3856": {
+          "pe": 1630,
+          "sp": 345
+        },
+        "3857": {
+          "pe": 5238,
+          "sp": 2393
+        },
+        "3972": {
+          "pe": 2636,
+          "sp": 1212
+        },
+        "3973": {
+          "pe": 4049,
+          "sp": 2090
+        },
+        "3974": {
+          "pe": 1607,
+          "sp": 910
+        },
+        "3976": {
+          "pe": 589,
+          "sp": 403
+        },
+        "4145": {
+          "pe": 0,
+          "sp": 100
+        },
+        "4149": {
+          "pe": 4298,
+          "sp": 1976
+        },
+        "4150": {
+          "pe": 3,
+          "sp": 2
+        },
+        "4152": {
+          "pe": 762,
+          "sp": 935
+        },
+        "4153": {
+          "pe": 125,
+          "sp": 123
+        },
+        "4154": {
+          "pe": 0,
+          "sp": 0
+        },
+        "4155": {
+          "pe": 2384,
+          "sp": 1466
+        },
+        "4340": {
+          "pe": 831,
+          "sp": 1038
+        },
+        "4341": {
+          "pe": 1952,
+          "sp": 679
+        },
+        "5209": {
+          "pe": 1940,
+          "sp": 101
+        },
+        "5381": {
+          "pe": 775,
+          "sp": 432
+        },
+        "5382": {
+          "pe": 649,
+          "sp": 1024
+        },
+        "5383": {
+          "pe": 218,
+          "sp": 101
+        },
+        "5447": {
+          "pe": 5281,
+          "sp": 1402
+        },
+        "6248": {
+          "pe": 1844,
+          "sp": 1273
+        },
+        "6249": {
+          "pe": 666,
+          "sp": 374
+        },
+        "6250": {
+          "pe": 2610,
+          "sp": 1500
+        },
+        "6251": {
+          "pe": 3341,
+          "sp": 1086
+        },
+        "6252": {
+          "pe": 3207,
+          "sp": 1235
+        },
+        "6253": {
+          "pe": 2989,
+          "sp": 1514
+        },
+        "6254": {
+          "pe": 506,
+          "sp": 358
+        },
+        "6255": {
+          "pe": 840,
+          "sp": 316
+        },
+        "6256": {
+          "pe": 6277,
+          "sp": 2682
+        },
+        "6257": {
+          "pe": 864,
+          "sp": 781
+        },
+        "6258": {
+          "pe": 1169,
+          "sp": 418
+        },
+        "6260": {
+          "pe": 950,
+          "sp": 1227
+        },
+        "6261": {
+          "pe": 3690,
+          "sp": 2057
+        },
+        "6262": {
+          "pe": 1163,
+          "sp": 1069
+        },
+        "6263": {
+          "pe": 699,
+          "sp": 790
+        },
+        "6264": {
+          "pe": 897,
+          "sp": 1234
+        },
+        "6265": {
+          "pe": 1664,
+          "sp": 1113
+        },
+        "6266": {
+          "pe": 1001,
+          "sp": 783
+        },
+        "6267": {
+          "pe": 1568,
+          "sp": 567
+        },
+        "6268": {
+          "pe": 472,
+          "sp": 475
+        },
+        "6269": {
+          "pe": 2869,
+          "sp": 424
+        },
+        "6270": {
+          "pe": 579,
+          "sp": 435
+        },
+        "6271": {
+          "pe": 2008,
+          "sp": 1017
+        },
+        "6272": {
+          "pe": 2910,
+          "sp": 874
+        },
+        "6273": {
+          "pe": 4041,
+          "sp": 1944
+        },
+        "6274": {
+          "pe": 3206,
+          "sp": 1318
+        },
+        "6275": {
+          "pe": 1843,
+          "sp": 941
+        },
+        "6276": {
+          "pe": 1357,
+          "sp": 294
+        },
+        "6277": {
+          "pe": 424,
+          "sp": 485
+        },
+        "6278": {
+          "pe": 818,
+          "sp": 1077
+        },
+        "6279": {
+          "pe": 1840,
+          "sp": 899
+        },
+        "6280": {
+          "pe": 559,
+          "sp": 815
+        },
+        "6281": {
+          "pe": 1595,
+          "sp": 859
+        },
+        "6282": {
+          "pe": 297,
+          "sp": 780
+        },
+        "6283": {
+          "pe": 1965,
+          "sp": 97
+        },
+        "6284": {
+          "pe": 3533,
+          "sp": 888
+        },
+        "6285": {
+          "pe": 146,
+          "sp": 347
+        },
+        "6286": {
+          "pe": 191,
+          "sp": 262
+        },
+        "6287": {
+          "pe": 1857,
+          "sp": 2072
+        },
+        "6288": {
+          "pe": 1289,
+          "sp": 413
+        },
+        "7615": {
+          "pe": 9766,
+          "sp": 4010
+        },
+        "7616": {
+          "pe": 8505,
+          "sp": 4166
+        }
+      },
+      "venda": {
+        "1555": {
+          "m3": 2986.6666666666665,
+          "pico6": 6681
+        },
+        "1557": {
+          "m3": 2109.6666666666665,
+          "pico6": 5001
+        },
+        "1559": {
+          "m3": 2300,
+          "pico6": 4161
+        },
+        "1560": {
+          "m3": 9121.333333333334,
+          "pico6": 17062
+        },
+        "1561": {
+          "m3": 8373.333333333334,
+          "pico6": 14599
+        },
+        "1562": {
+          "m3": 2581.3333333333335,
+          "pico6": 4583
+        },
+        "1564": {
+          "m3": 2523.6666666666665,
+          "pico6": 5226
+        },
+        "1566": {
+          "m3": 26789.666666666668,
+          "pico6": 49923
+        },
+        "1567": {
+          "m3": 4946,
+          "pico6": 8523
+        },
+        "1568": {
+          "m3": 1872.6666666666667,
+          "pico6": 4023
+        },
+        "1569": {
+          "m3": 16257.666666666666,
+          "pico6": 29663
+        },
+        "1570": {
+          "m3": 1425.3333333333333,
+          "pico6": 2588
+        },
+        "1571": {
+          "m3": 10061.333333333334,
+          "pico6": 16552
+        },
+        "1576": {
+          "m3": 2646,
+          "pico6": 4199
+        },
+        "1577": {
+          "m3": 49.333333333333336,
+          "pico6": 1163
+        },
+        "1581": {
+          "m3": 84396.66666666667,
+          "pico6": 147511
+        },
+        "1596": {
+          "m3": 3042.6666666666665,
+          "pico6": 6477
+        },
+        "1597": {
+          "m3": 6518.666666666667,
+          "pico6": 12381
+        },
+        "1599": {
+          "m3": 12282,
+          "pico6": 21295
+        },
+        "1600": {
+          "m3": 3375.6666666666665,
+          "pico6": 5384
+        },
+        "1602": {
+          "m3": 6705.666666666667,
+          "pico6": 11846
+        },
+        "1603": {
+          "m3": 1165.6666666666667,
+          "pico6": 2644
+        },
+        "1604": {
+          "m3": 11833.333333333334,
+          "pico6": 21480
+        },
+        "1605": {
+          "m3": 2591.6666666666665,
+          "pico6": 4819
+        },
+        "1610": {
+          "m3": 7378,
+          "pico6": 13328
+        },
+        "1611": {
+          "m3": 3779.6666666666665,
+          "pico6": 7062
+        },
+        "1612": {
+          "m3": 4974.333333333333,
+          "pico6": 7578
+        },
+        "1614": {
+          "m3": 3427.6666666666665,
+          "pico6": 6546
+        },
+        "1615": {
+          "m3": 15178,
+          "pico6": 28435
+        },
+        "1616": {
+          "m3": 7409,
+          "pico6": 12960
+        },
+        "1617": {
+          "m3": 13773,
+          "pico6": 22532
+        },
+        "1622": {
+          "m3": 2180.3333333333335,
+          "pico6": 3886
+        },
+        "1653": {
+          "m3": 5613,
+          "pico6": 9991
+        },
+        "1995": {
+          "m3": 1960.6666666666667,
+          "pico6": 3332
+        },
+        "1996": {
+          "m3": 5796.333333333333,
+          "pico6": 9733
+        },
+        "2179": {
+          "m3": 52,
+          "pico6": 156
+        },
+        "2180": {
+          "m3": 188,
+          "pico6": 2520
+        },
+        "2181": {
+          "m3": 2062.3333333333335,
+          "pico6": 4742
+        },
+        "2182": {
+          "m3": 1108,
+          "pico6": 2093
+        },
+        "2441": {
+          "m3": 5397.666666666667,
+          "pico6": 8874
+        },
+        "2483": {
+          "m3": 3196.6666666666665,
+          "pico6": 5542
+        },
+        "2484": {
+          "m3": 1588,
+          "pico6": 3062
+        },
+        "2485": {
+          "m3": 2346.3333333333335,
+          "pico6": 3833
+        },
+        "2486": {
+          "m3": 3175.3333333333335,
+          "pico6": 7171
+        },
+        "2489": {
+          "m3": 2176,
+          "pico6": 2657
+        },
+        "2491": {
+          "m3": 2251.3333333333335,
+          "pico6": 3494
+        },
+        "2493": {
+          "m3": 2953.3333333333335,
+          "pico6": 6713
+        },
+        "2494": {
+          "m3": 5189.666666666667,
+          "pico6": 8022
+        },
+        "2495": {
+          "m3": 1937,
+          "pico6": 4339
+        },
+        "2497": {
+          "m3": 2194.3333333333335,
+          "pico6": 4286
+        },
+        "2498": {
+          "m3": 5883,
+          "pico6": 9996
+        },
+        "2705": {
+          "m3": 1282.6666666666667,
+          "pico6": 2820
+        },
+        "2706": {
+          "m3": 22247.333333333332,
+          "pico6": 44163
+        },
+        "2707": {
+          "m3": 1270.3333333333333,
+          "pico6": 2629
+        },
+        "2708": {
+          "m3": 15699,
+          "pico6": 31156
+        },
+        "2709": {
+          "m3": 1895.3333333333333,
+          "pico6": 3200
+        },
+        "2853": {
+          "m3": 1650.3333333333333,
+          "pico6": 2701
+        },
+        "2854": {
+          "m3": 1578,
+          "pico6": 3232
+        },
+        "3104": {
+          "m3": 25,
+          "pico6": 64
+        },
+        "3109": {
+          "m3": 1942,
+          "pico6": 2322
+        },
+        "3112": {
+          "m3": 3561,
+          "pico6": 5872
+        },
+        "3113": {
+          "m3": 1157.6666666666667,
+          "pico6": 1914
+        },
+        "3153": {
+          "m3": 341.3333333333333,
+          "pico6": 728
+        },
+        "3315": {
+          "m3": 3495,
+          "pico6": 4669
+        },
+        "3316": {
+          "m3": 1426.6666666666667,
+          "pico6": 2650
+        },
+        "3317": {
+          "m3": 987.6666666666666,
+          "pico6": 1522
+        },
+        "3318": {
+          "m3": 2513.3333333333335,
+          "pico6": 3618
+        },
+        "3319": {
+          "m3": 1973.3333333333333,
+          "pico6": 2525
+        },
+        "3449": {
+          "m3": 1517,
+          "pico6": 3143
+        },
+        "3453": {
+          "m3": 1808.6666666666667,
+          "pico6": 4786
+        },
+        "3851": {
+          "m3": 201.33333333333334,
+          "pico6": 1262
+        },
+        "3852": {
+          "m3": 394.6666666666667,
+          "pico6": 659
+        },
+        "3853": {
+          "m3": 344,
+          "pico6": 927
+        },
+        "3854": {
+          "m3": 1173,
+          "pico6": 2473
+        },
+        "3855": {
+          "m3": 591.6666666666666,
+          "pico6": 962
+        },
+        "3856": {
+          "m3": 844,
+          "pico6": 1428
+        },
+        "3857": {
+          "m3": 1615.3333333333333,
+          "pico6": 2064
+        },
+        "3972": {
+          "m3": 1467,
+          "pico6": 2330
+        },
+        "3973": {
+          "m3": 2255,
+          "pico6": 3590
+        },
+        "3974": {
+          "m3": 1146.6666666666667,
+          "pico6": 1538
+        },
+        "3976": {
+          "m3": 1080.6666666666667,
+          "pico6": 1916
+        },
+        "4145": {
+          "m3": 347.3333333333333,
+          "pico6": 569
+        },
+        "4149": {
+          "m3": 1130.6666666666667,
+          "pico6": 1493
+        },
+        "4150": {
+          "m3": 246.66666666666666,
+          "pico6": 1273
+        },
+        "4152": {
+          "m3": 728.6666666666666,
+          "pico6": 2641
+        },
+        "4153": {
+          "m3": 655,
+          "pico6": 4293
+        },
+        "4154": {
+          "m3": 63,
+          "pico6": 8120
+        },
+        "4155": {
+          "m3": 967.3333333333334,
+          "pico6": 1218
+        },
+        "4340": {
+          "m3": 770.3333333333334,
+          "pico6": 1012
+        },
+        "4341": {
+          "m3": 1042.6666666666667,
+          "pico6": 1368
+        },
+        "4630": {
+          "m3": 1572.6666666666667,
+          "pico6": 2615
+        },
+        "5209": {
+          "m3": 1662,
+          "pico6": 4084
+        },
+        "5381": {
+          "m3": 2248.6666666666665,
+          "pico6": 3308
+        },
+        "5382": {
+          "m3": 2316,
+          "pico6": 3619
+        },
+        "5383": {
+          "m3": 2613.3333333333335,
+          "pico6": 4213
+        },
+        "5447": {
+          "m3": 1463.6666666666667,
+          "pico6": 2152
+        },
+        "6136": {
+          "m3": 503.6666666666667,
+          "pico6": 1704
+        },
+        "6248": {
+          "m3": 424.6666666666667,
+          "pico6": 776
+        },
+        "6249": {
+          "m3": 389.6666666666667,
+          "pico6": 659
+        },
+        "6250": {
+          "m3": 549,
+          "pico6": 975
+        },
+        "6251": {
+          "m3": 908,
+          "pico6": 1170
+        },
+        "6252": {
+          "m3": 529.3333333333334,
+          "pico6": 744
+        },
+        "6253": {
+          "m3": 445.6666666666667,
+          "pico6": 836
+        },
+        "6254": {
+          "m3": 632,
+          "pico6": 915
+        },
+        "6255": {
+          "m3": 581.3333333333334,
+          "pico6": 874
+        },
+        "6256": {
+          "m3": 596,
+          "pico6": 1804
+        },
+        "6257": {
+          "m3": 728,
+          "pico6": 1884
+        },
+        "6258": {
+          "m3": 567.3333333333334,
+          "pico6": 734
+        },
+        "6260": {
+          "m3": 427.6666666666667,
+          "pico6": 1631
+        },
+        "6261": {
+          "m3": 723.3333333333334,
+          "pico6": 849
+        },
+        "6262": {
+          "m3": 489,
+          "pico6": 974
+        },
+        "6263": {
+          "m3": 557.3333333333334,
+          "pico6": 805
+        },
+        "6264": {
+          "m3": 1226.6666666666667,
+          "pico6": 1762
+        },
+        "6265": {
+          "m3": 451.3333333333333,
+          "pico6": 801
+        },
+        "6266": {
+          "m3": 464.6666666666667,
+          "pico6": 1049
+        },
+        "6267": {
+          "m3": 585.6666666666666,
+          "pico6": 1099
+        },
+        "6268": {
+          "m3": 439.6666666666667,
+          "pico6": 669
+        },
+        "6269": {
+          "m3": 1071.3333333333333,
+          "pico6": 1490
+        },
+        "6270": {
+          "m3": 1005.6666666666666,
+          "pico6": 1287
+        },
+        "6271": {
+          "m3": 1014.6666666666666,
+          "pico6": 1462
+        },
+        "6272": {
+          "m3": 943,
+          "pico6": 1257
+        },
+        "6273": {
+          "m3": 716,
+          "pico6": 1152
+        },
+        "6274": {
+          "m3": 819.6666666666666,
+          "pico6": 1130
+        },
+        "6275": {
+          "m3": 424,
+          "pico6": 592
+        },
+        "6276": {
+          "m3": 361,
+          "pico6": 510
+        },
+        "6277": {
+          "m3": 642.3333333333334,
+          "pico6": 916
+        },
+        "6278": {
+          "m3": 1021,
+          "pico6": 1365
+        },
+        "6279": {
+          "m3": 709,
+          "pico6": 1086
+        },
+        "6280": {
+          "m3": 235,
+          "pico6": 910
+        },
+        "6281": {
+          "m3": 200.33333333333334,
+          "pico6": 1504
+        },
+        "6282": {
+          "m3": 354.3333333333333,
+          "pico6": 757
+        },
+        "6283": {
+          "m3": 275.6666666666667,
+          "pico6": 543
+        },
+        "6284": {
+          "m3": 770.6666666666666,
+          "pico6": 1003
+        },
+        "6285": {
+          "m3": 495.6666666666667,
+          "pico6": 795
+        },
+        "6286": {
+          "m3": 673.6666666666666,
+          "pico6": 1839
+        },
+        "6287": {
+          "m3": 269.3333333333333,
+          "pico6": 549
+        },
+        "6288": {
+          "m3": 503.6666666666667,
+          "pico6": 797
+        },
+        "7615": {
+          "m3": 202,
+          "pico6": 1188
+        },
+        "7616": {
+          "m3": 167.33333333333334,
+          "pico6": 1136
+        }
+      },
+      "insumos": {
+        "391": 259200,
+        "866": 59903,
+        "956": 1285000,
+        "1034": 107000,
+        "1035": 105000,
+        "1037": 113000,
+        "1038": 127000,
+        "1039": 108000,
+        "1041": 78000,
+        "1044": 62000,
+        "1045": 27500,
+        "1046": 102000,
+        "1047": 81000,
+        "1048": 122000,
+        "1051": 132000,
+        "1052": 128000,
+        "1053": 109000,
+        "1055": 420300,
+        "1056": 45000,
+        "1058": 142000,
+        "1059": 115000,
+        "1060": 97000,
+        "1062": 242000,
+        "1064": 108000,
+        "1066": 80400,
+        "1069": 85400,
+        "1071": 85400,
+        "1073": 83500,
+        "1076": 114000,
+        "1077": 184000,
+        "1078": 125000,
+        "1079": 1000,
+        "1083": 153000,
+        "1085": 9000,
+        "1316": 123000,
+        "1325": 6600000,
+        "1327": 25,
+        "1362": 450000,
+        "1376": 129000,
+        "2056": 126000,
+        "2057": 155000,
+        "2172": 90000,
+        "2174": 166700,
+        "2201": 60000,
+        "2202": 41000,
+        "2203": 32000,
+        "2204": 42900,
+        "2205": 23250,
+        "2206": 29800,
+        "2207": 22910,
+        "2208": 17600,
+        "2289": 45000,
+        "2417": 118,
+        "2421": 175200,
+        "2422": 127000,
+        "2423": 32900,
+        "2424": 23000,
+        "2425": 101000,
+        "2426": 109000,
+        "2427": 106000,
+        "2428": 100000,
+        "2429": 94000,
+        "2430": 122000,
+        "2431": 132000,
+        "2432": 177000,
+        "2433": 108000,
+        "2434": 55000,
+        "2435": 132000,
+        "2436": 35200,
+        "2455": 219600,
+        "2740": 22000,
+        "2741": 209000,
+        "2742": 45000,
+        "2743": 175000,
+        "2744": 32000,
+        "2745": 16000,
+        "2782": 17000,
+        "2783": 6000,
+        "2785": 0,
+        "2786": 17400,
+        "2818": 920,
+        "2837": 119237,
+        "2866": 25000,
+        "2916": 84300,
+        "2948": 1712000,
+        "3095": 46200,
+        "3096": 22650,
+        "3097": 122000,
+        "3098": 112000,
+        "3099": 52000,
+        "3100": 47000,
+        "3101": 107000,
+        "3102": 130000,
+        "3103": 104000,
+        "3120": 35500,
+        "3121": 65000,
+        "3123": 68200,
+        "3128": 2750,
+        "3221": 37300,
+        "3338": 38000,
+        "3339": 45180,
+        "3340": 35500,
+        "3341": 24000,
+        "3342": 25000,
+        "3343": 16000,
+        "3526": 41366,
+        "3527": 20000,
+        "3528": 20000,
+        "3529": 147000,
+        "3530": 37000,
+        "3531": 46533,
+        "3588": 29000,
+        "3589": 35640,
+        "3590": 0,
+        "3591": 29000,
+        "3806": 32050,
+        "3850": 25458,
+        "3903": 334080,
+        "3904": 240720,
+        "3905": 296000,
+        "3947": 0,
+        "3967": 100000,
+        "3968": 100500,
+        "3969": 100000,
+        "3994": 19000,
+        "3998": 5380,
+        "3999": 0,
+        "4000": 9600,
+        "4001": 8400,
+        "4002": 6720,
+        "4003": 2100,
+        "4004": 7000,
+        "4010": 2500,
+        "4011": 17500,
+        "4012": 7500,
+        "4013": 12988,
+        "4014": 17382,
+        "4015": 13780,
+        "4031": 2880,
+        "4032": 7210,
+        "4033": 390,
+        "4034": 5090,
+        "4035": 10212,
+        "4036": 6160,
+        "4037": 5660,
+        "4074": 43000,
+        "4075": 24183,
+        "4080": 19600,
+        "4081": 17850,
+        "4106": 50,
+        "4107": 50,
+        "4111": 7420,
+        "4112": 194300,
+        "4113": 9970,
+        "4114": 8970,
+        "4121": 6600,
+        "4122": 12620,
+        "4123": 4900,
+        "4124": 200,
+        "4174": 10700,
+        "4175": 1500,
+        "4176": 20000,
+        "4177": 0,
+        "4201": 720,
+        "4202": 42,
+        "4203": 8960,
+        "4204": 27559,
+        "4205": 7290,
+        "4206": 9960,
+        "4208": 80,
+        "4209": 9074,
+        "4210": 10000,
+        "4211": 29259,
+        "4212": 0,
+        "4213": 800,
+        "4214": 0,
+        "4215": 0,
+        "4216": 0,
+        "4217": 28559,
+        "4218": 0,
+        "4219": 10000,
+        "4229": 13750,
+        "4230": 150,
+        "4231": 24959,
+        "4243": 9744,
+        "4245": 112,
+        "4246": 7500,
+        "4247": 3560,
+        "4248": 9900,
+        "4250": 200,
+        "4251": 7480,
+        "4252": 3520,
+        "4253": 0,
+        "4254": 10000,
+        "4255": 7000,
+        "4256": 900,
+        "4366": 10000,
+        "4369": 29000,
+        "4370": 19800,
+        "4371": 27818,
+        "4372": 9900,
+        "4373": 19910,
+        "4388": 22000,
+        "4389": 16740,
+        "4428": 5348,
+        "4433": 0,
+        "4474": 4950,
+        "4475": 3860,
+        "4476": 3150,
+        "4553": 11200,
+        "4560": 12350,
+        "4565": 400,
+        "4620": 11616,
+        "4621": 7910,
+        "4622": 20980,
+        "4623": 18000,
+        "4624": 8950,
+        "4636": 12400,
+        "4638": 9000,
+        "4644": 10050,
+        "4645": 10030,
+        "4646": 20000,
+        "4648": 10400,
+        "4649": 605,
+        "4688": 19600,
+        "4690": 11560,
+        "4691": 10030,
+        "4710": 30000,
+        "4715": 63151,
+        "4717": 0,
+        "4718": 30000,
+        "4719": 41965,
+        "4761": 4500,
+        "4768": 6104.02,
+        "4769": 5436.12,
+        "4770": 4087,
+        "4771": 8647.18,
+        "4772": 6619.99,
+        "4773": 2066.47,
+        "4774": 1012.5,
+        "4775": 9081.64,
+        "4776": 9005.03,
+        "4777": 6363.13,
+        "4778": 6622.59,
+        "4779": 9041.08,
+        "4780": 7692.19,
+        "4781": 6434.5,
+        "4782": 10066.15,
+        "4783": 458.11,
+        "4784": 6606.17,
+        "4785": 6299.5,
+        "4786": 4714,
+        "4787": 3612.5,
+        "4788": 570,
+        "4789": 2859.39,
+        "4790": 7087.5,
+        "4791": 4916.56,
+        "4797": 200000,
+        "4798": 11300,
+        "4799": 8800,
+        "4800": 1000,
+        "4801": 12526,
+        "4802": 9688,
+        "4803": 10656,
+        "4804": 11012,
+        "4805": 6476,
+        "4806": 7554.4,
+        "4807": 9495,
+        "4808": 11918.4,
+        "4809": 13143.03,
+        "4810": 7444,
+        "4811": 8288.07,
+        "4812": 12345,
+        "4813": 10507,
+        "4814": 13124,
+        "4815": 8985,
+        "4816": 8671,
+        "4817": 9089,
+        "4818": 6126,
+        "4819": 10342,
+        "4820": 9082,
+        "4821": 9113,
+        "4822": 8932.4,
+        "4823": 10496.39,
+        "4824": 10679,
+        "4825": 11781.42,
+        "4826": 6766,
+        "4845": 9447,
+        "4846": 9275,
+        "4847": 7278,
+        "4937": 483,
+        "4938": 20,
+        "4939": 6942,
+        "4940": 7000,
+        "4941": 2990,
+        "4942": 2990,
+        "4994": 7382,
+        "4995": 5300,
+        "5210": 4444,
+        "5235": 9200,
+        "5236": 9600,
+        "5237": 8000,
+        "5238": 9500,
+        "5239": 12600,
+        "5278": 8000,
+        "5416": 4343,
+        "5417": 5750,
+        "5418": 721,
+        "5419": 5883,
+        "5420": 6531,
+        "5421": 4692,
+        "5422": 5002,
+        "5423": 7093,
+        "5424": 5249,
+        "5425": 6824,
+        "5426": 4030,
+        "5427": 311,
+        "5428": 2389,
+        "5429": 6604,
+        "5430": 7093,
+        "5915": 27648,
+        "5916": 4320,
+        "5917": 92736,
+        "5918": 3360,
+        "6289": 5170,
+        "6290": 2060,
+        "6291": 3130,
+        "7081": 88,
+        "7106": 3930,
+        "7131": 4340,
+        "7132": 3471,
+        "7133": 30569,
+        "7137": 4648,
+        "7138": 33514,
+        "7140": 3750,
+        "7155": 10381.999,
+        "7156": 7668.002,
+        "7157": 11662,
+        "7158": 7256,
+        "7159": 10532,
+        "7160": 10481,
+        "7161": 7934,
+        "7162": 6367,
+        "7163": 13258.997,
+        "7164": 10775,
+        "7165": 10430.001,
+        "7166": 8924,
+        "7167": 8560,
+        "7168": 0,
+        "7268": 2316,
+        "7276": 3900,
+        "7277": 19500,
+        "7577": 49,
+        "7578": 0,
+        "7579": 56,
+        "7590": 50000,
+        "7591": 18000,
+        "7596": 1628,
+        "7782": 3600,
+        "7797": 2990,
+        "7798": 2990,
+        "7799": 3500,
+        "7800": 2990,
+        "7801": 7450,
+        "7802": 6460,
+        "7813": 150,
+        "7817": 4900,
+        "7839": 1000,
+        "7840": 2020,
+        "7841": 970,
+        "7855": 2880,
+        "7884": 4000,
+        "7903": 600,
+        "7930": 228000,
+        "8188": 119186,
+        "8189": 138174,
+        "8190": 66741,
+        "8191": 41184,
+        "8192": 59633,
+        "8193": 204929,
+        "8194": 105061,
+        "8381": 9250,
+        "8382": 8492,
+        "8383": 3034,
+        "8436": 11860
+      }
     }
   ],
   "lastUpdate": {
-    "estoque": "2026-05-28T10:42:07.214Z",
-    "venda": "2026-05-28T10:42:11.945Z",
-    "essencias": "2026-05-28T10:42:15.023Z",
-    "insumos": "2026-05-28T10:42:19.312Z"
+    "estoque": "2026-05-29T17:57:27.060Z",
+    "venda": "2026-05-29T17:57:29.340Z",
+    "essencias": "2026-05-29T17:57:32.809Z",
+    "insumos": "2026-05-29T17:57:34.512Z"
   },
-  "exportedAt": "2026-05-28T14:08:48.121Z"
+  "exportedAt": "2026-05-29T18:27:50.375Z"
 }
