@@ -2280,6 +2280,105 @@
       "gramasPorUn": 10,
       "categoria": "Regular",
       "qtdPorCaixa": 96
+    },
+    {
+      "sku": 4729,
+      "descricao": "BLISS 30ml",
+      "categoria": "30ml",
+      "skuEssencia": 4275,
+      "gramasPorUn": 6,
+      "qtdPorCaixa": null,
+      "linha": "Manual"
+    },
+    {
+      "sku": 4731,
+      "descricao": "DESIRE 30ml",
+      "categoria": "30ml",
+      "skuEssencia": 4355,
+      "gramasPorUn": 7.5,
+      "qtdPorCaixa": null,
+      "linha": "Manual"
+    },
+    {
+      "sku": 3860,
+      "descricao": "F. C BARCELONA VISCA EL BARÇA 30ml",
+      "categoria": "30ml",
+      "skuEssencia": 4044,
+      "gramasPorUn": 5.1,
+      "qtdPorCaixa": null,
+      "linha": "Manual"
+    },
+    {
+      "sku": 4732,
+      "descricao": "LEGACY 30ml",
+      "categoria": "30ml",
+      "skuEssencia": 7527,
+      "gramasPorUn": 6.9,
+      "qtdPorCaixa": null,
+      "linha": "Manual"
+    },
+    {
+      "sku": 4728,
+      "descricao": "NFL  QUARTERBACK 30ml",
+      "categoria": "30ml",
+      "skuEssencia": 4692,
+      "gramasPorUn": 4.5,
+      "qtdPorCaixa": null,
+      "linha": "Manual"
+    },
+    {
+      "sku": 4727,
+      "descricao": "NFL TOUCHDOWN 30ml",
+      "categoria": "30ml",
+      "skuEssencia": 4693,
+      "gramasPorUn": 6,
+      "qtdPorCaixa": null,
+      "linha": "Manual"
+    },
+    {
+      "sku": 4739,
+      "descricao": "PRESTIGE 30ml",
+      "categoria": "30ml",
+      "skuEssencia": 4960,
+      "gramasPorUn": 4.5,
+      "qtdPorCaixa": null,
+      "linha": "Manual"
+    },
+    {
+      "sku": 3862,
+      "descricao": "PSG PARC DES PRINCES 30ml",
+      "categoria": "30ml",
+      "skuEssencia": 4071,
+      "gramasPorUn": 5.39,
+      "qtdPorCaixa": null,
+      "linha": "Manual"
+    },
+    {
+      "sku": 4735,
+      "descricao": "ROYALE  D´OR 30ml",
+      "categoria": "30ml",
+      "skuEssencia": 8298,
+      "gramasPorUn": 5.39,
+      "qtdPorCaixa": null,
+      "linha": "Manual"
+    },
+    {
+      "sku": 4737,
+      "descricao": "UNITY 30ml",
+      "categoria": "30ml",
+      "skuEssencia": 4392,
+      "gramasPorUn": 3.9,
+      "qtdPorCaixa": null,
+      "linha": "Manual"
+    },
+    {
+      "sku": 4738,
+      "descricao": "VELVET SEDUCTION 30ml",
+      "categoria": "30ml",
+      "skuEssencia": 4374,
+      "gramasPorUn": 6.9,
+      "qtdPorCaixa": null,
+      "linha": "Manual"
     }
   ],
   "estoque": {
@@ -10932,6 +11031,111 @@
       "produtoNome": "VIP 75 - FEMININO",
       "qtdReservada": 176,
       "importadoEm": "2026-05-29T18:27:37.783Z"
+    },
+    {
+      "id": "AND-1780176359074-1599",
+      "produtoSku": 1599,
+      "produtoNome": "VIP 12 - MASCULINO",
+      "qtdReservada": 10230,
+      "importadoEm": "2026-05-30T21:25:59.074Z"
+    },
+    {
+      "id": "AND-1780176359074-1569",
+      "produtoSku": 1569,
+      "produtoNome": "VIP 29 - FEMININO",
+      "qtdReservada": 6450,
+      "importadoEm": "2026-05-30T21:25:59.074Z"
+    },
+    {
+      "id": "AND-1780176359074-2483",
+      "produtoSku": 2483,
+      "produtoNome": "VIP 17 - FEMININO",
+      "qtdReservada": 2500,
+      "importadoEm": "2026-05-30T21:25:59.074Z"
+    },
+    {
+      "id": "AND-1780176359074-1564",
+      "produtoSku": 1564,
+      "produtoNome": "VIP 19 - FEMININO",
+      "qtdReservada": 2000,
+      "importadoEm": "2026-05-30T21:25:59.074Z"
+    },
+    {
+      "id": "AND-1780176359074-2489",
+      "produtoSku": 2489,
+      "produtoNome": "VIP 63 - FEMININO",
+      "qtdReservada": 2000,
+      "importadoEm": "2026-05-30T21:25:59.074Z"
+    },
+    {
+      "id": "AND-1780176359074-2494",
+      "produtoSku": 2494,
+      "produtoNome": "VIP 71 - FEMININO",
+      "qtdReservada": 2000,
+      "importadoEm": "2026-05-30T21:25:59.074Z"
+    },
+    {
+      "id": "AND-1780176359074-1615",
+      "produtoSku": 1615,
+      "produtoNome": "VIP 46 - MASCULINO",
+      "qtdReservada": 1000,
+      "importadoEm": "2026-05-30T21:25:59.074Z"
+    },
+    {
+      "id": "AND-1780176359074-5382",
+      "produtoSku": 5382,
+      "produtoNome": "VIP 75 - FEMININO",
+      "qtdReservada": 176,
+      "importadoEm": "2026-05-30T21:25:59.074Z"
+    },
+    {
+      "id": "AND-1780176359074-3860",
+      "produtoSku": 3860,
+      "produtoNome": "F. C BARCELONA VISCA EL BARÇA 30ml",
+      "qtdReservada": 4000,
+      "importadoEm": "2026-05-30T21:25:59.074Z"
+    },
+    {
+      "id": "AND-1780176359074-4738",
+      "produtoSku": 4738,
+      "produtoNome": "VELVET SEDUCTION 30ml",
+      "qtdReservada": 1000,
+      "importadoEm": "2026-05-30T21:25:59.074Z"
+    },
+    {
+      "id": "AND-1780176359074-4146",
+      "produtoSku": 4146,
+      "produtoNome": "ROYALE  D´OR",
+      "qtdReservada": 900,
+      "importadoEm": "2026-05-30T21:25:59.074Z"
+    },
+    {
+      "id": "AND-1780176359074-4729",
+      "produtoSku": 4729,
+      "produtoNome": "BLISS 30ml",
+      "qtdReservada": 666,
+      "importadoEm": "2026-05-30T21:25:59.074Z"
+    },
+    {
+      "id": "AND-1780176359074-6286",
+      "produtoSku": 6286,
+      "produtoNome": "DESODORANTE COLONIA VIRTUDE YES 100ml",
+      "qtdReservada": 570,
+      "importadoEm": "2026-05-30T21:25:59.074Z"
+    },
+    {
+      "id": "AND-1780176359074-6257",
+      "produtoSku": 6257,
+      "produtoNome": "DESODORANTE COLONIA DOCE FORCA YES 100ml",
+      "qtdReservada": 516,
+      "importadoEm": "2026-05-30T21:25:59.074Z"
+    },
+    {
+      "id": "AND-1780176359074-6248",
+      "produtoSku": 6248,
+      "produtoNome": "DESODORANTE COLONIA ARDENTE YES 100ml",
+      "qtdReservada": 483,
+      "importadoEm": "2026-05-30T21:25:59.074Z"
     }
   ],
   "comprasEmAndamento": [
@@ -58891,5 +59095,5 @@
     "essencias": "2026-05-29T17:57:32.809Z",
     "insumos": "2026-05-29T17:57:34.512Z"
   },
-  "exportedAt": "2026-05-29T18:35:01.592Z"
+  "exportedAt": "2026-05-30T21:26:08.625Z"
 }
