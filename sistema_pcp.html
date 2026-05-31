@@ -1060,7 +1060,7 @@
             <th class="right" style="width: 80px;" title="Pico nos últimos 6 meses">Pico6</th>
             <th class="right" style="width: 100px;" title="Tendência recente: variação % de M1 vs M3">M1 vs M3</th>
             <th class="right" style="width: 100px;" title="Tendência longa: variação % de M3 vs M6">M3 vs M6</th>
-            <th class="right" style="width: 110px;" title="Diferença entre Sell-In e Sell-Out (M3)">Sell-In vs Out</th>
+            <th class="right" style="width: 110px;" title="Diferença em unidades entre Sell-In e Sell-Out (M3)">Sell-In vs Out</th>
             <th style="width: 140px;" title="Status do canal: equilíbrio entre o que sai da fábrica e o que vende na ponta">Sinal canal</th>
           </tr>
         </thead>
@@ -3554,18 +3554,31 @@ function _destroyChart(id) {
   }
 }
 
-// Calcula tendência: retorna { tipo: 'up'|'down'|'stable', pct: number }
+// Calcula tendência: retorna { tipo: 'up'|'down'|'stable', delta: number, pct: number }
+// delta = diferença absoluta em unidades (positivo subindo, negativo caindo)
+// pct = mesma diferença em % (usada só pra classificar tipo, não pra exibir)
+// Classificação:
+//   - Diferença < 5% E menos de 100 unidades absolutas = estável
+//   - Caso contrário = up ou down
 function _calcTendencia(atual, base) {
-  if (!base || base === 0) return { tipo: atual > 0 ? 'up' : 'stable', pct: atual > 0 ? 100 : 0 };
-  const pct = ((atual - base) / base) * 100;
-  if (Math.abs(pct) < 10) return { tipo: 'stable', pct };
-  return { tipo: pct > 0 ? 'up' : 'down', pct };
+  const delta = (atual || 0) - (base || 0);
+  if (!base || base === 0) {
+    return { tipo: atual > 0 ? 'up' : 'stable', delta, pct: atual > 0 ? 100 : 0 };
+  }
+  const pct = (delta / base) * 100;
+  // Pra ser classificado como "subindo/caindo" precisa ter variação relevante
+  // (> 5% E > 100 unidades absolutas) — senão é ruído de produtos pequenos
+  if (Math.abs(pct) < 5 || Math.abs(delta) < 100) return { tipo: 'stable', delta, pct };
+  return { tipo: pct > 0 ? 'up' : 'down', delta, pct };
 }
 
+// Badge em unidades absolutas (não mais em %)
 function _badgeTendencia(tend) {
-  if (tend.tipo === 'up') return `<span style="color: var(--ok); font-weight: 600;">↑ ${tend.pct.toFixed(0)}%</span>`;
-  if (tend.tipo === 'down') return `<span style="color: var(--critical); font-weight: 600;">↓ ${Math.abs(tend.pct).toFixed(0)}%</span>`;
-  return `<span style="color: var(--text-muted);">→ ${tend.pct >= 0 ? '+' : ''}${tend.pct.toFixed(0)}%</span>`;
+  const sinal = tend.delta >= 0 ? '+' : '';
+  const valor = Math.round(tend.delta).toLocaleString('pt-BR');
+  if (tend.tipo === 'up') return `<span style="color: var(--ok); font-weight: 600;">↑ ${sinal}${valor}</span>`;
+  if (tend.tipo === 'down') return `<span style="color: var(--critical); font-weight: 600;">↓ ${valor}</span>`;
+  return `<span style="color: var(--text-muted);">→ ${sinal}${valor}</span>`;
 }
 
 // Cores do Chart.js usando as variáveis CSS
@@ -3629,8 +3642,10 @@ function _calcularPerformance() {
     // Sell-In vs Sell-Out: comparação por m3
     let inOut = null;
     if (vo) {
-      const diffPct = m3 > 0 ? ((m3 - (vo.m3 || 0)) / m3) * 100 : 0;
-      inOut = { sellIn: m3, sellOut: vo.m3 || 0, diffPct };
+      const sellOutM3 = vo.m3 || 0;
+      const diff = m3 - sellOutM3; // diferença absoluta (unidades)
+      const diffPct = m3 > 0 ? (diff / m3) * 100 : 0;
+      inOut = { sellIn: m3, sellOut: sellOutM3, diff, diffPct };
     }
 
     lista.push({ p, m1, m3, m6, pico6, tendRecente, tendLonga, curva, inOut, sellOut: vo });
@@ -3750,8 +3765,9 @@ function _renderVendasVisao(lista) {
     return v.meses[idx] || 0;
   };
 
-  // Calcula a variação percentual conforme a métrica escolhida
-  const calcPctEscolhida = (l) => {
+  // Calcula a variação ABSOLUTA (em unidades) e os valores brutos atual/base
+  // Retorna { delta, atual, base } — delta = atual - base
+  const calcDeltaEscolhido = (l) => {
     let atual = 0, base = 0;
     if (metricaComp === 'mes_vs_mes') {
       atual = valorDoMes(l, mesAtualLabel);
@@ -3761,8 +3777,7 @@ function _renderVendasVisao(lista) {
     else if (metricaComp === 'm3_m6') { atual = l.m3; base = l.m6; }
     else if (metricaComp === 'm1_m6') { atual = l.m1; base = l.m6; }
     else if (metricaComp === 'm1_pico6') { atual = l.m1; base = l.pico6; }
-    if (!base) return atual > 0 ? 100 : 0;
-    return ((atual - base) / base) * 100;
+    return { delta: atual - base, atual, base };
   };
 
   // Função pra pegar volume conforme métrica escolhida
@@ -3784,8 +3799,8 @@ function _renderVendasVisao(lista) {
   const gT = document.getElementById('chartTopGrowthTitle');
   const dT = document.getElementById('chartTopDropTitle');
   const vT = document.getElementById('chartTopVolumeTitle');
-  if (gT) gT.textContent = `📈 Top 10 — Maior crescimento (${labelComp})`;
-  if (dT) dT.textContent = `📉 Top 10 — Maior queda (${labelComp})`;
+  if (gT) gT.textContent = `📈 Top 10 — Maior crescimento (unid · ${labelComp})`;
+  if (dT) dT.textContent = `📉 Top 10 — Maior queda (unid · ${labelComp})`;
   if (vT) vT.textContent = `📊 Top 20 — Volume (${labelVol})`;
 
   // Filtra: precisa ter base > 0 pra fazer comparação
@@ -3796,16 +3811,30 @@ function _renderVendasVisao(lista) {
     if (metricaComp === 'm1_m6') return l.m6 > 0;
     if (metricaComp === 'm1_pico6') return l.pico6 > 0;
     return true;
-  }).map(l => ({ ...l, pctEscolhida: calcPctEscolhida(l) }));
+  }).map(l => {
+    const d = calcDeltaEscolhido(l);
+    return { ...l, deltaEscolhido: d.delta, atualEscolhido: d.atual, baseEscolhido: d.base };
+  });
 
-  const topGrowth = comGrowth.slice().sort((a, b) => b.pctEscolhida - a.pctEscolhida).slice(0, 10);
-  const topDrop = comGrowth.slice().sort((a, b) => a.pctEscolhida - b.pctEscolhida).slice(0, 10);
+  const topGrowth = comGrowth.slice().sort((a, b) => b.deltaEscolhido - a.deltaEscolhido).slice(0, 10);
+  const topDrop = comGrowth.slice().sort((a, b) => a.deltaEscolhido - b.deltaEscolhido).slice(0, 10);
 
   // Volume usa a métrica escolhida
   const topVolume = listaComFonte.slice()
-    .map(l => ({ ...l, volEscolhido: calcVolume(l) }))
+    .map(l => ({ ...l, volEscolhido: calcVolume(l), deltaEscolhido: calcDeltaEscolhido(l).delta }))
     .sort((a, b) => b.volEscolhido - a.volEscolhido)
     .slice(0, 20);
+
+  // Tooltip personalizado pra gráficos comparativos: mostra unidades + % no hover
+  const tooltipDelta = (ctx) => {
+    const l = ctx.dataset._linhas?.[ctx.dataIndex];
+    if (!l) return `${ctx.formattedValue}`;
+    const sinal = l.deltaEscolhido >= 0 ? '+' : '';
+    const pctTxt = l.baseEscolhido > 0
+      ? ` (${l.deltaEscolhido >= 0 ? '+' : ''}${((l.deltaEscolhido / l.baseEscolhido) * 100).toFixed(0)}%)`
+      : '';
+    return `${sinal}${Math.round(l.deltaEscolhido).toLocaleString('pt-BR')} unidades${pctTxt}  ·  ${Math.round(l.baseEscolhido).toLocaleString('pt-BR')} → ${Math.round(l.atualEscolhido).toLocaleString('pt-BR')}`;
+  };
 
   // Chart top growth
   _destroyChart('chartTopGrowth');
@@ -3816,14 +3845,21 @@ function _renderVendasVisao(lista) {
       data: {
         labels: topGrowth.map(l => l.p.descricao.substring(0, 28)),
         datasets: [{
-          label: `% Crescimento (${labelComp})`,
-          data: topGrowth.map(l => l.pctEscolhida),
+          label: `Crescimento em unidades (${labelComp})`,
+          data: topGrowth.map(l => l.deltaEscolhido),
           backgroundColor: _CHART_COLORS.ok + 'cc',
           borderColor: _CHART_COLORS.ok,
           borderWidth: 1,
+          _linhas: topGrowth,
         }],
       },
-      options: { ..._chartCommonOpts(true), indexAxis: 'y' },
+      options: {
+        ..._chartCommonOpts(true), indexAxis: 'y',
+        plugins: {
+          ..._chartCommonOpts(true).plugins,
+          tooltip: { ..._chartCommonOpts(true).plugins.tooltip, callbacks: { label: tooltipDelta } },
+        },
+      },
     });
   }
 
@@ -3836,21 +3872,34 @@ function _renderVendasVisao(lista) {
       data: {
         labels: topDrop.map(l => l.p.descricao.substring(0, 28)),
         datasets: [{
-          label: `% Queda (${labelComp})`,
-          data: topDrop.map(l => l.pctEscolhida),
+          label: `Queda em unidades (${labelComp})`,
+          data: topDrop.map(l => l.deltaEscolhido),
           backgroundColor: _CHART_COLORS.critical + 'cc',
           borderColor: _CHART_COLORS.critical,
           borderWidth: 1,
+          _linhas: topDrop,
         }],
       },
-      options: { ..._chartCommonOpts(true), indexAxis: 'y' },
+      options: {
+        ..._chartCommonOpts(true), indexAxis: 'y',
+        plugins: {
+          ..._chartCommonOpts(true).plugins,
+          tooltip: { ..._chartCommonOpts(true).plugins.tooltip, callbacks: { label: tooltipDelta } },
+        },
+      },
     });
   }
 
-  // Chart top volume — cor por tendência (calculada com a métrica escolhida)
+  // Chart top volume — cor por delta absoluto (usa o mesmo critério de _calcTendencia)
   _destroyChart('chartTopVolume');
   const ctxV = document.getElementById('chartTopVolume');
   if (ctxV) {
+    const corPorDelta = (l) => {
+      const d = l.deltaEscolhido;
+      if (d > 100) return { bg: _CHART_COLORS.ok + 'cc', border: _CHART_COLORS.ok };
+      if (d < -100) return { bg: _CHART_COLORS.critical + 'cc', border: _CHART_COLORS.critical };
+      return { bg: _CHART_COLORS.text + '99', border: _CHART_COLORS.text };
+    };
     _vendasCharts.chartTopVolume = new Chart(ctxV, {
       type: 'bar',
       data: {
@@ -3858,18 +3907,8 @@ function _renderVendasVisao(lista) {
         datasets: [{
           label: `Vendas ${labelVol}`,
           data: topVolume.map(l => l.volEscolhido),
-          backgroundColor: topVolume.map(l => {
-            const pct = calcPctEscolhida(l);
-            if (pct > 10) return _CHART_COLORS.ok + 'cc';
-            if (pct < -10) return _CHART_COLORS.critical + 'cc';
-            return _CHART_COLORS.text + '99';
-          }),
-          borderColor: topVolume.map(l => {
-            const pct = calcPctEscolhida(l);
-            if (pct > 10) return _CHART_COLORS.ok;
-            if (pct < -10) return _CHART_COLORS.critical;
-            return _CHART_COLORS.text;
-          }),
+          backgroundColor: topVolume.map(l => corPorDelta(l).bg),
+          borderColor: topVolume.map(l => corPorDelta(l).border),
           borderWidth: 1,
         }],
       },
@@ -3913,8 +3952,8 @@ function _renderHistoricoMensal(lista) {
   if (base === 'm1') ordenado.sort((a, b) => b._m1 - a._m1);
   else if (base === 'm3') ordenado.sort((a, b) => b._m3 - a._m3);
   else if (base === 'm6') ordenado.sort((a, b) => b._m6 - a._m6);
-  else if (base === 'growth') ordenado.sort((a, b) => b.tendRecente.pct - a.tendRecente.pct);
-  else if (base === 'drop') ordenado.sort((a, b) => a.tendRecente.pct - b.tendRecente.pct);
+  else if (base === 'growth') ordenado.sort((a, b) => b.tendRecente.delta - a.tendRecente.delta);
+  else if (base === 'drop') ordenado.sort((a, b) => a.tendRecente.delta - b.tendRecente.delta);
   const top = ordenado.slice(0, topN);
 
   // Pega rótulos dos meses do primeiro produto (todos compartilham os mesmos rótulos)
@@ -3979,8 +4018,8 @@ function _renderVendasRanking(lista) {
 
   const ordemCurva = { A: 0, B: 1, C: 2, Z: 3 };
   if (ordem === 'vendaDesc') filtrada.sort((a, b) => b.m1 - a.m1);
-  else if (ordem === 'growthDesc') filtrada.sort((a, b) => b.tendRecente.pct - a.tendRecente.pct);
-  else if (ordem === 'growthAsc') filtrada.sort((a, b) => a.tendRecente.pct - b.tendRecente.pct);
+  else if (ordem === 'growthDesc') filtrada.sort((a, b) => b.tendRecente.delta - a.tendRecente.delta);
+  else if (ordem === 'growthAsc') filtrada.sort((a, b) => a.tendRecente.delta - b.tendRecente.delta);
   else if (ordem === 'abc') filtrada.sort((a, b) => (ordemCurva[a.curva] - ordemCurva[b.curva]) || (b.m1 - a.m1));
 
   const tbody = document.getElementById('vendasTbody');
@@ -3989,7 +4028,7 @@ function _renderVendasRanking(lista) {
   } else {
     tbody.innerHTML = filtrada.map(l => {
       const inOutCell = l.inOut
-        ? `<span class="mono" style="color: ${Math.abs(l.inOut.diffPct) < 10 ? 'var(--text-muted)' : (l.inOut.diffPct > 0 ? 'var(--warn)' : 'var(--info)')}">${l.inOut.diffPct >= 0 ? '+' : ''}${l.inOut.diffPct.toFixed(0)}%</span>`
+        ? `<span class="mono" style="color: ${Math.abs(l.inOut.diffPct) < 10 ? 'var(--text-muted)' : (l.inOut.diff > 0 ? 'var(--warn)' : 'var(--info)')}">${l.inOut.diff >= 0 ? '+' : ''}${Math.round(l.inOut.diff).toLocaleString('pt-BR')}</span>`
         : '<span style="color:var(--text-dim); font-size:11px">—</span>';
       // Sinal do canal: classifica baseado em diffPct (positivo = sell-in maior = canal abarrotando)
       let sinalCell;
@@ -4057,6 +4096,10 @@ function _renderVendasProduto() {
   const tendLonga = _calcTendencia(v.m3 || 0, v.m6 || 0);
 
   // KPIs do produto
+  const fmtDelta = (t) => {
+    const sinal = t.delta >= 0 ? '+' : '';
+    return `${t.tipo === 'up' ? '↑' : t.tipo === 'down' ? '↓' : '→'} ${sinal}${Math.round(t.delta).toLocaleString('pt-BR')}`;
+  };
   document.getElementById('vendasProdutoKpis').innerHTML = `
     <div class="kpi">
       <div class="kpi-label">Curva ABC</div>
@@ -4064,14 +4107,14 @@ function _renderVendasProduto() {
       <div class="kpi-sub">Rank #${curva.ranking || '—'}</div>
     </div>
     <div class="kpi ${tendRecente.tipo === 'up' ? 'ok' : tendRecente.tipo === 'down' ? 'critical' : ''}">
-      <div class="kpi-label">Tendência recente</div>
-      <div class="kpi-value" style="font-size: 22px;">${tendRecente.tipo === 'up' ? '↑' : tendRecente.tipo === 'down' ? '↓' : '→'} ${tendRecente.pct >= 0 ? '+' : ''}${tendRecente.pct.toFixed(0)}%</div>
-      <div class="kpi-sub">M1 vs M3</div>
+      <div class="kpi-label">Tendência recente (M1 vs M3)</div>
+      <div class="kpi-value" style="font-size: 22px;">${fmtDelta(tendRecente)}</div>
+      <div class="kpi-sub">${Math.round(v.m3 || 0).toLocaleString('pt-BR')} → ${Math.round(v.m1 || 0).toLocaleString('pt-BR')} un</div>
     </div>
     <div class="kpi ${tendLonga.tipo === 'up' ? 'ok' : tendLonga.tipo === 'down' ? 'critical' : ''}">
-      <div class="kpi-label">Tendência longa</div>
-      <div class="kpi-value" style="font-size: 22px;">${tendLonga.tipo === 'up' ? '↑' : tendLonga.tipo === 'down' ? '↓' : '→'} ${tendLonga.pct >= 0 ? '+' : ''}${tendLonga.pct.toFixed(0)}%</div>
-      <div class="kpi-sub">M3 vs M6</div>
+      <div class="kpi-label">Tendência longa (M3 vs M6)</div>
+      <div class="kpi-value" style="font-size: 22px;">${fmtDelta(tendLonga)}</div>
+      <div class="kpi-sub">${Math.round(v.m6 || 0).toLocaleString('pt-BR')} → ${Math.round(v.m3 || 0).toLocaleString('pt-BR')} un</div>
     </div>
     <div class="kpi">
       <div class="kpi-label">Pico 6M</div>
