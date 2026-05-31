@@ -2920,7 +2920,7 @@ function computeAnalise() {
       leadTime: ess.leadTime,
       producao: ess.producao,
       cobertura: ess.cobertura,
-      diasTotal,
+      diasTotal: DIAS_ALVO,
       estoqueG: estoqueEssG,
       pedidoAbertoG: pedidoG,
       comprasAtivasG,
@@ -4399,7 +4399,7 @@ function _renderAnaliseInner() {
     `;
     if (isExp) {
       html += `<tr class="detail-row"><td colspan="15">
-        <div class="detail-title">Composição · ${r.qtdProdutos} produto(s) · lead ${r.leadTime} + prod ${r.producao} + cob ${r.cobertura} = ${r.diasTotal} dias</div>
+        <div class="detail-title">Composição · ${r.qtdProdutos} produto(s) · estoque-alvo de ${r.diasTotal} dias de venda</div>
         <div style="display:grid; grid-template-columns: 2fr 90px 60px 110px 80px 110px; gap:6px 12px; font-size:12px; padding:6px 0;">
           <div class="h">PRODUTO</div>
           <div class="h" style="text-align:right">GIRO/MÊS</div>
