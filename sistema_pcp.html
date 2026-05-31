@@ -1029,14 +1029,6 @@
         <option value="down">↓ Caindo (m1 &lt; m3)</option>
         <option value="stable">→ Estável</option>
       </select>
-      <select class="search-input" id="vendasFiltroSinal" style="width: 200px;">
-        <option value="">Todos sinais (canal)</option>
-        <option value="encalhe">🔴 Encalhe alto</option>
-        <option value="enchendo">🟡 Canal enchendo</option>
-        <option value="equilibrado">✓ Equilibrado</option>
-        <option value="vazando">🔵 Canal vazando</option>
-        <option value="desabastecimento">💧 Desabastecimento</option>
-      </select>
       <select class="search-input" id="vendasOrdem" style="width: 200px;">
         <option value="vendaDesc">Mais vendidos primeiro</option>
         <option value="growthDesc">Maior crescimento %</option>
@@ -1061,7 +1053,6 @@
             <th class="right" style="width: 100px;" title="Tendência recente: variação % de M1 vs M3">M1 vs M3</th>
             <th class="right" style="width: 100px;" title="Tendência longa: variação % de M3 vs M6">M3 vs M6</th>
             <th class="right" style="width: 110px;" title="Diferença em unidades entre Sell-In e Sell-Out (M3)">Sell-In vs Out</th>
-            <th style="width: 140px;" title="Status do canal: equilíbrio entre o que sai da fábrica e o que vende na ponta">Sinal canal</th>
           </tr>
         </thead>
         <tbody id="vendasTbody"></tbody>
@@ -3298,25 +3289,6 @@ function renderDashboard() {
   let volumeMes = 0;
   produtosFiltrados().forEach(p => { volumeMes += calcGiro(state.venda[p.sku]); });
 
-  // KPI risco de encalhe — quantos produtos têm Sell-In >> Sell-Out (diff > 30%)
-  let riscoEncalhe = 0;
-  let desabastecidos = 0;
-  let comparaveis = 0;
-  produtosFiltrados().forEach(p => {
-    const vIn = state.venda[p.sku];
-    const vOut = state.vendaSellOut?.[p.sku];
-    if (!vIn || !vOut) return;
-    const m3In = vIn.m3 || 0;
-    const m3Out = vOut.m3 || 0;
-    if (m3In === 0 && m3Out === 0) return;
-    comparaveis++;
-    if (m3In === 0) { desabastecidos++; return; }
-    const diff = ((m3In - m3Out) / m3In) * 100;
-    if (diff > 30) riscoEncalhe++;
-    else if (diff < -30) desabastecidos++;
-  });
-  const temSellOut = comparaveis > 0;
-
   document.getElementById('dashKpis').innerHTML = `
     <div class="kpi warn">
       <div class="kpi-label">OPs em andamento</div>
@@ -3338,18 +3310,6 @@ function renderDashboard() {
       <div class="kpi-value">${insVitaisCriticos}</div>
       <div class="kpi-sub">Cobertura &lt; 15d</div>
     </div>
-    ${temSellOut ? `
-    <div class="kpi" style="background: rgba(225,29,42,0.06); border-color: rgba(225,29,42,0.3);">
-      <div class="kpi-label">Risco de encalhe</div>
-      <div class="kpi-value">${riscoEncalhe}</div>
-      <div class="kpi-sub">Sell-In ≫ Sell-Out (canal abarrotando)</div>
-    </div>
-    <div class="kpi" style="background: rgba(107,155,212,0.06); border-color: rgba(107,155,212,0.3);">
-      <div class="kpi-label">Desabastecimento no canal</div>
-      <div class="kpi-value">${desabastecidos}</div>
-      <div class="kpi-sub">Sell-Out ≫ Sell-In (recomprar logo)</div>
-    </div>
-    ` : ''}
   `;
 
   // ===== Resumo da curva =====
@@ -3996,25 +3956,12 @@ function _renderVendasRanking(lista) {
   const q = norm(document.getElementById('vendasSearch')?.value || '');
   const fCurva = document.getElementById('vendasFiltroCurva')?.value || '';
   const fTend = document.getElementById('vendasFiltroTendencia')?.value || '';
-  const fSinal = document.getElementById('vendasFiltroSinal')?.value || '';
   const ordem = document.getElementById('vendasOrdem')?.value || 'vendaDesc';
-
-  // Calcula sinal pra cada produto
-  const calcSinal = (l) => {
-    if (!l.inOut) return 'sem';
-    const d = l.inOut.diffPct;
-    if (Math.abs(d) < 10) return 'equilibrado';
-    if (d > 30) return 'encalhe';
-    if (d > 10) return 'enchendo';
-    if (d < -30) return 'desabastecimento';
-    return 'vazando';
-  };
 
   let filtrada = lista.slice();
   if (q) filtrada = filtrada.filter(l => norm(l.p.descricao).includes(q) || String(l.p.sku).includes(q));
   if (fCurva) filtrada = filtrada.filter(l => l.curva === fCurva);
   if (fTend) filtrada = filtrada.filter(l => l.tendRecente.tipo === fTend);
-  if (fSinal) filtrada = filtrada.filter(l => calcSinal(l) === fSinal);
 
   const ordemCurva = { A: 0, B: 1, C: 2, Z: 3 };
   if (ordem === 'vendaDesc') filtrada.sort((a, b) => b.m1 - a.m1);
@@ -4024,27 +3971,12 @@ function _renderVendasRanking(lista) {
 
   const tbody = document.getElementById('vendasTbody');
   if (filtrada.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; color:var(--text-dim); padding:30px;">Nenhum produto com esse filtro.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; color:var(--text-dim); padding:30px;">Nenhum produto com esse filtro.</td></tr>`;
   } else {
     tbody.innerHTML = filtrada.map(l => {
       const inOutCell = l.inOut
         ? `<span class="mono" style="color: ${Math.abs(l.inOut.diffPct) < 10 ? 'var(--text-muted)' : (l.inOut.diff > 0 ? 'var(--warn)' : 'var(--info)')}">${l.inOut.diff >= 0 ? '+' : ''}${Math.round(l.inOut.diff).toLocaleString('pt-BR')}</span>`
         : '<span style="color:var(--text-dim); font-size:11px">—</span>';
-      // Sinal do canal: classifica baseado em diffPct (positivo = sell-in maior = canal abarrotando)
-      let sinalCell;
-      if (!l.inOut) {
-        sinalCell = '<span style="color:var(--text-dim); font-size:11px">— sem Sell-Out</span>';
-      } else if (Math.abs(l.inOut.diffPct) < 10) {
-        sinalCell = '<span style="font-size:11px; color:var(--ok);">✓ Equilibrado</span>';
-      } else if (l.inOut.diffPct > 30) {
-        sinalCell = '<span style="font-size:11px; color:var(--critical); font-weight:600;">🔴 Encalhe alto</span>';
-      } else if (l.inOut.diffPct > 10) {
-        sinalCell = '<span style="font-size:11px; color:var(--warn);">🟡 Canal enchendo</span>';
-      } else if (l.inOut.diffPct < -30) {
-        sinalCell = '<span style="font-size:11px; color:var(--info); font-weight:600;">💧 Desabastecimento</span>';
-      } else {
-        sinalCell = '<span style="font-size:11px; color:var(--info);">🔵 Canal vazando</span>';
-      }
       return `
         <tr>
           <td class="right">${refSku(l.p.sku, 'produto')}</td>
@@ -4057,7 +3989,6 @@ function _renderVendasRanking(lista) {
           <td class="right">${_badgeTendencia(l.tendRecente)}</td>
           <td class="right">${_badgeTendencia(l.tendLonga)}</td>
           <td class="right">${inOutCell}</td>
-          <td>${sinalCell}</td>
         </tr>`;
     }).join('');
   }
@@ -8833,7 +8764,6 @@ document.addEventListener('keydown', (e) => {
   bindLive('vendasSearch', renderVendas);
   bindChange('vendasFiltroCurva', renderVendas);
   bindChange('vendasFiltroTendencia', renderVendas);
-  bindChange('vendasFiltroSinal', renderVendas);
   bindChange('vendasOrdem', renderVendas);
   bindChange('vendasProdutoSelect', renderVendas);
   // Toggle Sell-In / Sell-Out na Visão Geral
