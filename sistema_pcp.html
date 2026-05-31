@@ -935,6 +935,13 @@
     <!-- Filtros de métrica -->
     <div class="toolbar" style="margin: 4px 0 18px; flex-wrap: wrap; gap: 10px;">
       <div class="param-group">
+        <label class="param-label">Fonte dos dados</label>
+        <div style="display: flex; gap: 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden;">
+          <button class="filtro-emp-btn active" data-vendas-fonte="sellin">Sell-In</button>
+          <button class="filtro-emp-btn" data-vendas-fonte="sellout">Sell-Out</button>
+        </div>
+      </div>
+      <div class="param-group">
         <label class="param-label">Comparação</label>
         <select class="param-input" id="vendasMetricaComp" style="width: 220px;">
           <option value="mes_vs_mes" selected>Mês vs Mês (escolher)</option>
@@ -1022,6 +1029,14 @@
         <option value="down">↓ Caindo (m1 &lt; m3)</option>
         <option value="stable">→ Estável</option>
       </select>
+      <select class="search-input" id="vendasFiltroSinal" style="width: 200px;">
+        <option value="">Todos sinais (canal)</option>
+        <option value="encalhe">🔴 Encalhe alto</option>
+        <option value="enchendo">🟡 Canal enchendo</option>
+        <option value="equilibrado">✓ Equilibrado</option>
+        <option value="vazando">🔵 Canal vazando</option>
+        <option value="desabastecimento">💧 Desabastecimento</option>
+      </select>
       <select class="search-input" id="vendasOrdem" style="width: 200px;">
         <option value="vendaDesc">Mais vendidos primeiro</option>
         <option value="growthDesc">Maior crescimento %</option>
@@ -1045,7 +1060,8 @@
             <th class="right" style="width: 80px;" title="Pico nos últimos 6 meses">Pico6</th>
             <th class="right" style="width: 100px;" title="Tendência recente: variação % de M1 vs M3">M1 vs M3</th>
             <th class="right" style="width: 100px;" title="Tendência longa: variação % de M3 vs M6">M3 vs M6</th>
-            <th class="right" style="width: 110px;" title="Diferença entre Sell-In e Sell-Out">Sell-In vs Out</th>
+            <th class="right" style="width: 110px;" title="Diferença entre Sell-In e Sell-Out (M3)">Sell-In vs Out</th>
+            <th style="width: 140px;" title="Status do canal: equilíbrio entre o que sai da fábrica e o que vende na ponta">Sinal canal</th>
           </tr>
         </thead>
         <tbody id="vendasTbody"></tbody>
@@ -3282,6 +3298,25 @@ function renderDashboard() {
   let volumeMes = 0;
   produtosFiltrados().forEach(p => { volumeMes += calcGiro(state.venda[p.sku]); });
 
+  // KPI risco de encalhe — quantos produtos têm Sell-In >> Sell-Out (diff > 30%)
+  let riscoEncalhe = 0;
+  let desabastecidos = 0;
+  let comparaveis = 0;
+  produtosFiltrados().forEach(p => {
+    const vIn = state.venda[p.sku];
+    const vOut = state.vendaSellOut?.[p.sku];
+    if (!vIn || !vOut) return;
+    const m3In = vIn.m3 || 0;
+    const m3Out = vOut.m3 || 0;
+    if (m3In === 0 && m3Out === 0) return;
+    comparaveis++;
+    if (m3In === 0) { desabastecidos++; return; }
+    const diff = ((m3In - m3Out) / m3In) * 100;
+    if (diff > 30) riscoEncalhe++;
+    else if (diff < -30) desabastecidos++;
+  });
+  const temSellOut = comparaveis > 0;
+
   document.getElementById('dashKpis').innerHTML = `
     <div class="kpi warn">
       <div class="kpi-label">OPs em andamento</div>
@@ -3303,6 +3338,18 @@ function renderDashboard() {
       <div class="kpi-value">${insVitaisCriticos}</div>
       <div class="kpi-sub">Cobertura &lt; 15d</div>
     </div>
+    ${temSellOut ? `
+    <div class="kpi" style="background: rgba(225,29,42,0.06); border-color: rgba(225,29,42,0.3);">
+      <div class="kpi-label">Risco de encalhe</div>
+      <div class="kpi-value">${riscoEncalhe}</div>
+      <div class="kpi-sub">Sell-In ≫ Sell-Out (canal abarrotando)</div>
+    </div>
+    <div class="kpi" style="background: rgba(107,155,212,0.06); border-color: rgba(107,155,212,0.3);">
+      <div class="kpi-label">Desabastecimento no canal</div>
+      <div class="kpi-value">${desabastecidos}</div>
+      <div class="kpi-sub">Sell-Out ≫ Sell-In (recomprar logo)</div>
+    </div>
+    ` : ''}
   `;
 
   // ===== Resumo da curva =====
@@ -3491,6 +3538,15 @@ function renderDashboard() {
 // Variáveis pra guardar instâncias de Chart.js e poder destruir antes de recriar
 const _vendasCharts = {};
 
+// Fonte atualmente selecionada na Visão Geral: 'sellin' | 'sellout'
+let _vendasFonteAtual = 'sellin';
+
+// Pega o dataset de vendas conforme a fonte ativa
+function _getVendaFonte(sku, fonte) {
+  if (fonte === 'sellout') return state.vendaSellOut?.[sku] || null;
+  return state.venda?.[sku] || null;
+}
+
 function _destroyChart(id) {
   if (_vendasCharts[id]) {
     _vendasCharts[id].destroy();
@@ -3625,13 +3681,28 @@ function renderVendas() {
 function _renderVendasVisao(lista) {
   const metricaComp = document.getElementById('vendasMetricaComp')?.value || 'mes_vs_mes';
   const metricaVol = document.getElementById('vendasMetricaVolume')?.value || 'mes';
+  const fonte = _vendasFonteAtual; // 'sellin' | 'sellout'
 
-  // Detecta meses disponíveis (pega do primeiro produto que tem mesesLabels)
+  // Re-calcula métricas usando a fonte ativa (sell-in ou sell-out)
+  // Sobrescreve m1/m3/m6/pico6/meses no objeto local pra não mexer no state
+  const listaComFonte = lista.map(l => {
+    const v = _getVendaFonte(l.p.sku, fonte) || {};
+    return {
+      ...l,
+      m1: v.m1 || 0,
+      m3: v.m3 || 0,
+      m6: v.m6 || 0,
+      pico6: v.pico6 || 0,
+      meses: v.meses || [],
+      mesesLabels: v.mesesLabels || [],
+    };
+  });
+
+  // Detecta meses disponíveis (pega do primeiro produto que tem mesesLabels na fonte ativa)
   let mesesDisponiveis = [];
-  for (const l of lista) {
-    const v = state.venda[l.p.sku];
-    if (v?.mesesLabels?.length) {
-      mesesDisponiveis = v.mesesLabels.slice();
+  for (const l of listaComFonte) {
+    if (l.mesesLabels?.length) {
+      mesesDisponiveis = l.mesesLabels.slice();
       break;
     }
   }
@@ -3670,9 +3741,9 @@ function _renderVendasVisao(lista) {
   const mesAtualLabel = selAtual.value;
   const mesBaseLabel = selBase.value;
 
-  // Função helper: pega o valor de um mês específico do histórico de um produto
+  // Função helper: pega o valor de um mês específico do histórico de um produto (da fonte ativa)
   const valorDoMes = (l, label) => {
-    const v = state.venda[l.p.sku];
+    const v = _getVendaFonte(l.p.sku, fonte);
     if (!v?.mesesLabels || !v?.meses) return 0;
     const idx = v.mesesLabels.indexOf(label);
     if (idx < 0) return 0;
@@ -3718,7 +3789,7 @@ function _renderVendasVisao(lista) {
   if (vT) vT.textContent = `📊 Top 20 — Volume (${labelVol})`;
 
   // Filtra: precisa ter base > 0 pra fazer comparação
-  const comGrowth = lista.filter(l => {
+  const comGrowth = listaComFonte.filter(l => {
     if (metricaComp === 'mes_vs_mes') return valorDoMes(l, mesBaseLabel) > 0;
     if (metricaComp === 'm1_m3') return l.m3 > 0;
     if (metricaComp === 'm3_m6') return l.m6 > 0;
@@ -3731,7 +3802,7 @@ function _renderVendasVisao(lista) {
   const topDrop = comGrowth.slice().sort((a, b) => a.pctEscolhida - b.pctEscolhida).slice(0, 10);
 
   // Volume usa a métrica escolhida
-  const topVolume = lista.slice()
+  const topVolume = listaComFonte.slice()
     .map(l => ({ ...l, volEscolhido: calcVolume(l) }))
     .sort((a, b) => b.volEscolhido - a.volEscolhido)
     .slice(0, 20);
@@ -3817,40 +3888,44 @@ function _renderVendasVisao(lista) {
 function _renderHistoricoMensal(lista) {
   const topN = parseInt(document.getElementById('vendasHistTopN')?.value || '5');
   const base = document.getElementById('vendasHistBase')?.value || 'm1';
+  const fonte = _vendasFonteAtual;
 
-  // Filtra produtos que têm histórico mensal (meses array com dados)
+  // Filtra produtos que têm histórico mensal na fonte ativa
   const comHist = lista.filter(l => {
-    const meses = state.venda[l.p.sku]?.meses;
+    const v = _getVendaFonte(l.p.sku, fonte);
+    const meses = v?.meses;
     return Array.isArray(meses) && meses.length > 0 && meses.some(v => v > 0);
   });
 
   const msgEl = document.getElementById('chartHistoricoMsg');
   if (comHist.length === 0) {
     _destroyChart('chartHistorico');
-    if (msgEl) msgEl.textContent = '⚠ Sem histórico mensal disponível. Re-importe o arquivo de vendas (o sistema agora salva os 6 últimos meses).';
+    const fonteLabel = fonte === 'sellout' ? 'Sell-Out' : 'Sell-In';
+    if (msgEl) msgEl.textContent = `⚠ Sem histórico mensal de ${fonteLabel}. Re-importe o arquivo correspondente.`;
     return;
   }
 
-  // Ordena conforme critério
-  const ordenado = comHist.slice();
-  if (base === 'm1' || base === 'm3' || base === 'm6') {
-    ordenado.sort((a, b) => (b[base] || 0) - (a[base] || 0));
-  } else if (base === 'growth') {
-    ordenado.sort((a, b) => b.tendRecente.pct - a.tendRecente.pct);
-  } else if (base === 'drop') {
-    ordenado.sort((a, b) => a.tendRecente.pct - b.tendRecente.pct);
-  }
+  // Ordena conforme critério — usa os agregados da FONTE ATIVA
+  const ordenado = comHist.map(l => {
+    const v = _getVendaFonte(l.p.sku, fonte) || {};
+    return { ...l, _m1: v.m1 || 0, _m3: v.m3 || 0, _m6: v.m6 || 0 };
+  });
+  if (base === 'm1') ordenado.sort((a, b) => b._m1 - a._m1);
+  else if (base === 'm3') ordenado.sort((a, b) => b._m3 - a._m3);
+  else if (base === 'm6') ordenado.sort((a, b) => b._m6 - a._m6);
+  else if (base === 'growth') ordenado.sort((a, b) => b.tendRecente.pct - a.tendRecente.pct);
+  else if (base === 'drop') ordenado.sort((a, b) => a.tendRecente.pct - b.tendRecente.pct);
   const top = ordenado.slice(0, topN);
 
   // Pega rótulos dos meses do primeiro produto (todos compartilham os mesmos rótulos)
-  const primeiro = state.venda[top[0]?.p.sku];
+  const primeiro = _getVendaFonte(top[0]?.p.sku, fonte);
   const labels = primeiro?.mesesLabels || primeiro?.meses?.map((_, i) => `M-${primeiro.meses.length - i}`) || [];
 
   // Cores variadas pras linhas
   const palette = ['#c9a861', '#10b981', '#e11d2a', '#6b9bd4', '#d4a559', '#a78bfa', '#f59e0b', '#34d399', '#f87171', '#60a5fa', '#fbbf24', '#a3e635', '#fb7185', '#22d3ee', '#fde047'];
 
   const datasets = top.map((l, i) => {
-    const v = state.venda[l.p.sku];
+    const v = _getVendaFonte(l.p.sku, fonte);
     const meses = v?.meses || [];
     const cor = palette[i % palette.length];
     return {
@@ -3873,7 +3948,8 @@ function _renderHistoricoMensal(lista) {
     options: _chartCommonOpts(true),
   });
   if (msgEl) {
-    msgEl.textContent = `${top.length} produto(s) · ${labels.length} mês(es) de histórico`;
+    const fonteLabel = fonte === 'sellout' ? 'Sell-Out' : 'Sell-In';
+    msgEl.textContent = `${top.length} produto(s) · ${labels.length} mês(es) · fonte: ${fonteLabel}`;
   }
 }
 
@@ -3881,12 +3957,25 @@ function _renderVendasRanking(lista) {
   const q = norm(document.getElementById('vendasSearch')?.value || '');
   const fCurva = document.getElementById('vendasFiltroCurva')?.value || '';
   const fTend = document.getElementById('vendasFiltroTendencia')?.value || '';
+  const fSinal = document.getElementById('vendasFiltroSinal')?.value || '';
   const ordem = document.getElementById('vendasOrdem')?.value || 'vendaDesc';
+
+  // Calcula sinal pra cada produto
+  const calcSinal = (l) => {
+    if (!l.inOut) return 'sem';
+    const d = l.inOut.diffPct;
+    if (Math.abs(d) < 10) return 'equilibrado';
+    if (d > 30) return 'encalhe';
+    if (d > 10) return 'enchendo';
+    if (d < -30) return 'desabastecimento';
+    return 'vazando';
+  };
 
   let filtrada = lista.slice();
   if (q) filtrada = filtrada.filter(l => norm(l.p.descricao).includes(q) || String(l.p.sku).includes(q));
   if (fCurva) filtrada = filtrada.filter(l => l.curva === fCurva);
   if (fTend) filtrada = filtrada.filter(l => l.tendRecente.tipo === fTend);
+  if (fSinal) filtrada = filtrada.filter(l => calcSinal(l) === fSinal);
 
   const ordemCurva = { A: 0, B: 1, C: 2, Z: 3 };
   if (ordem === 'vendaDesc') filtrada.sort((a, b) => b.m1 - a.m1);
@@ -3896,12 +3985,27 @@ function _renderVendasRanking(lista) {
 
   const tbody = document.getElementById('vendasTbody');
   if (filtrada.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; color:var(--text-dim); padding:30px;">Nenhum produto com esse filtro.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; color:var(--text-dim); padding:30px;">Nenhum produto com esse filtro.</td></tr>`;
   } else {
     tbody.innerHTML = filtrada.map(l => {
       const inOutCell = l.inOut
         ? `<span class="mono" style="color: ${Math.abs(l.inOut.diffPct) < 10 ? 'var(--text-muted)' : (l.inOut.diffPct > 0 ? 'var(--warn)' : 'var(--info)')}">${l.inOut.diffPct >= 0 ? '+' : ''}${l.inOut.diffPct.toFixed(0)}%</span>`
         : '<span style="color:var(--text-dim); font-size:11px">—</span>';
+      // Sinal do canal: classifica baseado em diffPct (positivo = sell-in maior = canal abarrotando)
+      let sinalCell;
+      if (!l.inOut) {
+        sinalCell = '<span style="color:var(--text-dim); font-size:11px">— sem Sell-Out</span>';
+      } else if (Math.abs(l.inOut.diffPct) < 10) {
+        sinalCell = '<span style="font-size:11px; color:var(--ok);">✓ Equilibrado</span>';
+      } else if (l.inOut.diffPct > 30) {
+        sinalCell = '<span style="font-size:11px; color:var(--critical); font-weight:600;">🔴 Encalhe alto</span>';
+      } else if (l.inOut.diffPct > 10) {
+        sinalCell = '<span style="font-size:11px; color:var(--warn);">🟡 Canal enchendo</span>';
+      } else if (l.inOut.diffPct < -30) {
+        sinalCell = '<span style="font-size:11px; color:var(--info); font-weight:600;">💧 Desabastecimento</span>';
+      } else {
+        sinalCell = '<span style="font-size:11px; color:var(--info);">🔵 Canal vazando</span>';
+      }
       return `
         <tr>
           <td class="right">${refSku(l.p.sku, 'produto')}</td>
@@ -3914,6 +4018,7 @@ function _renderVendasRanking(lista) {
           <td class="right">${_badgeTendencia(l.tendRecente)}</td>
           <td class="right">${_badgeTendencia(l.tendLonga)}</td>
           <td class="right">${inOutCell}</td>
+          <td>${sinalCell}</td>
         </tr>`;
     }).join('');
   }
@@ -4002,42 +4107,56 @@ function _renderVendasProduto() {
     });
   }
 
-  // Chart 2: Histórico mensal (se v.meses existir)
+  // Chart 2: Histórico mensal real (usa v.meses + v.mesesLabels)
   _destroyChart('chartProdutoHistorico');
   const ctx2 = document.getElementById('chartProdutoHistorico');
   const msgEl = document.getElementById('vendasHistMsg');
   if (ctx2) {
-    const meses = v.meses || {};
-    const mesesArr = Object.keys(meses).sort();
-    if (mesesArr.length === 0) {
-      msgEl.textContent = '⚠ Sem histórico mensal disponível pra esse produto. O sistema só tem agregados M1/M3/M6/Pico6.';
+    const meses = Array.isArray(v.meses) ? v.meses : [];
+    const labels = Array.isArray(v.mesesLabels) ? v.mesesLabels : meses.map((_, i) => `M-${meses.length - i}`);
+    if (meses.length === 0) {
+      msgEl.textContent = '⚠ Sem histórico mensal pra esse produto. Re-importe o arquivo de vendas.';
       ctx2.style.opacity = '0.3';
+      _vendasCharts.chartProdutoHistorico = new Chart(ctx2, {
+        type: 'line', data: { labels: [], datasets: [] }, options: _chartCommonOpts(false),
+      });
     } else {
       msgEl.textContent = '';
       ctx2.style.opacity = '1';
       const datasets = [{
         label: 'Sell-In',
-        data: mesesArr.map(m => meses[m] || 0),
+        data: meses,
         borderColor: _CHART_COLORS.primary,
-        backgroundColor: _CHART_COLORS.primary + '33',
-        fill: true,
+        backgroundColor: _CHART_COLORS.primary + '22',
+        fill: false,
         tension: 0.3,
-        pointRadius: 3,
+        pointRadius: 4,
+        borderWidth: 2.5,
       }];
-      if (vo && vo.meses) {
+      if (vo && Array.isArray(vo.meses) && vo.meses.length > 0) {
+        // Alinha pelos rótulos do Sell-In: pra cada label do Sell-In, busca o índice no Sell-Out
+        const dataSellOut = labels.map(lbl => {
+          if (!vo.mesesLabels) return null;
+          const idx = vo.mesesLabels.indexOf(lbl);
+          return idx >= 0 ? (vo.meses[idx] || 0) : null;
+        });
         datasets.push({
           label: 'Sell-Out',
-          data: mesesArr.map(m => (vo.meses[m] || 0)),
+          data: dataSellOut,
           borderColor: _CHART_COLORS.info,
-          backgroundColor: _CHART_COLORS.info + '33',
-          fill: true,
+          backgroundColor: _CHART_COLORS.info + '22',
+          borderDash: [6, 4],
+          fill: false,
           tension: 0.3,
-          pointRadius: 3,
+          pointRadius: 4,
+          borderWidth: 2.5,
         });
+      } else if (vo === null) {
+        // Sem Sell-Out cadastrado pra esse produto: avisa
       }
       _vendasCharts.chartProdutoHistorico = new Chart(ctx2, {
         type: 'line',
-        data: { labels: mesesArr, datasets },
+        data: { labels, datasets },
         options: _chartCommonOpts(true),
       });
     }
@@ -8671,8 +8790,18 @@ document.addEventListener('keydown', (e) => {
   bindLive('vendasSearch', renderVendas);
   bindChange('vendasFiltroCurva', renderVendas);
   bindChange('vendasFiltroTendencia', renderVendas);
+  bindChange('vendasFiltroSinal', renderVendas);
   bindChange('vendasOrdem', renderVendas);
   bindChange('vendasProdutoSelect', renderVendas);
+  // Toggle Sell-In / Sell-Out na Visão Geral
+  document.querySelectorAll('[data-vendas-fonte]').forEach(btn => {
+    btn.onclick = () => {
+      _vendasFonteAtual = btn.dataset.vendasFonte; // 'sellin' | 'sellout'
+      document.querySelectorAll('[data-vendas-fonte]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderVendas();
+    };
+  });
   // Filtros de métrica e histórico
   bindChange('vendasMetricaComp', renderVendas);
   bindChange('vendasMetricaVolume', renderVendas);
