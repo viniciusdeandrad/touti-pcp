@@ -932,20 +932,67 @@
 
   <!-- TAB: VISÃO GERAL -->
   <div id="vendasTab-visao" class="vendas-tab">
+    <!-- Filtros de métrica -->
+    <div class="toolbar" style="margin: 4px 0 18px;">
+      <div class="param-group">
+        <label class="param-label">Métrica nos gráficos comparativos</label>
+        <select class="param-input" id="vendasMetricaComp" style="width: 220px;">
+          <option value="m1_m3" selected>M1 vs M3 (recente)</option>
+          <option value="m3_m6">M3 vs M6 (longo prazo)</option>
+          <option value="m1_m6">M1 vs M6 (vs semestre)</option>
+          <option value="m1_pico6">M1 vs Pico 6m</option>
+        </select>
+      </div>
+      <div class="param-group" style="margin-left: 16px;">
+        <label class="param-label">Volume mostrado</label>
+        <select class="param-input" id="vendasMetricaVolume" style="width: 180px;">
+          <option value="m1" selected>M1 — último mês</option>
+          <option value="m3">M3 — média 3 meses</option>
+          <option value="m6">M6 — média 6 meses</option>
+          <option value="pico6">Pico nos 6 meses</option>
+        </select>
+      </div>
+    </div>
+
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
       <div class="card" style="padding: 18px;">
-        <h3 style="font-size: 14px; margin: 0 0 12px; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;">📈 Top 10 — Maior crescimento (m1 vs m3)</h3>
+        <h3 style="font-size: 14px; margin: 0 0 12px; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;" id="chartTopGrowthTitle">📈 Top 10 — Maior crescimento</h3>
         <div style="height: 320px; position: relative;"><canvas id="chartTopGrowth"></canvas></div>
       </div>
       <div class="card" style="padding: 18px;">
-        <h3 style="font-size: 14px; margin: 0 0 12px; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;">📉 Top 10 — Maior queda (m1 vs m3)</h3>
+        <h3 style="font-size: 14px; margin: 0 0 12px; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;" id="chartTopDropTitle">📉 Top 10 — Maior queda</h3>
         <div style="height: 320px; position: relative;"><canvas id="chartTopDrop"></canvas></div>
       </div>
     </div>
 
     <div class="card" style="padding: 18px; margin-top: 18px;">
-      <h3 style="font-size: 14px; margin: 0 0 12px; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;">📊 Top 20 — Volume (último mês)</h3>
+      <h3 style="font-size: 14px; margin: 0 0 12px; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;" id="chartTopVolumeTitle">📊 Top 20 — Volume</h3>
       <div style="height: 360px; position: relative;"><canvas id="chartTopVolume"></canvas></div>
+    </div>
+
+    <!-- Histórico mensal: linhas dos top 10 -->
+    <div class="card" style="padding: 18px; margin-top: 18px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+        <h3 style="font-size: 14px; margin: 0; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;">📈 Histórico mensal — Top produtos</h3>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span style="font-size: 11px; color: var(--text-muted);">Mostrar top</span>
+          <select class="search-input" id="vendasHistTopN" style="width: 90px;">
+            <option value="5" selected>5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+          </select>
+          <select class="search-input" id="vendasHistBase" style="width: 180px;">
+            <option value="m1" selected>por volume M1</option>
+            <option value="m3">por volume M3</option>
+            <option value="m6">por volume M6</option>
+            <option value="growth">por maior crescimento</option>
+            <option value="drop">por maior queda</option>
+          </select>
+        </div>
+      </div>
+      <div style="height: 380px; position: relative;"><canvas id="chartHistorico"></canvas></div>
+      <div style="font-size: 11px; color: var(--text-dim); margin-top: 8px;" id="chartHistoricoMsg"></div>
     </div>
   </div>
 
@@ -2770,6 +2817,10 @@ function parseVenda(rows) {
   }
   if (monthCols.length === 0 && m3Col < 0) return { error: 'Não encontrei colunas de venda mensal nem M3' };
 
+  // Rótulos dos últimos 6 meses (ex: "jan/26", "fev/26", ...)
+  const ultimos6Cols = monthCols.slice(-6);
+  const mesesLabels = ultimos6Cols.map(c => String(head1[c] || '').trim().toLowerCase());
+
   // Index produtos cadastrados por nome normalizado (tira espaços duplos)
   const normProd = s => norm(s).replace(/\s+/g, ' ').trim();
   const prodMap = new Map();
@@ -2788,12 +2839,12 @@ function parseVenda(rows) {
 
     const m1 = monthCols.length ? toNum(r[monthCols[monthCols.length - 1]]) : 0;
     // Últimos 6 meses fechados (excluindo o mês corrente em curso, se possível): pegamos os 6 últimos da lista
-    const ultimos6 = monthCols.slice(-6).map(c => toNum(r[c]));
+    const ultimos6 = ultimos6Cols.map(c => toNum(r[c]));
     const ultimos3 = monthCols.slice(-3).map(c => toNum(r[c]));
     const m3 = m3Col >= 0 ? toNum(r[m3Col]) : (ultimos3.length ? ultimos3.reduce((s, x) => s + x, 0) / ultimos3.length : m1);
     const m6 = m6Col >= 0 ? toNum(r[m6Col]) : (ultimos6.length ? ultimos6.reduce((s, x) => s + x, 0) / ultimos6.length : m3);
     const pico6 = ultimos6.length ? Math.max(...ultimos6) : m1;
-    data[prod.sku] = { m1, m3, m6, pico6, meses: ultimos6 };
+    data[prod.sku] = { m1, m3, m6, pico6, meses: ultimos6, mesesLabels };
   }
   return { data, meses: monthCols.length, matched, unmatched };
 }
@@ -3562,11 +3613,54 @@ function renderVendas() {
 }
 
 function _renderVendasVisao(lista) {
-  // Top 10 crescimento (filtra os que tem m3 > 0 e ordenando por pct)
-  const comGrowth = lista.filter(l => l.m3 > 0).slice();
-  const topGrowth = comGrowth.slice().sort((a, b) => b.tendRecente.pct - a.tendRecente.pct).slice(0, 10);
-  const topDrop = comGrowth.slice().sort((a, b) => a.tendRecente.pct - b.tendRecente.pct).slice(0, 10);
-  const topVolume = lista.slice().sort((a, b) => b.m1 - a.m1).slice(0, 20);
+  // Lê filtros de métrica
+  const metricaComp = document.getElementById('vendasMetricaComp')?.value || 'm1_m3';
+  const metricaVol = document.getElementById('vendasMetricaVolume')?.value || 'm1';
+
+  // Calcula a variação percentual conforme a métrica escolhida
+  // pct = ((atual - base) / base) * 100
+  const calcPctEscolhida = (l) => {
+    let atual = 0, base = 0;
+    if (metricaComp === 'm1_m3') { atual = l.m1; base = l.m3; }
+    else if (metricaComp === 'm3_m6') { atual = l.m3; base = l.m6; }
+    else if (metricaComp === 'm1_m6') { atual = l.m1; base = l.m6; }
+    else if (metricaComp === 'm1_pico6') { atual = l.m1; base = l.pico6; }
+    if (!base) return atual > 0 ? 100 : 0;
+    return ((atual - base) / base) * 100;
+  };
+
+  // Atualiza títulos
+  const labelComp = {
+    m1_m3: 'M1 vs M3', m3_m6: 'M3 vs M6',
+    m1_m6: 'M1 vs M6', m1_pico6: 'M1 vs Pico 6m'
+  }[metricaComp] || 'M1 vs M3';
+  const labelVol = {
+    m1: 'M1 (último mês)', m3: 'M3 (média 3 meses)',
+    m6: 'M6 (média 6 meses)', pico6: 'Pico 6 meses'
+  }[metricaVol] || 'M1';
+  const gT = document.getElementById('chartTopGrowthTitle');
+  const dT = document.getElementById('chartTopDropTitle');
+  const vT = document.getElementById('chartTopVolumeTitle');
+  if (gT) gT.textContent = `📈 Top 10 — Maior crescimento (${labelComp})`;
+  if (dT) dT.textContent = `📉 Top 10 — Maior queda (${labelComp})`;
+  if (vT) vT.textContent = `📊 Top 20 — Volume (${labelVol})`;
+
+  // Calcula listas
+  const comGrowth = lista.filter(l => {
+    if (metricaComp === 'm1_m3') return l.m3 > 0;
+    if (metricaComp === 'm3_m6') return l.m6 > 0;
+    if (metricaComp === 'm1_m6') return l.m6 > 0;
+    if (metricaComp === 'm1_pico6') return l.pico6 > 0;
+    return true;
+  }).map(l => ({ ...l, pctEscolhida: calcPctEscolhida(l) }));
+
+  const topGrowth = comGrowth.slice().sort((a, b) => b.pctEscolhida - a.pctEscolhida).slice(0, 10);
+  const topDrop = comGrowth.slice().sort((a, b) => a.pctEscolhida - b.pctEscolhida).slice(0, 10);
+
+  // Volume usa a métrica escolhida em "Volume mostrado"
+  const topVolume = lista.slice()
+    .sort((a, b) => (b[metricaVol] || 0) - (a[metricaVol] || 0))
+    .slice(0, 20);
 
   // Chart top growth
   _destroyChart('chartTopGrowth');
@@ -3577,8 +3671,8 @@ function _renderVendasVisao(lista) {
       data: {
         labels: topGrowth.map(l => l.p.descricao.substring(0, 28)),
         datasets: [{
-          label: '% Crescimento M1 vs M3',
-          data: topGrowth.map(l => l.tendRecente.pct),
+          label: `% Crescimento (${labelComp})`,
+          data: topGrowth.map(l => l.pctEscolhida),
           backgroundColor: _CHART_COLORS.ok + 'cc',
           borderColor: _CHART_COLORS.ok,
           borderWidth: 1,
@@ -3597,8 +3691,8 @@ function _renderVendasVisao(lista) {
       data: {
         labels: topDrop.map(l => l.p.descricao.substring(0, 28)),
         datasets: [{
-          label: '% Queda M1 vs M3',
-          data: topDrop.map(l => l.tendRecente.pct),
+          label: `% Queda (${labelComp})`,
+          data: topDrop.map(l => l.pctEscolhida),
           backgroundColor: _CHART_COLORS.critical + 'cc',
           borderColor: _CHART_COLORS.critical,
           borderWidth: 1,
@@ -3608,7 +3702,7 @@ function _renderVendasVisao(lista) {
     });
   }
 
-  // Chart top volume — com cor por tendência
+  // Chart top volume — cor por tendência (calculada com a métrica escolhida)
   _destroyChart('chartTopVolume');
   const ctxV = document.getElementById('chartTopVolume');
   if (ctxV) {
@@ -3617,23 +3711,95 @@ function _renderVendasVisao(lista) {
       data: {
         labels: topVolume.map(l => l.p.descricao.substring(0, 30)),
         datasets: [{
-          label: 'Vendas M1',
-          data: topVolume.map(l => l.m1),
-          backgroundColor: topVolume.map(l =>
-            l.tendRecente.tipo === 'up' ? _CHART_COLORS.ok + 'cc' :
-            l.tendRecente.tipo === 'down' ? _CHART_COLORS.critical + 'cc' :
-            _CHART_COLORS.text + '99'
-          ),
-          borderColor: topVolume.map(l =>
-            l.tendRecente.tipo === 'up' ? _CHART_COLORS.ok :
-            l.tendRecente.tipo === 'down' ? _CHART_COLORS.critical :
-            _CHART_COLORS.text
-          ),
+          label: `Vendas ${labelVol}`,
+          data: topVolume.map(l => l[metricaVol] || 0),
+          backgroundColor: topVolume.map(l => {
+            const pct = calcPctEscolhida(l);
+            if (pct > 10) return _CHART_COLORS.ok + 'cc';
+            if (pct < -10) return _CHART_COLORS.critical + 'cc';
+            return _CHART_COLORS.text + '99';
+          }),
+          borderColor: topVolume.map(l => {
+            const pct = calcPctEscolhida(l);
+            if (pct > 10) return _CHART_COLORS.ok;
+            if (pct < -10) return _CHART_COLORS.critical;
+            return _CHART_COLORS.text;
+          }),
           borderWidth: 1,
         }],
       },
       options: { ..._chartCommonOpts(true), indexAxis: 'y' },
     });
+  }
+
+  // Renderiza histórico mensal
+  _renderHistoricoMensal(lista);
+}
+
+// ===== HISTÓRICO MENSAL =====
+//
+// Plota linhas dos últimos 6 meses dos top N produtos.
+// O critério pra escolher os top N pode ser: volume (m1/m3/m6) ou crescimento/queda.
+function _renderHistoricoMensal(lista) {
+  const topN = parseInt(document.getElementById('vendasHistTopN')?.value || '5');
+  const base = document.getElementById('vendasHistBase')?.value || 'm1';
+
+  // Filtra produtos que têm histórico mensal (meses array com dados)
+  const comHist = lista.filter(l => {
+    const meses = state.venda[l.p.sku]?.meses;
+    return Array.isArray(meses) && meses.length > 0 && meses.some(v => v > 0);
+  });
+
+  const msgEl = document.getElementById('chartHistoricoMsg');
+  if (comHist.length === 0) {
+    _destroyChart('chartHistorico');
+    if (msgEl) msgEl.textContent = '⚠ Sem histórico mensal disponível. Re-importe o arquivo de vendas (o sistema agora salva os 6 últimos meses).';
+    return;
+  }
+
+  // Ordena conforme critério
+  const ordenado = comHist.slice();
+  if (base === 'm1' || base === 'm3' || base === 'm6') {
+    ordenado.sort((a, b) => (b[base] || 0) - (a[base] || 0));
+  } else if (base === 'growth') {
+    ordenado.sort((a, b) => b.tendRecente.pct - a.tendRecente.pct);
+  } else if (base === 'drop') {
+    ordenado.sort((a, b) => a.tendRecente.pct - b.tendRecente.pct);
+  }
+  const top = ordenado.slice(0, topN);
+
+  // Pega rótulos dos meses do primeiro produto (todos compartilham os mesmos rótulos)
+  const primeiro = state.venda[top[0]?.p.sku];
+  const labels = primeiro?.mesesLabels || primeiro?.meses?.map((_, i) => `M-${primeiro.meses.length - i}`) || [];
+
+  // Cores variadas pras linhas
+  const palette = ['#c9a861', '#10b981', '#e11d2a', '#6b9bd4', '#d4a559', '#a78bfa', '#f59e0b', '#34d399', '#f87171', '#60a5fa', '#fbbf24', '#a3e635', '#fb7185', '#22d3ee', '#fde047'];
+
+  const datasets = top.map((l, i) => {
+    const v = state.venda[l.p.sku];
+    const meses = v?.meses || [];
+    const cor = palette[i % palette.length];
+    return {
+      label: l.p.descricao.substring(0, 30),
+      data: meses,
+      borderColor: cor,
+      backgroundColor: cor + '22',
+      tension: 0.3,
+      pointRadius: 3,
+      fill: false,
+    };
+  });
+
+  _destroyChart('chartHistorico');
+  const ctx = document.getElementById('chartHistorico');
+  if (!ctx) return;
+  _vendasCharts.chartHistorico = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: _chartCommonOpts(true),
+  });
+  if (msgEl) {
+    msgEl.textContent = `${top.length} produto(s) · ${labels.length} mês(es) de histórico`;
   }
 }
 
@@ -8433,6 +8599,11 @@ document.addEventListener('keydown', (e) => {
   bindChange('vendasFiltroTendencia', renderVendas);
   bindChange('vendasOrdem', renderVendas);
   bindChange('vendasProdutoSelect', renderVendas);
+  // Filtros de métrica e histórico
+  bindChange('vendasMetricaComp', renderVendas);
+  bindChange('vendasMetricaVolume', renderVendas);
+  bindChange('vendasHistTopN', renderVendas);
+  bindChange('vendasHistBase', renderVendas);
 
   // ===== SYNC: bind dos handlers =====
   const cfg = state.syncConfig || {};
