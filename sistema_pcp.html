@@ -933,20 +933,30 @@
   <!-- TAB: VISÃO GERAL -->
   <div id="vendasTab-visao" class="vendas-tab">
     <!-- Filtros de métrica -->
-    <div class="toolbar" style="margin: 4px 0 18px;">
+    <div class="toolbar" style="margin: 4px 0 18px; flex-wrap: wrap; gap: 10px;">
       <div class="param-group">
-        <label class="param-label">Métrica nos gráficos comparativos</label>
+        <label class="param-label">Comparação</label>
         <select class="param-input" id="vendasMetricaComp" style="width: 220px;">
-          <option value="m1_m3" selected>M1 vs M3 (recente)</option>
+          <option value="mes_vs_mes" selected>Mês vs Mês (escolher)</option>
+          <option value="m1_m3">M1 vs M3 (recente)</option>
           <option value="m3_m6">M3 vs M6 (longo prazo)</option>
           <option value="m1_m6">M1 vs M6 (vs semestre)</option>
           <option value="m1_pico6">M1 vs Pico 6m</option>
         </select>
       </div>
-      <div class="param-group" style="margin-left: 16px;">
+      <div class="param-group" id="vendasMesAtualWrap">
+        <label class="param-label">Mês atual</label>
+        <select class="param-input" id="vendasMesAtual" style="width: 120px;"></select>
+      </div>
+      <div class="param-group" id="vendasMesBaseWrap">
+        <label class="param-label">Comparar com</label>
+        <select class="param-input" id="vendasMesBase" style="width: 120px;"></select>
+      </div>
+      <div class="param-group">
         <label class="param-label">Volume mostrado</label>
         <select class="param-input" id="vendasMetricaVolume" style="width: 180px;">
-          <option value="m1" selected>M1 — último mês</option>
+          <option value="mes" selected>Mês escolhido (atual)</option>
+          <option value="m1">M1 — último mês (agregado)</option>
           <option value="m3">M3 — média 3 meses</option>
           <option value="m6">M6 — média 6 meses</option>
           <option value="pico6">Pico nos 6 meses</option>
@@ -3613,15 +3623,70 @@ function renderVendas() {
 }
 
 function _renderVendasVisao(lista) {
-  // Lê filtros de métrica
-  const metricaComp = document.getElementById('vendasMetricaComp')?.value || 'm1_m3';
-  const metricaVol = document.getElementById('vendasMetricaVolume')?.value || 'm1';
+  const metricaComp = document.getElementById('vendasMetricaComp')?.value || 'mes_vs_mes';
+  const metricaVol = document.getElementById('vendasMetricaVolume')?.value || 'mes';
+
+  // Detecta meses disponíveis (pega do primeiro produto que tem mesesLabels)
+  let mesesDisponiveis = [];
+  for (const l of lista) {
+    const v = state.venda[l.p.sku];
+    if (v?.mesesLabels?.length) {
+      mesesDisponiveis = v.mesesLabels.slice();
+      break;
+    }
+  }
+
+  // Popula selects de mês (atual e base) — preserva seleção se válida
+  const selAtual = document.getElementById('vendasMesAtual');
+  const selBase = document.getElementById('vendasMesBase');
+  const wrapAtual = document.getElementById('vendasMesAtualWrap');
+  const wrapBase = document.getElementById('vendasMesBaseWrap');
+
+  if (mesesDisponiveis.length > 0) {
+    const valAtual = selAtual.value;
+    const valBase = selBase.value;
+    // Default: último mês como "atual", penúltimo como "base"
+    const defaultAtual = mesesDisponiveis[mesesDisponiveis.length - 1];
+    const defaultBase = mesesDisponiveis[mesesDisponiveis.length - 2] || mesesDisponiveis[0];
+
+    selAtual.innerHTML = mesesDisponiveis.map(m =>
+      `<option value="${m}" ${m === (mesesDisponiveis.includes(valAtual) ? valAtual : defaultAtual) ? 'selected' : ''}>${m}</option>`
+    ).join('');
+    selBase.innerHTML = mesesDisponiveis.map(m =>
+      `<option value="${m}" ${m === (mesesDisponiveis.includes(valBase) ? valBase : defaultBase) ? 'selected' : ''}>${m}</option>`
+    ).join('');
+  } else {
+    // Sem histórico mensal: mostra alerta nos selects
+    selAtual.innerHTML = '<option>—</option>';
+    selBase.innerHTML = '<option>—</option>';
+  }
+
+  // Mostra/esconde selects de mês conforme métrica escolhida
+  const usaMesMes = metricaComp === 'mes_vs_mes';
+  wrapAtual.style.display = usaMesMes ? '' : 'none';
+  wrapBase.style.display = usaMesMes ? '' : 'none';
+
+  // Resolve mês-índice escolhido
+  const mesAtualLabel = selAtual.value;
+  const mesBaseLabel = selBase.value;
+
+  // Função helper: pega o valor de um mês específico do histórico de um produto
+  const valorDoMes = (l, label) => {
+    const v = state.venda[l.p.sku];
+    if (!v?.mesesLabels || !v?.meses) return 0;
+    const idx = v.mesesLabels.indexOf(label);
+    if (idx < 0) return 0;
+    return v.meses[idx] || 0;
+  };
 
   // Calcula a variação percentual conforme a métrica escolhida
-  // pct = ((atual - base) / base) * 100
   const calcPctEscolhida = (l) => {
     let atual = 0, base = 0;
-    if (metricaComp === 'm1_m3') { atual = l.m1; base = l.m3; }
+    if (metricaComp === 'mes_vs_mes') {
+      atual = valorDoMes(l, mesAtualLabel);
+      base = valorDoMes(l, mesBaseLabel);
+    }
+    else if (metricaComp === 'm1_m3') { atual = l.m1; base = l.m3; }
     else if (metricaComp === 'm3_m6') { atual = l.m3; base = l.m6; }
     else if (metricaComp === 'm1_m6') { atual = l.m1; base = l.m6; }
     else if (metricaComp === 'm1_pico6') { atual = l.m1; base = l.pico6; }
@@ -3629,15 +3694,22 @@ function _renderVendasVisao(lista) {
     return ((atual - base) / base) * 100;
   };
 
-  // Atualiza títulos
-  const labelComp = {
+  // Função pra pegar volume conforme métrica escolhida
+  const calcVolume = (l) => {
+    if (metricaVol === 'mes') return valorDoMes(l, mesAtualLabel);
+    return l[metricaVol] || 0;
+  };
+
+  // Labels dos gráficos
+  const labelComp = metricaComp === 'mes_vs_mes' ? `${mesAtualLabel} vs ${mesBaseLabel}` : {
     m1_m3: 'M1 vs M3', m3_m6: 'M3 vs M6',
     m1_m6: 'M1 vs M6', m1_pico6: 'M1 vs Pico 6m'
-  }[metricaComp] || 'M1 vs M3';
-  const labelVol = {
+  }[metricaComp];
+  const labelVol = metricaVol === 'mes' ? mesAtualLabel : {
     m1: 'M1 (último mês)', m3: 'M3 (média 3 meses)',
     m6: 'M6 (média 6 meses)', pico6: 'Pico 6 meses'
-  }[metricaVol] || 'M1';
+  }[metricaVol];
+
   const gT = document.getElementById('chartTopGrowthTitle');
   const dT = document.getElementById('chartTopDropTitle');
   const vT = document.getElementById('chartTopVolumeTitle');
@@ -3645,8 +3717,9 @@ function _renderVendasVisao(lista) {
   if (dT) dT.textContent = `📉 Top 10 — Maior queda (${labelComp})`;
   if (vT) vT.textContent = `📊 Top 20 — Volume (${labelVol})`;
 
-  // Calcula listas
+  // Filtra: precisa ter base > 0 pra fazer comparação
   const comGrowth = lista.filter(l => {
+    if (metricaComp === 'mes_vs_mes') return valorDoMes(l, mesBaseLabel) > 0;
     if (metricaComp === 'm1_m3') return l.m3 > 0;
     if (metricaComp === 'm3_m6') return l.m6 > 0;
     if (metricaComp === 'm1_m6') return l.m6 > 0;
@@ -3657,9 +3730,10 @@ function _renderVendasVisao(lista) {
   const topGrowth = comGrowth.slice().sort((a, b) => b.pctEscolhida - a.pctEscolhida).slice(0, 10);
   const topDrop = comGrowth.slice().sort((a, b) => a.pctEscolhida - b.pctEscolhida).slice(0, 10);
 
-  // Volume usa a métrica escolhida em "Volume mostrado"
+  // Volume usa a métrica escolhida
   const topVolume = lista.slice()
-    .sort((a, b) => (b[metricaVol] || 0) - (a[metricaVol] || 0))
+    .map(l => ({ ...l, volEscolhido: calcVolume(l) }))
+    .sort((a, b) => b.volEscolhido - a.volEscolhido)
     .slice(0, 20);
 
   // Chart top growth
@@ -3712,7 +3786,7 @@ function _renderVendasVisao(lista) {
         labels: topVolume.map(l => l.p.descricao.substring(0, 30)),
         datasets: [{
           label: `Vendas ${labelVol}`,
-          data: topVolume.map(l => l[metricaVol] || 0),
+          data: topVolume.map(l => l.volEscolhido),
           backgroundColor: topVolume.map(l => {
             const pct = calcPctEscolhida(l);
             if (pct > 10) return _CHART_COLORS.ok + 'cc';
@@ -8602,6 +8676,8 @@ document.addEventListener('keydown', (e) => {
   // Filtros de métrica e histórico
   bindChange('vendasMetricaComp', renderVendas);
   bindChange('vendasMetricaVolume', renderVendas);
+  bindChange('vendasMesAtual', renderVendas);
+  bindChange('vendasMesBase', renderVendas);
   bindChange('vendasHistTopN', renderVendas);
   bindChange('vendasHistBase', renderVendas);
 
