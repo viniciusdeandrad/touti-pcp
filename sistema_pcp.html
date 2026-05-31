@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -695,6 +696,7 @@
   <button class="nav-item" data-view="transferencia"><span class="nav-item-icon">📦</span> Transferência PE↔SP</button>
   <button class="nav-item" data-view="producao"><span class="nav-item-icon">🏭</span> Ordens de Produção</button>
   <button class="nav-item" data-view="compartilhados"><span class="nav-item-icon">⚡</span> Insumos Compartilhados</button>
+  <button class="nav-item" data-view="vendas"><span class="nav-item-icon">📈</span> Acompanhamento de Vendas</button>
 
   <div class="drawer-section-title">Estoques</div>
   <button class="nav-item" data-view="estoque-pa"><span class="nav-item-icon">📦</span> Estoque PA</button>
@@ -881,6 +883,117 @@
   </div>
 </div>
 
+<!-- ===== VIEW: ACOMPANHAMENTO DE VENDAS ===== -->
+<div id="view-vendas" class="view hidden">
+  <h1 class="page-title">Acompanhamento de Vendas</h1>
+  <p class="page-sub">Performance de cada produto: tendência recente (m1 vs m3), tendência longa (m3 vs m6) e comparação Sell-In vs Sell-Out.</p>
+
+  <!-- KPIs gerais -->
+  <div class="kpis" id="vendasKpis"></div>
+
+  <!-- Tabs de visão -->
+  <div class="tabs" style="margin-bottom: 18px;">
+    <button class="tab active" data-vendas-tab="visao">📊 Visão geral</button>
+    <button class="tab" data-vendas-tab="ranking">🏆 Ranking de produtos</button>
+    <button class="tab" data-vendas-tab="produto">🔍 Detalhe por produto</button>
+  </div>
+
+  <!-- TAB: VISÃO GERAL -->
+  <div id="vendasTab-visao" class="vendas-tab">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+      <div class="card" style="padding: 18px;">
+        <h3 style="font-size: 14px; margin: 0 0 12px; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;">📈 Top 10 — Maior crescimento (m1 vs m3)</h3>
+        <div style="height: 320px; position: relative;"><canvas id="chartTopGrowth"></canvas></div>
+      </div>
+      <div class="card" style="padding: 18px;">
+        <h3 style="font-size: 14px; margin: 0 0 12px; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;">📉 Top 10 — Maior queda (m1 vs m3)</h3>
+        <div style="height: 320px; position: relative;"><canvas id="chartTopDrop"></canvas></div>
+      </div>
+    </div>
+
+    <div class="card" style="padding: 18px; margin-top: 18px;">
+      <h3 style="font-size: 14px; margin: 0 0 12px; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;">📊 Top 20 — Volume (último mês)</h3>
+      <div style="height: 360px; position: relative;"><canvas id="chartTopVolume"></canvas></div>
+    </div>
+  </div>
+
+  <!-- TAB: RANKING -->
+  <div id="vendasTab-ranking" class="vendas-tab hidden">
+    <div class="toolbar" style="margin: 14px 0;">
+      <input type="text" class="search-input" id="vendasSearch" placeholder="Buscar produto, SKU…">
+      <select class="search-input" id="vendasFiltroCurva" style="width: 140px;">
+        <option value="">Todas curvas</option>
+        <option value="A">Curva A</option>
+        <option value="B">Curva B</option>
+        <option value="C">Curva C</option>
+      </select>
+      <select class="search-input" id="vendasFiltroTendencia" style="width: 200px;">
+        <option value="">Todas tendências</option>
+        <option value="up">↑ Subindo (m1 &gt; m3)</option>
+        <option value="down">↓ Caindo (m1 &lt; m3)</option>
+        <option value="stable">→ Estável</option>
+      </select>
+      <select class="search-input" id="vendasOrdem" style="width: 200px;">
+        <option value="vendaDesc">Mais vendidos primeiro</option>
+        <option value="growthDesc">Maior crescimento %</option>
+        <option value="growthAsc">Maior queda %</option>
+        <option value="abc">Curva ABC</option>
+      </select>
+      <div style="flex: 1;"></div>
+      <span style="font-size: 11px; color: var(--text-muted);" id="vendasResumo">—</span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="right" style="width: 70px;">SKU</th>
+            <th style="width: 50px;">Curva</th>
+            <th>Produto</th>
+            <th class="right" style="width: 80px;" title="Vendas último mês">M1</th>
+            <th class="right" style="width: 80px;" title="Média 3 meses">M3</th>
+            <th class="right" style="width: 80px;" title="Média 6 meses">M6</th>
+            <th class="right" style="width: 80px;" title="Pico nos últimos 6 meses">Pico6</th>
+            <th class="right" style="width: 100px;" title="Tendência recente: variação % de M1 vs M3">M1 vs M3</th>
+            <th class="right" style="width: 100px;" title="Tendência longa: variação % de M3 vs M6">M3 vs M6</th>
+            <th class="right" style="width: 110px;" title="Diferença entre Sell-In e Sell-Out">Sell-In vs Out</th>
+          </tr>
+        </thead>
+        <tbody id="vendasTbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: DETALHE POR PRODUTO -->
+  <div id="vendasTab-produto" class="vendas-tab hidden">
+    <div class="toolbar" style="margin: 14px 0;">
+      <select class="search-input" id="vendasProdutoSelect" style="width: 100%; max-width: 600px;">
+        <option value="">— Selecione um produto —</option>
+      </select>
+    </div>
+
+    <div id="vendasProdutoConteudo" style="display: none;">
+      <div class="kpis" id="vendasProdutoKpis"></div>
+
+      <div class="card" style="padding: 18px; margin: 18px 0;">
+        <h3 style="font-size: 14px; margin: 0 0 12px; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;">📊 Comparação Sell-In vs Sell-Out</h3>
+        <div style="height: 320px; position: relative;"><canvas id="chartProdutoMetrica"></canvas></div>
+      </div>
+
+      <div class="card" style="padding: 18px;">
+        <h3 style="font-size: 14px; margin: 0 0 12px; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;">📈 Histórico mensal (se disponível)</h3>
+        <div style="height: 320px; position: relative;"><canvas id="chartProdutoHistorico"></canvas></div>
+        <div style="font-size: 11px; color: var(--text-dim); margin-top: 10px;" id="vendasHistMsg"></div>
+      </div>
+    </div>
+
+    <div id="vendasProdutoVazio" class="empty">
+      <div class="empty-title">Selecione um produto pra ver o detalhe</div>
+      <div class="empty-sub">Você verá gráficos comparando Sell-In e Sell-Out, com indicadores de tendência.</div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== VIEW: ESTOQUE PA ===== -->
 <div id="view-estoque-pa" class="view hidden">
   <h1 class="page-title">Estoque PA</h1>
@@ -996,7 +1109,7 @@
 <!-- ===== VIEW: ATUALIZAR ===== -->
 <div id="view-atualizar" class="view hidden">
   <h1 class="page-title">Atualizar dados</h1>
-  <p class="page-sub">Arraste os 4 arquivos que você recebe periodicamente. O sistema reconhece o formato automaticamente e lê sempre a aba mais recente quando há múltiplas abas por data.</p>
+  <p class="page-sub">Arraste os arquivos que você recebe periodicamente. O sistema reconhece o formato automaticamente e lê sempre a aba mais recente quando há múltiplas abas por data.</p>
 
   <div class="upload-grid">
     <div class="dropzone" id="dz-estoque">
@@ -1008,8 +1121,14 @@
     <div class="dropzone" id="dz-venda">
       <input type="file" accept=".xlsx,.xls,.csv" data-slot="venda">
       <div class="dropzone-icon">📊</div>
-      <div class="dropzone-title" id="dzt-venda">Vendas</div>
-      <div class="dropzone-hint" id="dzh-venda">Export do Power BI</div>
+      <div class="dropzone-title" id="dzt-venda">Vendas — Sell-In</div>
+      <div class="dropzone-hint" id="dzh-venda">O que sai do estoque (pro varejista)</div>
+    </div>
+    <div class="dropzone" id="dz-sellout">
+      <input type="file" accept=".xlsx,.xls,.csv" data-slot="sellout">
+      <div class="dropzone-icon">🛍️</div>
+      <div class="dropzone-title" id="dzt-sellout">Vendas — Sell-Out</div>
+      <div class="dropzone-hint" id="dzh-sellout">O que o consumidor compra na ponta</div>
     </div>
     <div class="dropzone" id="dz-ess">
       <input type="file" accept=".xlsx,.xls,.csv" data-slot="ess">
@@ -1023,6 +1142,10 @@
       <div class="dropzone-title" id="dzt-ins">Estoque de insumos</div>
       <div class="dropzone-hint" id="dzh-ins">Embalagens, dados, selos, papelaria</div>
     </div>
+  </div>
+
+  <div class="help-box">
+    <b>Diferença Sell-In vs Sell-Out:</b> <b>Sell-In</b> é o que a Touti vende pro canal (varejista/distribuidor) — é o que sai do nosso estoque, base pra dimensionar produção. <b>Sell-Out</b> é o que o consumidor final compra na loja — mostra a demanda real do mercado. Ambos usam a mesma estrutura: m1, m3, m6, pico6.
   </div>
 
   <div class="help-box">
@@ -1948,7 +2071,8 @@ const state = {
   essencias: [],      // {sku, nome, fornecedor, codigoFornecedor, precoUSD, leadTime, producao, cobertura, estoqueG, pedidoAbertoG}
   produtos: [],       // {sku, descricao, categoria, skuEssencia, gramasPorUn, qtdPorCaixa}
   estoque: {},        // {sku: {pe, sp, diasPePbi, diasSpPbi}}
-  venda: {},          // {sku: {m1, m3, m6, pico6, meses}}
+  venda: {},          // {sku: {m1, m3, m6, pico6, meses}} -- SELL-IN (do PBI)
+  vendaSellOut: {},   // {sku: {m1, m3, m6, pico6, meses}} -- SELL-OUT (mesma estrutura)
   engenharia: {},     // {produtoSku: [{sku, nome, qtd, unidade}]}  -- BOM (lista de insumos por produto)
   insumos: {},        // {sku: {nome, categoria, estoque, unidade}} -- estoque de embalagens/dados/selos/papelaria
   ordensProducao: [], // [{id, produtoSku, qtdSolicitada, qtdViavel, limitadorSku, criadoEm, status, observacoes}]
@@ -2174,7 +2298,7 @@ function badgeCurva(curva) {
 
 async function loadState() {
   try {
-    const keys = ['essencias','produtos','estoque','venda','lastUpdate','engenharia','insumos','ordensProducao','opsEmProducao','comprasEmAndamento','snapshots','syncConfig'];
+    const keys = ['essencias','produtos','estoque','venda','vendaSellOut','lastUpdate','engenharia','insumos','ordensProducao','opsEmProducao','comprasEmAndamento','snapshots','syncConfig'];
     for (const k of keys) {
       try {
         const r = await window.storage.get(k);
@@ -2269,6 +2393,7 @@ document.querySelectorAll('.nav-item').forEach(b => b.onclick = () => {
   if (v === 'dashboard') renderDashboard();
   if (v === 'mudancas') renderMudancas();
   if (v === 'compartilhados') renderCompartilhados();
+  if (v === 'vendas') renderVendas();
   if (v === 'estoque-pa') renderEstoquePA();
   if (v === 'estoque-ins') renderEstoqueInsumos();
   if (v === 'essencias') renderEssTable();
@@ -2360,7 +2485,22 @@ async function handleUpload(file, slot) {
     const cnt = Object.keys(result.data).length;
     document.getElementById('dzh-venda').textContent = `${cnt} produtos · ${result.meses} meses · ${(result.unmatched||[]).length} sem cadastro`;
     const um = result.unmatched || [];
-    let msg = `Vendas: ${cnt} produtos cruzados com cadastro`;
+    let msg = `Vendas (Sell-In): ${cnt} produtos cruzados com cadastro`;
+    if (um.length) msg += ` · ${um.length} sem correspondência: ${um.slice(0,3).join(', ')}${um.length > 3 ? '…' : ''}`;
+    logUpdate('ok', msg);
+  }
+  else if (slot === 'sellout') {
+    const result = parseVenda(rows); // mesmo parser — estrutura idêntica
+    if (result.error) { logUpdate('error', `Sell-Out: ${result.error}`); return; }
+    state.vendaSellOut = result.data;
+    state.lastUpdate.vendaSellOut = new Date().toISOString();
+    await saveEntity('vendaSellOut'); await saveEntity('lastUpdate');
+    document.getElementById('dz-sellout').classList.add('has-file');
+    document.getElementById('dzt-sellout').textContent = `✓ ${file.name}`;
+    const cnt = Object.keys(result.data).length;
+    document.getElementById('dzh-sellout').textContent = `${cnt} produtos · ${result.meses} meses · ${(result.unmatched||[]).length} sem cadastro`;
+    const um = result.unmatched || [];
+    let msg = `Vendas (Sell-Out): ${cnt} produtos cruzados com cadastro`;
     if (um.length) msg += ` · ${um.length} sem correspondência: ${um.slice(0,3).join(', ')}${um.length > 3 ? '…' : ''}`;
     logUpdate('ok', msg);
   }
@@ -3189,6 +3329,395 @@ function renderDashboard() {
       <td class="right mono"><b>${c.podeProd.toLocaleString('pt-BR')}</b></td>
     </tr>
   `).join('') || '<tr><td colspan="4" style="text-align:center; color:var(--text-dim); padding:20px;">Nenhuma OP sugerida no momento</td></tr>';
+}
+
+// ===== RENDER ACOMPANHAMENTO DE VENDAS =====
+//
+// Performance dos produtos: tendência (m1 vs m3, m3 vs m6) e Sell-In vs Sell-Out.
+// Não tenho série histórica mensal — só os agregados m1/m3/m6/pico6. Mas dá pra
+// inferir tendência comparando esses agregados.
+//
+//   m1 > m3  =>  último mês foi melhor que a média → SUBINDO
+//   m1 < m3  =>  último mês foi pior que a média  → CAINDO
+//   |m1 - m3| / m3 < 10%  =>  ESTÁVEL
+//
+// E o mesmo pra m3 vs m6 (tendência mais longa).
+
+// Variáveis pra guardar instâncias de Chart.js e poder destruir antes de recriar
+const _vendasCharts = {};
+
+function _destroyChart(id) {
+  if (_vendasCharts[id]) {
+    _vendasCharts[id].destroy();
+    _vendasCharts[id] = null;
+  }
+}
+
+// Calcula tendência: retorna { tipo: 'up'|'down'|'stable', pct: number }
+function _calcTendencia(atual, base) {
+  if (!base || base === 0) return { tipo: atual > 0 ? 'up' : 'stable', pct: atual > 0 ? 100 : 0 };
+  const pct = ((atual - base) / base) * 100;
+  if (Math.abs(pct) < 10) return { tipo: 'stable', pct };
+  return { tipo: pct > 0 ? 'up' : 'down', pct };
+}
+
+function _badgeTendencia(tend) {
+  if (tend.tipo === 'up') return `<span style="color: var(--ok); font-weight: 600;">↑ ${tend.pct.toFixed(0)}%</span>`;
+  if (tend.tipo === 'down') return `<span style="color: var(--critical); font-weight: 600;">↓ ${Math.abs(tend.pct).toFixed(0)}%</span>`;
+  return `<span style="color: var(--text-muted);">→ ${tend.pct >= 0 ? '+' : ''}${tend.pct.toFixed(0)}%</span>`;
+}
+
+// Cores do Chart.js usando as variáveis CSS
+const _CHART_COLORS = {
+  primary: '#c9a861',
+  ok: '#10b981',
+  critical: '#e11d2a',
+  warn: '#d4a559',
+  info: '#6b9bd4',
+  text: '#9a9aa3',
+  border: '#2a2a2e',
+};
+
+// Padrão de configuração Chart.js
+function _chartCommonOpts(legend = true) {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: legend,
+        position: 'top',
+        labels: { color: _CHART_COLORS.text, font: { size: 11 } },
+      },
+      tooltip: {
+        backgroundColor: '#0a0a0b',
+        titleColor: '#f5f5f7',
+        bodyColor: '#9a9aa3',
+        borderColor: _CHART_COLORS.border,
+        borderWidth: 1,
+        padding: 10,
+        cornerRadius: 6,
+      },
+    },
+    scales: {
+      x: {
+        ticks: { color: _CHART_COLORS.text, font: { size: 10 } },
+        grid: { color: _CHART_COLORS.border, drawBorder: false },
+      },
+      y: {
+        ticks: { color: _CHART_COLORS.text, font: { size: 10 } },
+        grid: { color: _CHART_COLORS.border, drawBorder: false },
+      },
+    },
+  };
+}
+
+// Calcula dados de performance pra todos os produtos
+function _calcularPerformance() {
+  const lista = [];
+  state.produtos.forEach(p => {
+    const v = state.venda[p.sku] || {};
+    const vo = state.vendaSellOut[p.sku] || null;
+    const m1 = v.m1 || 0, m3 = v.m3 || 0, m6 = v.m6 || 0, pico6 = v.pico6 || 0;
+    if (m1 === 0 && m3 === 0 && m6 === 0) return; // pula sem nenhuma venda
+
+    const tendRecente = _calcTendencia(m1, m3);
+    const tendLonga = _calcTendencia(m3, m6);
+    const curva = getCurvaProduto(p.sku).curva;
+
+    // Sell-In vs Sell-Out: comparação por m3
+    let inOut = null;
+    if (vo) {
+      const diffPct = m3 > 0 ? ((m3 - (vo.m3 || 0)) / m3) * 100 : 0;
+      inOut = { sellIn: m3, sellOut: vo.m3 || 0, diffPct };
+    }
+
+    lista.push({ p, m1, m3, m6, pico6, tendRecente, tendLonga, curva, inOut, sellOut: vo });
+  });
+  return lista;
+}
+
+function renderVendas() {
+  const lista = _calcularPerformance();
+
+  // KPIs gerais
+  const subindo = lista.filter(l => l.tendRecente.tipo === 'up').length;
+  const caindo = lista.filter(l => l.tendRecente.tipo === 'down').length;
+  const estaveis = lista.filter(l => l.tendRecente.tipo === 'stable').length;
+  const semSellOut = Object.keys(state.vendaSellOut || {}).length === 0;
+  const volumeMes = lista.reduce((s, l) => s + l.m1, 0);
+
+  document.getElementById('vendasKpis').innerHTML = `
+    <div class="kpi ok">
+      <div class="kpi-label">Subindo</div>
+      <div class="kpi-value">${subindo}</div>
+      <div class="kpi-sub">M1 ${'>'} M3 em mais de 10%</div>
+    </div>
+    <div class="kpi critical">
+      <div class="kpi-label">Caindo</div>
+      <div class="kpi-value">${caindo}</div>
+      <div class="kpi-sub">M1 ${'<'} M3 em mais de 10%</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Estáveis</div>
+      <div class="kpi-value">${estaveis}</div>
+      <div class="kpi-sub">Variação &lt; 10%</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Volume M1</div>
+      <div class="kpi-value" style="font-size: 24px;">${Math.round(volumeMes).toLocaleString('pt-BR')}</div>
+      <div class="kpi-sub">${semSellOut ? '⚠ Sem Sell-Out carregado' : 'Sell-In · último mês'}</div>
+    </div>
+  `;
+
+  // Renderiza tab ativa
+  const activeTab = document.querySelector('[data-vendas-tab].active')?.dataset.vendasTab || 'visao';
+  if (activeTab === 'visao') _renderVendasVisao(lista);
+  else if (activeTab === 'ranking') _renderVendasRanking(lista);
+  else if (activeTab === 'produto') _renderVendasProduto();
+}
+
+function _renderVendasVisao(lista) {
+  // Top 10 crescimento (filtra os que tem m3 > 0 e ordenando por pct)
+  const comGrowth = lista.filter(l => l.m3 > 0).slice();
+  const topGrowth = comGrowth.slice().sort((a, b) => b.tendRecente.pct - a.tendRecente.pct).slice(0, 10);
+  const topDrop = comGrowth.slice().sort((a, b) => a.tendRecente.pct - b.tendRecente.pct).slice(0, 10);
+  const topVolume = lista.slice().sort((a, b) => b.m1 - a.m1).slice(0, 20);
+
+  // Chart top growth
+  _destroyChart('chartTopGrowth');
+  const ctxG = document.getElementById('chartTopGrowth');
+  if (ctxG) {
+    _vendasCharts.chartTopGrowth = new Chart(ctxG, {
+      type: 'bar',
+      data: {
+        labels: topGrowth.map(l => l.p.descricao.substring(0, 28)),
+        datasets: [{
+          label: '% Crescimento M1 vs M3',
+          data: topGrowth.map(l => l.tendRecente.pct),
+          backgroundColor: _CHART_COLORS.ok + 'cc',
+          borderColor: _CHART_COLORS.ok,
+          borderWidth: 1,
+        }],
+      },
+      options: { ..._chartCommonOpts(false), indexAxis: 'y' },
+    });
+  }
+
+  // Chart top drop
+  _destroyChart('chartTopDrop');
+  const ctxD = document.getElementById('chartTopDrop');
+  if (ctxD) {
+    _vendasCharts.chartTopDrop = new Chart(ctxD, {
+      type: 'bar',
+      data: {
+        labels: topDrop.map(l => l.p.descricao.substring(0, 28)),
+        datasets: [{
+          label: '% Queda M1 vs M3',
+          data: topDrop.map(l => l.tendRecente.pct),
+          backgroundColor: _CHART_COLORS.critical + 'cc',
+          borderColor: _CHART_COLORS.critical,
+          borderWidth: 1,
+        }],
+      },
+      options: { ..._chartCommonOpts(false), indexAxis: 'y' },
+    });
+  }
+
+  // Chart top volume — com cor por tendência
+  _destroyChart('chartTopVolume');
+  const ctxV = document.getElementById('chartTopVolume');
+  if (ctxV) {
+    _vendasCharts.chartTopVolume = new Chart(ctxV, {
+      type: 'bar',
+      data: {
+        labels: topVolume.map(l => l.p.descricao.substring(0, 30)),
+        datasets: [{
+          label: 'Vendas M1',
+          data: topVolume.map(l => l.m1),
+          backgroundColor: topVolume.map(l =>
+            l.tendRecente.tipo === 'up' ? _CHART_COLORS.ok + 'cc' :
+            l.tendRecente.tipo === 'down' ? _CHART_COLORS.critical + 'cc' :
+            _CHART_COLORS.text + '99'
+          ),
+          borderColor: topVolume.map(l =>
+            l.tendRecente.tipo === 'up' ? _CHART_COLORS.ok :
+            l.tendRecente.tipo === 'down' ? _CHART_COLORS.critical :
+            _CHART_COLORS.text
+          ),
+          borderWidth: 1,
+        }],
+      },
+      options: { ..._chartCommonOpts(false), indexAxis: 'y' },
+    });
+  }
+}
+
+function _renderVendasRanking(lista) {
+  const q = norm(document.getElementById('vendasSearch')?.value || '');
+  const fCurva = document.getElementById('vendasFiltroCurva')?.value || '';
+  const fTend = document.getElementById('vendasFiltroTendencia')?.value || '';
+  const ordem = document.getElementById('vendasOrdem')?.value || 'vendaDesc';
+
+  let filtrada = lista.slice();
+  if (q) filtrada = filtrada.filter(l => norm(l.p.descricao).includes(q) || String(l.p.sku).includes(q));
+  if (fCurva) filtrada = filtrada.filter(l => l.curva === fCurva);
+  if (fTend) filtrada = filtrada.filter(l => l.tendRecente.tipo === fTend);
+
+  const ordemCurva = { A: 0, B: 1, C: 2, Z: 3 };
+  if (ordem === 'vendaDesc') filtrada.sort((a, b) => b.m1 - a.m1);
+  else if (ordem === 'growthDesc') filtrada.sort((a, b) => b.tendRecente.pct - a.tendRecente.pct);
+  else if (ordem === 'growthAsc') filtrada.sort((a, b) => a.tendRecente.pct - b.tendRecente.pct);
+  else if (ordem === 'abc') filtrada.sort((a, b) => (ordemCurva[a.curva] - ordemCurva[b.curva]) || (b.m1 - a.m1));
+
+  const tbody = document.getElementById('vendasTbody');
+  if (filtrada.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; color:var(--text-dim); padding:30px;">Nenhum produto com esse filtro.</td></tr>`;
+  } else {
+    tbody.innerHTML = filtrada.map(l => {
+      const inOutCell = l.inOut
+        ? `<span class="mono" style="color: ${Math.abs(l.inOut.diffPct) < 10 ? 'var(--text-muted)' : (l.inOut.diffPct > 0 ? 'var(--warn)' : 'var(--info)')}">${l.inOut.diffPct >= 0 ? '+' : ''}${l.inOut.diffPct.toFixed(0)}%</span>`
+        : '<span style="color:var(--text-dim); font-size:11px">—</span>';
+      return `
+        <tr>
+          <td class="right">${refSku(l.p.sku, 'produto')}</td>
+          <td>${badgeCurva(l.curva)}</td>
+          <td>${refNome(l.p.sku, l.p.descricao, 'produto')}</td>
+          <td class="right mono">${Math.round(l.m1).toLocaleString('pt-BR')}</td>
+          <td class="right mono">${Math.round(l.m3).toLocaleString('pt-BR')}</td>
+          <td class="right mono" style="color:var(--text-muted)">${Math.round(l.m6).toLocaleString('pt-BR')}</td>
+          <td class="right mono" style="color:var(--text-muted)">${Math.round(l.pico6).toLocaleString('pt-BR')}</td>
+          <td class="right">${_badgeTendencia(l.tendRecente)}</td>
+          <td class="right">${_badgeTendencia(l.tendLonga)}</td>
+          <td class="right">${inOutCell}</td>
+        </tr>`;
+    }).join('');
+  }
+  document.getElementById('vendasResumo').textContent =
+    filtrada.length === lista.length ? `${lista.length} produtos` : `${filtrada.length} de ${lista.length} visíveis`;
+}
+
+function _renderVendasProduto() {
+  // Popula select
+  const sel = document.getElementById('vendasProdutoSelect');
+  if (sel.options.length <= 1) {
+    state.produtos.slice().sort((a, b) => a.descricao.localeCompare(b.descricao)).forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.sku;
+      opt.textContent = `${p.descricao} [${p.sku}]`;
+      sel.appendChild(opt);
+    });
+  }
+
+  const sku = parseInt(sel.value);
+  if (!sku) {
+    document.getElementById('vendasProdutoConteudo').style.display = 'none';
+    document.getElementById('vendasProdutoVazio').style.display = '';
+    return;
+  }
+
+  document.getElementById('vendasProdutoConteudo').style.display = '';
+  document.getElementById('vendasProdutoVazio').style.display = 'none';
+
+  const p = state.produtos.find(x => x.sku === sku);
+  if (!p) return;
+  const v = state.venda[sku] || {};
+  const vo = state.vendaSellOut[sku] || null;
+  const curva = getCurvaProduto(sku);
+  const tendRecente = _calcTendencia(v.m1 || 0, v.m3 || 0);
+  const tendLonga = _calcTendencia(v.m3 || 0, v.m6 || 0);
+
+  // KPIs do produto
+  document.getElementById('vendasProdutoKpis').innerHTML = `
+    <div class="kpi">
+      <div class="kpi-label">Curva ABC</div>
+      <div class="kpi-value" style="font-size: 28px;">${curva.curva}</div>
+      <div class="kpi-sub">Rank #${curva.ranking || '—'}</div>
+    </div>
+    <div class="kpi ${tendRecente.tipo === 'up' ? 'ok' : tendRecente.tipo === 'down' ? 'critical' : ''}">
+      <div class="kpi-label">Tendência recente</div>
+      <div class="kpi-value" style="font-size: 22px;">${tendRecente.tipo === 'up' ? '↑' : tendRecente.tipo === 'down' ? '↓' : '→'} ${tendRecente.pct >= 0 ? '+' : ''}${tendRecente.pct.toFixed(0)}%</div>
+      <div class="kpi-sub">M1 vs M3</div>
+    </div>
+    <div class="kpi ${tendLonga.tipo === 'up' ? 'ok' : tendLonga.tipo === 'down' ? 'critical' : ''}">
+      <div class="kpi-label">Tendência longa</div>
+      <div class="kpi-value" style="font-size: 22px;">${tendLonga.tipo === 'up' ? '↑' : tendLonga.tipo === 'down' ? '↓' : '→'} ${tendLonga.pct >= 0 ? '+' : ''}${tendLonga.pct.toFixed(0)}%</div>
+      <div class="kpi-sub">M3 vs M6</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Pico 6M</div>
+      <div class="kpi-value" style="font-size: 22px;">${Math.round(v.pico6 || 0).toLocaleString('pt-BR')}</div>
+      <div class="kpi-sub">Melhor mês recente</div>
+    </div>
+  `;
+
+  // Chart 1: Sell-In vs Sell-Out (barras agrupadas por métrica)
+  _destroyChart('chartProdutoMetrica');
+  const ctx1 = document.getElementById('chartProdutoMetrica');
+  if (ctx1) {
+    const datasets = [{
+      label: 'Sell-In',
+      data: [v.m1 || 0, v.m3 || 0, v.m6 || 0, v.pico6 || 0],
+      backgroundColor: _CHART_COLORS.primary + 'cc',
+      borderColor: _CHART_COLORS.primary,
+      borderWidth: 1,
+    }];
+    if (vo) {
+      datasets.push({
+        label: 'Sell-Out',
+        data: [vo.m1 || 0, vo.m3 || 0, vo.m6 || 0, vo.pico6 || 0],
+        backgroundColor: _CHART_COLORS.info + 'cc',
+        borderColor: _CHART_COLORS.info,
+        borderWidth: 1,
+      });
+    }
+    _vendasCharts.chartProdutoMetrica = new Chart(ctx1, {
+      type: 'bar',
+      data: { labels: ['Último mês (M1)', 'Média 3m (M3)', 'Média 6m (M6)', 'Pico 6m'], datasets },
+      options: _chartCommonOpts(true),
+    });
+  }
+
+  // Chart 2: Histórico mensal (se v.meses existir)
+  _destroyChart('chartProdutoHistorico');
+  const ctx2 = document.getElementById('chartProdutoHistorico');
+  const msgEl = document.getElementById('vendasHistMsg');
+  if (ctx2) {
+    const meses = v.meses || {};
+    const mesesArr = Object.keys(meses).sort();
+    if (mesesArr.length === 0) {
+      msgEl.textContent = '⚠ Sem histórico mensal disponível pra esse produto. O sistema só tem agregados M1/M3/M6/Pico6.';
+      ctx2.style.opacity = '0.3';
+    } else {
+      msgEl.textContent = '';
+      ctx2.style.opacity = '1';
+      const datasets = [{
+        label: 'Sell-In',
+        data: mesesArr.map(m => meses[m] || 0),
+        borderColor: _CHART_COLORS.primary,
+        backgroundColor: _CHART_COLORS.primary + '33',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 3,
+      }];
+      if (vo && vo.meses) {
+        datasets.push({
+          label: 'Sell-Out',
+          data: mesesArr.map(m => (vo.meses[m] || 0)),
+          borderColor: _CHART_COLORS.info,
+          backgroundColor: _CHART_COLORS.info + '33',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 3,
+        });
+      }
+      _vendasCharts.chartProdutoHistorico = new Chart(ctx2, {
+        type: 'line',
+        data: { labels: mesesArr, datasets },
+        options: _chartCommonOpts(true),
+      });
+    }
+  }
 }
 
 // ===== RENDER ESTOQUE PA =====
@@ -6614,6 +7143,7 @@ document.getElementById('btnBackup').onclick = () => {
     produtos: state.produtos,
     estoque: state.estoque,
     venda: state.venda,
+    vendaSellOut: state.vendaSellOut,
     engenharia: state.engenharia,
     insumos: state.insumos,
     ordensProducao: state.ordensProducao,
@@ -6667,6 +7197,7 @@ document.getElementById('restoreFile').onchange = async e => {
     state.produtos = data.produtos;
     state.estoque = data.estoque || {};
     state.venda = data.venda || {};
+    state.vendaSellOut = data.vendaSellOut || {};
     state.engenharia = data.engenharia || {};
     state.insumos = data.insumos || {};
     state.ordensProducao = data.ordensProducao || [];
@@ -6675,7 +7206,7 @@ document.getElementById('restoreFile').onchange = async e => {
     state.snapshots = data.snapshots || [];
     state.lastUpdate = data.lastUpdate || {};
     await saveEntity('essencias'); await saveEntity('produtos');
-    await saveEntity('estoque'); await saveEntity('venda'); await saveEntity('lastUpdate');
+    await saveEntity('estoque'); await saveEntity('venda'); await saveEntity('vendaSellOut'); await saveEntity('lastUpdate');
     await saveEntity('engenharia'); await saveEntity('insumos'); await saveEntity('ordensProducao');
     await saveEntity('opsEmProducao');
     await saveEntity('comprasEmAndamento');
@@ -7313,6 +7844,7 @@ async function sincronizarComUrl(url, opts = {}) {
     state.produtos = data.produtos || [];
     state.estoque = data.estoque || {};
     state.venda = data.venda || {};
+    state.vendaSellOut = data.vendaSellOut || {};
     state.engenharia = data.engenharia || {};
     state.insumos = data.insumos || {};
     state.ordensProducao = data.ordensProducao || [];
@@ -7323,7 +7855,7 @@ async function sincronizarComUrl(url, opts = {}) {
 
     // Salva tudo
     await saveEntity('essencias'); await saveEntity('produtos');
-    await saveEntity('estoque'); await saveEntity('venda'); await saveEntity('lastUpdate');
+    await saveEntity('estoque'); await saveEntity('venda'); await saveEntity('vendaSellOut'); await saveEntity('lastUpdate');
     await saveEntity('engenharia'); await saveEntity('insumos');
     await saveEntity('ordensProducao'); await saveEntity('opsEmProducao');
     await saveEntity('comprasEmAndamento'); await saveEntity('snapshots');
@@ -7754,6 +8286,23 @@ document.addEventListener('keydown', (e) => {
   bindLive('estInsSearch', renderEstoqueInsumos);
   bindChange('estInsFiltroCategoria', renderEstoqueInsumos);
   bindChange('estInsFiltroStatus', renderEstoqueInsumos);
+
+  // Acompanhamento de Vendas — tabs internas
+  document.querySelectorAll('[data-vendas-tab]').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('[data-vendas-tab]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const tab = btn.dataset.vendasTab;
+      document.querySelectorAll('.vendas-tab').forEach(t => t.classList.add('hidden'));
+      document.getElementById('vendasTab-' + tab).classList.remove('hidden');
+      renderVendas();
+    };
+  });
+  bindLive('vendasSearch', renderVendas);
+  bindChange('vendasFiltroCurva', renderVendas);
+  bindChange('vendasFiltroTendencia', renderVendas);
+  bindChange('vendasOrdem', renderVendas);
+  bindChange('vendasProdutoSelect', renderVendas);
 
   // ===== SYNC: bind dos handlers =====
   const cfg = state.syncConfig || {};
