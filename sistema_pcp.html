@@ -543,6 +543,33 @@
   .sim-days-btn { transition: all 0.15s; }
   .sim-days-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
 
+  /* FILTRO EMPRESA — segmented control */
+  .filtro-emp-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 6px 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: all 0.15s;
+    border-right: 1px solid var(--border);
+  }
+  .filtro-emp-btn:last-child { border-right: none; }
+  .filtro-emp-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+  .filtro-emp-btn.active {
+    background: var(--accent);
+    color: #000;
+  }
+  .filtro-emp-btn.active[data-empresa="Yes"] { background: #e11d2a; color: #fff; }
+  .filtro-emp-btn.active[data-empresa="ambas"] { background: var(--text); color: var(--bg); }
+  @media (max-width: 768px) {
+    .filtro-emp-btn { padding: 5px 8px; font-size: 10px; }
+  }
+
   /* MODO SOMENTE-LEITURA — desabilita botões de edição */
   body.read-only .btn-primary,
   body.read-only .btn-gold,
@@ -654,6 +681,11 @@
     <button class="btn btn-sm" id="btnBuscaGlobal" title="Buscar (Ctrl+K)" style="display:flex; gap:6px; align-items:center;">
       🔎 <span class="busca-label">Buscar</span> <kbd class="busca-kbd">Ctrl+K</kbd>
     </button>
+    <div id="filtroEmpresaWrap" style="display: flex; align-items: center; gap: 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden;">
+      <button class="filtro-emp-btn" data-empresa="ambas" title="Mostrar Touti e Yes">Ambas</button>
+      <button class="filtro-emp-btn" data-empresa="Touti" title="Mostrar apenas Touti">Touti</button>
+      <button class="filtro-emp-btn" data-empresa="Yes" title="Mostrar apenas Yes">Yes</button>
+    </div>
     <span id="syncBadge" class="hidden" title="Status de sincronização"></span>
     <span><span class="status-dot"></span> <span id="storageStatus">Carregando…</span></span>
     <span id="dataStamp" class="mono last-update">—</span>
@@ -1619,6 +1651,7 @@
           <th style="width: 36px;"></th>
           <th class="right" style="width: 80px;">SKU</th>
           <th>Descrição</th>
+          <th style="width: 60px;" title="Empresa: Touti ou Yes (classificada pelo nome)">Empresa</th>
           <th style="width: 60px;" title="Curva ABC calculada automaticamente">Curva</th>
           <th style="width: 130px;">Categoria</th>
           <th style="width: 100px;">Linha</th>
@@ -2073,6 +2106,7 @@ const state = {
   estoque: {},        // {sku: {pe, sp, diasPePbi, diasSpPbi}}
   venda: {},          // {sku: {m1, m3, m6, pico6, meses}} -- SELL-IN (do PBI)
   vendaSellOut: {},   // {sku: {m1, m3, m6, pico6, meses}} -- SELL-OUT (mesma estrutura)
+  filtroEmpresa: 'ambas', // 'Touti' | 'Yes' | 'ambas' — filtro global persistido
   engenharia: {},     // {produtoSku: [{sku, nome, qtd, unidade}]}  -- BOM (lista de insumos por produto)
   insumos: {},        // {sku: {nome, categoria, estoque, unidade}} -- estoque de embalagens/dados/selos/papelaria
   ordensProducao: [], // [{id, produtoSku, qtdSolicitada, qtdViavel, limitadorSku, criadoEm, status, observacoes}]
@@ -2196,6 +2230,53 @@ function todosSkusVitais() {
     .forEach(i => { if (i.sku) skus.add(i.sku); });
   return skus;
 }
+// ===== EMPRESA (Touti / Yes) =====
+//
+// Classificação por heurística baseada no nome do produto.
+// Calculada em tempo real, não salva no produto — quando os critérios mudarem, basta editar aqui.
+//
+// Regra Yes:
+//   - Começa com "DESODORANTE COLONIA"  (toda a linha Yes desodorante)
+//   - OU contém "EXTREME BLACK"
+//   - OU contém "SANDALO" (com ou sem acento)
+//
+// Resto → Touti.
+
+function getEmpresaProduto(prod) {
+  if (!prod) return 'Touti';
+  // Override manual (se o usuário cadastrou explicitamente)
+  if (prod.empresa === 'Yes' || prod.empresa === 'Touti') return prod.empresa;
+  const desc = String(prod.descricao || '').toUpperCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // remove acentos pra match
+  if (desc.startsWith('DESODORANTE COLONIA')) return 'Yes';
+  if (desc.includes('EXTREME BLACK')) return 'Yes';
+  if (desc.includes('SANDALO')) return 'Yes';
+  return 'Touti';
+}
+
+// Cor visual de cada empresa (pra badge)
+function badgeEmpresa(empresa) {
+  if (empresa === 'Yes') {
+    return `<span style="display:inline-block; padding:2px 7px; border-radius:4px; font-size:10px; font-weight:700; background:rgba(225,29,42,0.12); color:#ff6b75; border:1px solid rgba(225,29,42,0.35); letter-spacing:0.04em;">YES</span>`;
+  }
+  return `<span style="display:inline-block; padding:2px 7px; border-radius:4px; font-size:10px; font-weight:700; background:rgba(201,168,97,0.12); color:var(--accent); border:1px solid rgba(201,168,97,0.35); letter-spacing:0.04em;">TOUTI</span>`;
+}
+
+// Filtro global: passa um produto e retorna true se ele deve aparecer.
+// Lê do state.filtroEmpresa (persistido).
+function passaFiltroEmpresa(prod) {
+  const f = state.filtroEmpresa || 'ambas';
+  if (f === 'ambas') return true;
+  return getEmpresaProduto(prod) === f;
+}
+
+// Retorna apenas os produtos que passam pelo filtro de empresa atual
+function produtosFiltrados() {
+  const f = state.filtroEmpresa || 'ambas';
+  if (f === 'ambas') return state.produtos;
+  return state.produtos.filter(p => getEmpresaProduto(p) === f);
+}
+
 function getLinhaProduto(prod) {
   const termos = (state.linhaAutoTermos && state.linhaAutoTermos.length) ? state.linhaAutoTermos : LINHA_AUTO_DEFAULT;
   if (!prod) return 'Manual';
@@ -2298,7 +2379,7 @@ function badgeCurva(curva) {
 
 async function loadState() {
   try {
-    const keys = ['essencias','produtos','estoque','venda','vendaSellOut','lastUpdate','engenharia','insumos','ordensProducao','opsEmProducao','comprasEmAndamento','snapshots','syncConfig'];
+    const keys = ['essencias','produtos','estoque','venda','vendaSellOut','filtroEmpresa','lastUpdate','engenharia','insumos','ordensProducao','opsEmProducao','comprasEmAndamento','snapshots','syncConfig'];
     for (const k of keys) {
       try {
         const r = await window.storage.get(k);
@@ -2998,7 +3079,7 @@ function computeAnalise() {
 
   const out = [];
   for (const ess of state.essencias) {
-    const usadaPor = state.produtos.filter(p => p.skuEssencia === ess.sku);
+    const usadaPor = produtosFiltrados().filter(p => p.skuEssencia === ess.sku);
 
     let demandaMes = 0;
     let estoquePaEquivalenteG = 0;
@@ -3087,7 +3168,7 @@ function renderDashboard() {
 
   // Contagem por status de produtos (curva A com cobertura < 15d = mais crítico)
   let crit15A = 0, crit15Total = 0;
-  state.produtos.forEach(p => {
+  produtosFiltrados().forEach(p => {
     const v = state.venda[p.sku];
     const venMes = calcGiro(v);
     if (venMes <= 0) return;
@@ -3101,11 +3182,11 @@ function renderDashboard() {
     }
   });
 
-  // Essências críticas (estoque + pedido < demanda do período)
+  // Essências críticas (estoque + pedido < demanda do período) — filtrado por empresa
   let essCriticas = 0, essTotal = state.essencias.length;
   state.essencias.forEach(e => {
     let demandaMes = 0;
-    state.produtos.forEach(p => {
+    produtosFiltrados().forEach(p => {
       if (p.skuEssencia === e.sku) {
         demandaMes += calcGiro(state.venda[p.sku]) * (p.gramasPorUn || 0);
       }
@@ -3117,14 +3198,16 @@ function renderDashboard() {
     if (disponivel < demandaTotal) essCriticas++;
   });
 
-  // Insumos vitais críticos (cobertura < 15d)
+  // Insumos vitais críticos (cobertura < 15d) — filtrado por empresa
   const skusVitais = todosSkusVitais();
+  const skusProdFiltrados = new Set(produtosFiltrados().map(p => p.sku));
   let insVitaisCriticos = 0;
   skusVitais.forEach(sku => {
     const ins = state.insumos[sku];
     if (!ins) return;
     let demandaMes = 0;
     Object.entries(state.engenharia || {}).forEach(([prodSku, bom]) => {
+      if (!skusProdFiltrados.has(parseInt(prodSku))) return;
       (bom || []).forEach(b => {
         if (b.sku === sku) demandaMes += calcGiro(state.venda[parseInt(prodSku)]) * (b.qtd || 0);
       });
@@ -3134,9 +3217,9 @@ function renderDashboard() {
     if (cob < 15) insVitaisCriticos++;
   });
 
-  // Volume total previsto/mês (giro × 30 dias)
+  // Volume total previsto/mês (giro × 30 dias) — filtrado por empresa
   let volumeMes = 0;
-  state.produtos.forEach(p => { volumeMes += calcGiro(state.venda[p.sku]); });
+  produtosFiltrados().forEach(p => { volumeMes += calcGiro(state.venda[p.sku]); });
 
   document.getElementById('dashKpis').innerHTML = `
     <div class="kpi warn">
@@ -3163,11 +3246,12 @@ function renderDashboard() {
 
   // ===== Resumo da curva =====
   const curvaCounts = { A: 0, B: 0, C: 0, Z: 0 };
-  state.produtos.forEach(p => {
+  const prodsFiltrados = produtosFiltrados();
+  prodsFiltrados.forEach(p => {
     const c = getCurvaProduto(p.sku);
     curvaCounts[c.curva]++;
   });
-  const totalProd = state.produtos.length;
+  const totalProd = prodsFiltrados.length;
   const pctA = totalProd > 0 ? (curvaCounts.A / totalProd * 100).toFixed(0) : 0;
   const pctB = totalProd > 0 ? (curvaCounts.B / totalProd * 100).toFixed(0) : 0;
   const pctC = totalProd > 0 ? (curvaCounts.C / totalProd * 100).toFixed(0) : 0;
@@ -3215,9 +3299,9 @@ function renderDashboard() {
     alertaWrap.innerHTML = `<div class="alert alert-ok">✓ Operação saudável. Nenhum ponto crítico.</div>`;
   }
 
-  // ===== Top produtos críticos (curva A com menor cobertura) =====
+  // ===== Top produtos críticos (curva A com menor cobertura) — filtrado por empresa =====
   const prodCriticos = [];
-  state.produtos.forEach(p => {
+  produtosFiltrados().forEach(p => {
     const v = state.venda[p.sku];
     const venMes = calcGiro(v);
     if (venMes <= 0) return;
@@ -3242,15 +3326,15 @@ function renderDashboard() {
     </tr>
   `).join('') || '<tr><td colspan="4" style="text-align:center; color:var(--text-dim); padding:20px;">Nenhum produto crítico no momento ✓</td></tr>';
 
-  // ===== Top essências críticas =====
+  // ===== Top essências críticas — filtrado por empresa =====
   const essCrit = [];
   state.essencias.forEach(e => {
     let demandaMes = 0;
-    state.produtos.forEach(p => {
+    produtosFiltrados().forEach(p => {
       if (p.skuEssencia === e.sku) demandaMes += calcGiro(state.venda[p.sku]) * (p.gramasPorUn || 0);
     });
     if (demandaMes <= 0) return;
-    const demandaTotal = (demandaMes / 30) * 45; // sempre 45 dias
+    const demandaTotal = (demandaMes / 30) * 45;
     const comprasAtivas = getComprasAtivasPorEss(e.sku);
     const disp = (e.estoqueG || 0) + (e.pedidoAbertoG || 0) + comprasAtivas;
     const comprar = Math.max(0, demandaTotal - disp);
@@ -3294,10 +3378,10 @@ function renderDashboard() {
     </tr>
   `).join('') || '<tr><td colspan="4" style="text-align:center; color:var(--text-dim); padding:20px;">Insumos vitais OK ✓</td></tr>';
 
-  // ===== Próximas OPs sugeridas =====
+  // ===== Próximas OPs sugeridas — filtrado por empresa =====
   // Top 8 produtos críticos que podem produzir (têm insumo)
   const proxOps = [];
-  state.produtos.forEach(p => {
+  produtosFiltrados().forEach(p => {
     const v = state.venda[p.sku];
     const venMes = calcGiro(v);
     if (venMes <= 0) return;
@@ -3412,10 +3496,10 @@ function _chartCommonOpts(legend = true) {
   };
 }
 
-// Calcula dados de performance pra todos os produtos
+// Calcula dados de performance pra todos os produtos (filtrado por empresa)
 function _calcularPerformance() {
   const lista = [];
-  state.produtos.forEach(p => {
+  produtosFiltrados().forEach(p => {
     const v = state.venda[p.sku] || {};
     const vo = state.vendaSellOut[p.sku] || null;
     const m1 = v.m1 || 0, m3 = v.m3 || 0, m6 = v.m6 || 0, pico6 = v.pico6 || 0;
@@ -3500,7 +3584,7 @@ function _renderVendasVisao(lista) {
           borderWidth: 1,
         }],
       },
-      options: { ..._chartCommonOpts(false), indexAxis: 'y' },
+      options: { ..._chartCommonOpts(true), indexAxis: 'y' },
     });
   }
 
@@ -3520,7 +3604,7 @@ function _renderVendasVisao(lista) {
           borderWidth: 1,
         }],
       },
-      options: { ..._chartCommonOpts(false), indexAxis: 'y' },
+      options: { ..._chartCommonOpts(true), indexAxis: 'y' },
     });
   }
 
@@ -3548,7 +3632,7 @@ function _renderVendasVisao(lista) {
           borderWidth: 1,
         }],
       },
-      options: { ..._chartCommonOpts(false), indexAxis: 'y' },
+      options: { ..._chartCommonOpts(true), indexAxis: 'y' },
     });
   }
 }
@@ -3739,7 +3823,7 @@ function renderEstoquePA() {
   const fStatus = document.getElementById('estPaFiltroStatus')?.value || '';
 
   const linhas = [];
-  state.produtos.forEach(p => {
+  produtosFiltrados().forEach(p => {
     const est = state.estoque[p.sku] || { pe: 0, sp: 0 };
     const pe = est.pe || 0;
     const sp = est.sp || 0;
@@ -3859,8 +3943,10 @@ function renderEstoqueInsumos() {
 
   // Index reverso: insumoSku → demanda mensal agregada (e quantos produtos usam)
   const demandaPorSku = {}; // sku -> { demandaMes, produtosUsam }
+  const skusFiltrados = new Set(produtosFiltrados().map(p => p.sku));
   Object.entries(state.engenharia || {}).forEach(([prodSkuStr, bom]) => {
     const prodSku = parseInt(prodSkuStr);
+    if (!skusFiltrados.has(prodSku)) return; // pula produtos fora do filtro
     const giro = calcGiro(state.venda[prodSku]);
     (bom || []).forEach(b => {
       if (!demandaPorSku[b.sku]) demandaPorSku[b.sku] = { demandaMes: 0, produtosUsam: 0 };
@@ -3983,8 +4069,10 @@ function renderCompartilhados() {
 
   // Aba "Todos compartilhados": insumos não-vitais que aparecem em 2+ produtos
   const usoPorInsumo = {};
+  const skusFiltrados = new Set(produtosFiltrados().map(p => p.sku));
   Object.entries(state.engenharia || {}).forEach(([prodSkuStr, bom]) => {
     const prodSku = parseInt(prodSkuStr);
+    if (!skusFiltrados.has(prodSku)) return;
     (bom || []).forEach(b => {
       if (!usoPorInsumo[b.sku]) usoPorInsumo[b.sku] = [];
       usoPorInsumo[b.sku].push({ prodSku, qtd: b.qtd });
@@ -4087,10 +4175,12 @@ function _renderInsumosVitaisLegacy() {
     return Math.max(v.m3 || 0, v.pico6 || 0);
   };
 
-  // Index reverso: insumoSku → [{produto, qtdPorUn, ...}]
+  // Index reverso: insumoSku → [{produto, qtdPorUn, ...}] -- só produtos da empresa filtrada
   const usoPorInsumo = {};
+  const skusFiltradosLegacy = new Set(produtosFiltrados().map(p => p.sku));
   Object.entries(state.engenharia || {}).forEach(([prodSkuStr, bom]) => {
     const prodSku = parseInt(prodSkuStr);
+    if (!skusFiltradosLegacy.has(prodSku)) return;
     const p = state.produtos.find(x => x.sku === prodSku);
     if (!p) return;
     (bom || []).forEach(b => {
@@ -4643,7 +4733,7 @@ function calcularSimulacaoCobertura(dias) {
     let demandaMensalG = 0;
     let paEquivG = 0;
     let produtosUsando = 0;
-    state.produtos.forEach(p => {
+    produtosFiltrados().forEach(p => {
       if (p.skuEssencia !== ess.sku) return;
       const giro = calcGiro(state.venda[p.sku]);
       if (giro <= 0) return;
@@ -5053,7 +5143,7 @@ function renderEssTable() {
 function renderProdTable() {
   const q = norm(document.getElementById('searchProd')?.value || '');
   const fc = document.getElementById('filterCategoria')?.value || '';
-  let rows = state.produtos.slice();
+  let rows = produtosFiltrados().slice();
   if (q) rows = rows.filter(p => {
     const ess = state.essencias.find(e => e.sku === p.skuEssencia);
     return norm(p.descricao).includes(q) || String(p.sku).includes(q) ||
@@ -5101,6 +5191,7 @@ function renderProdTable() {
         <td>${temEng ? `<button class="toggle-btn" data-toggle-prod="${p.sku}">${isExp ? '▼' : '▶'}</button>` : '<span style="color:var(--text-dim); font-size:11px; padding-left:6px">—</span>'}</td>
         <td class="right mono">${p.sku}</td>
         <td>${p.descricao}</td>
+        <td>${badgeEmpresa(getEmpresaProduto(p))}</td>
         <td title="Giro: ${Math.round(getCurvaProduto(p.sku).giro).toLocaleString('pt-BR')}/mês · Rank: ${getCurvaProduto(p.sku).ranking || '—'}">${badgeCurva(getCurvaProduto(p.sku).curva)}</td>
         <td class="editable-cell"><select class="editable" data-field="categoria" data-text="1">${catOpts}</select></td>
         <td class="editable-cell">${linhaSelect}</td>
@@ -5136,7 +5227,7 @@ function renderProdTable() {
           <div class="mono" style="text-align:right">${fmt(b.qtd, 4)} ${unidade}</div>
           <div class="mono" style="text-align:right; color:${estoque > 0 ? 'var(--text)' : 'var(--text-dim)'}">${fmt(estoque, 2)}</div>`;
       }).join('');
-      html += `<tr class="detail-row"><td colspan="11">
+      html += `<tr class="detail-row"><td colspan="12">
         <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
           <div class="detail-title">Engenharia (BOM) · ${bom.length} insumo(s)</div>
           <button class="btn btn-sm" data-eng-from-prod="${p.sku}">⚙️ Editar engenharia</button>
@@ -5653,7 +5744,7 @@ function gerarOPsCascata(linhaFiltro, opcoes) {
   };
 
   const candidatos = [];
-  for (const p of state.produtos) {
+  for (const p of produtosFiltrados()) {
     const linha = getLinhaProduto(p);
     if (linhaFiltro && linha !== linhaFiltro) continue;
     const bom = state.engenharia[p.sku];
@@ -6023,7 +6114,7 @@ function calcularDisponibilidade(linhaFiltro, estoqueOverride) {
   };
 
   const out = [];
-  for (const p of state.produtos) {
+  for (const p of produtosFiltrados()) {
     const linha = getLinhaProduto(p);
     if (linhaFiltro && linha !== linhaFiltro) continue;
     const bom = state.engenharia[p.sku];
@@ -7299,8 +7390,8 @@ function computeTransferencia() {
   const fonteDias = document.getElementById('tParamFonteDias').value;
 
   const out = [];
-  // Itera sobre produtos cadastrados (mais robusto que iterar sobre estoque, pois temos a chave SKU certa)
-  for (const p of state.produtos) {
+  // Itera sobre produtos filtrados por empresa
+  for (const p of produtosFiltrados()) {
     const e = state.estoque[p.sku];
     const v = state.venda[p.sku];
     if (!e) continue; // sem dados de estoque, pula
@@ -8263,6 +8354,45 @@ document.addEventListener('keydown', (e) => {
   document.querySelectorAll('[data-template-import]').forEach(btn => {
     btn.onclick = () => baixarTemplateImport(btn.dataset.templateImport);
   });
+
+  // ===== FILTRO GLOBAL DE EMPRESA (Touti / Yes / Ambas) =====
+  // Aplica visualmente o estado atual e re-renderiza ao trocar
+  function aplicarFiltroEmpresaVisual() {
+    document.querySelectorAll('[data-empresa]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.empresa === (state.filtroEmpresa || 'ambas'));
+    });
+  }
+  // Função pra re-renderizar a view ativa
+  function rerenderViewAtual() {
+    const ativa = document.querySelector('.view:not(.hidden)')?.id || '';
+    const v = ativa.replace('view-', '');
+    if (v === 'dashboard') renderDashboard();
+    else if (v === 'mudancas') renderMudancas?.();
+    else if (v === 'compartilhados') renderCompartilhados();
+    else if (v === 'vendas') renderVendas();
+    else if (v === 'estoque-pa') renderEstoquePA();
+    else if (v === 'estoque-ins') renderEstoqueInsumos();
+    else if (v === 'analise') renderAnalise();
+    else if (v === 'transferencia') renderTransferencia?.();
+    else if (v === 'producao') renderOPView?.();
+    else if (v === 'produtos') renderProdTable?.();
+    else if (v === 'essencias') renderEssTable?.();
+    else if (v === 'insumos') renderInsTable?.();
+    // Dashboard sempre re-renderiza pra atualizar os números
+    renderDashboard();
+  }
+  document.querySelectorAll('[data-empresa]').forEach(btn => {
+    btn.onclick = async () => {
+      state.filtroEmpresa = btn.dataset.empresa;
+      await saveEntity('filtroEmpresa');
+      aplicarFiltroEmpresaVisual();
+      // Curva ABC pode mudar com filtro? Não — curva é sempre do universo total.
+      // Mas se o usuário quer ver "Touti curva A", melhor recalcular sobre o subconjunto.
+      // Decisão: NÃO recalcular curva (deixa estável). Só re-renderiza a view.
+      rerenderViewAtual();
+    };
+  });
+  aplicarFiltroEmpresaVisual();
 
   // Bind dos filtros das novas views (busca + filtros)
   const bindLive = (id, fn) => { const el = document.getElementById(id); if (el) el.oninput = fn; };
