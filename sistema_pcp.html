@@ -695,6 +695,10 @@
   <button class="nav-item" data-view="transferencia"><span class="nav-item-icon">📦</span> Transferência PE↔SP</button>
   <button class="nav-item" data-view="producao"><span class="nav-item-icon">🏭</span> Ordens de Produção</button>
   <button class="nav-item" data-view="compartilhados"><span class="nav-item-icon">⚡</span> Insumos Compartilhados</button>
+
+  <div class="drawer-section-title">Estoques</div>
+  <button class="nav-item" data-view="estoque-pa"><span class="nav-item-icon">📦</span> Estoque PA</button>
+  <button class="nav-item" data-view="estoque-ins"><span class="nav-item-icon">🧰</span> Estoque Insumos</button>
   <div class="drawer-section-title">Atualizar</div>
   <button class="nav-item" data-view="atualizar"><span class="nav-item-icon">📥</span> Atualizar dados</button>
   <div class="drawer-section-title">Cadastros</div>
@@ -811,6 +815,9 @@
     </div>
 
     <div id="compTab-vitais" class="comp-tab">
+      <div class="toolbar" style="margin: 14px 0;">
+        <input type="text" class="search-input" id="compVitaisSearch" placeholder="Buscar insumo (nome, SKU)…">
+      </div>
       <h3 style="font-size: 14px; margin: 14px 0 8px; color: var(--text-muted);">🧴 Granel — matéria-prima</h3>
       <div class="table-wrap" style="margin-bottom: 14px;">
         <table>
@@ -843,7 +850,10 @@
     </div>
 
     <div id="compTab-todos" class="comp-tab hidden">
-      <p style="font-size: 13px; color: var(--text-muted); margin: 14px 0 10px;">Todos os insumos que aparecem na BOM de <b>2 ou mais produtos</b>. Ordenados por número de produtos que usam.</p>
+      <div class="toolbar" style="margin: 14px 0;">
+        <input type="text" class="search-input" id="compTodosSearch" placeholder="Buscar insumo (nome, SKU)…">
+      </div>
+      <p style="font-size: 13px; color: var(--text-muted); margin: 4px 0 10px;">Todos os insumos que aparecem na BOM de <b>2 ou mais produtos</b>. Ordenados por número de produtos que usam.</p>
       <div class="table-wrap">
         <table>
           <thead>
@@ -855,7 +865,10 @@
     </div>
 
     <div id="compTab-essencias" class="comp-tab hidden">
-      <p style="font-size: 13px; color: var(--text-muted); margin: 14px 0 10px;">Essências que aparecem em <b>2 ou mais produtos</b>. Estas exigem fatiamento proporcional na geração de OP.</p>
+      <div class="toolbar" style="margin: 14px 0;">
+        <input type="text" class="search-input" id="compEssSearch" placeholder="Buscar essência (nome, SKU, fornecedor)…">
+      </div>
+      <p style="font-size: 13px; color: var(--text-muted); margin: 4px 0 10px;">Essências que aparecem em <b>2 ou mais produtos</b>. Estas exigem fatiamento proporcional na geração de OP.</p>
       <div class="table-wrap">
         <table>
           <thead>
@@ -865,6 +878,96 @@
         </table>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ===== VIEW: ESTOQUE PA ===== -->
+<div id="view-estoque-pa" class="view hidden">
+  <h1 class="page-title">Estoque PA</h1>
+  <p class="page-sub">Visão consolidada do estoque de produto acabado nas filiais, com <b>Days on Hand</b> por CD calculado a partir da venda mensal.</p>
+
+  <div class="kpis" id="estPaKpis"></div>
+
+  <div class="toolbar" style="margin: 18px 0 12px;">
+    <input type="text" class="search-input" id="estPaSearch" placeholder="Buscar produto, SKU, essência…">
+    <select class="search-input" id="estPaFiltroCurva" style="width: 140px;">
+      <option value="">Todas curvas</option>
+      <option value="A">Curva A</option>
+      <option value="B">Curva B</option>
+      <option value="C">Curva C</option>
+      <option value="Z">Curva Z (sem venda)</option>
+    </select>
+    <select class="search-input" id="estPaFiltroStatus" style="width: 200px;">
+      <option value="">Todos os status</option>
+      <option value="crit">🚨 Crítico (DoH &lt; 15 em algum CD)</option>
+      <option value="warn">⚠ Atenção (DoH &lt; 30 em algum CD)</option>
+      <option value="ok">✓ OK</option>
+    </select>
+    <div style="flex: 1;"></div>
+    <span style="font-size: 11px; color: var(--text-muted);" id="estPaResumo">—</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="right" style="width: 70px;">SKU</th>
+          <th style="width: 50px;">Curva</th>
+          <th>Produto</th>
+          <th class="right" style="width: 90px;">PE</th>
+          <th class="right" style="width: 70px;" title="Days on Hand em PE: estoque ÷ (venda mensal ÷ 30)">DoH PE</th>
+          <th class="right" style="width: 90px;">SP</th>
+          <th class="right" style="width: 70px;" title="Days on Hand em SP: estoque ÷ (venda mensal ÷ 30)">DoH SP</th>
+          <th class="right" style="width: 90px;">Total</th>
+          <th class="right" style="width: 90px;">Venda/mês</th>
+          <th class="right" style="width: 80px;">DoH total</th>
+        </tr>
+      </thead>
+      <tbody id="estPaTbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== VIEW: ESTOQUE INSUMOS ===== -->
+<div id="view-estoque-ins" class="view hidden">
+  <h1 class="page-title">Estoque de Insumos</h1>
+  <p class="page-sub">Visão consolidada de todos os insumos (matéria-prima e embalagens) com demanda mensal calculada a partir da engenharia dos produtos.</p>
+
+  <div class="kpis" id="estInsKpis"></div>
+
+  <div class="toolbar" style="margin: 18px 0 12px;">
+    <input type="text" class="search-input" id="estInsSearch" placeholder="Buscar insumo, SKU, categoria…">
+    <select class="search-input" id="estInsFiltroCategoria" style="width: 170px;">
+      <option value="">Todas categorias</option>
+    </select>
+    <select class="search-input" id="estInsFiltroStatus" style="width: 200px;">
+      <option value="">Todos os status</option>
+      <option value="crit">🚨 Crítico (&lt; 15 dias)</option>
+      <option value="warn">⚠ Atenção (15-45 dias)</option>
+      <option value="ok">✓ OK (&gt; 45 dias)</option>
+      <option value="parado">💤 Sem demanda</option>
+    </select>
+    <div style="flex: 1;"></div>
+    <span style="font-size: 11px; color: var(--text-muted);" id="estInsResumo">—</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="right" style="width: 70px;">SKU</th>
+          <th>Insumo</th>
+          <th style="width: 130px;">Categoria</th>
+          <th class="right" style="width: 100px;">Estoque</th>
+          <th style="width: 60px;">Un</th>
+          <th class="right" style="width: 90px;">Em N prod</th>
+          <th class="right" style="width: 110px;">Demanda/mês</th>
+          <th class="right" style="width: 80px;">DoH</th>
+          <th style="width: 110px;">Status</th>
+        </tr>
+      </thead>
+      <tbody id="estInsTbody"></tbody>
+    </table>
   </div>
 </div>
 
@@ -1019,9 +1122,9 @@
     </div>
     <button class="btn btn-gold" id="btnSimularCobertura" style="margin-left: 14px;">🔮 Simular cobertura</button>
     <div style="flex: 1;"></div>
-    <div style="font-size: 12px; color: var(--text-muted); max-width: 420px; text-align: right;">
-      💡 Considera: <b>estoque essência + pedido aberto + estoque PA convertido</b> (PE+SP × g/un).<br>
-      <span style="color: var(--text-dim);">Lead time, produção e cobertura são por essência (aba ⚙️ Essências).</span>
+    <div style="font-size: 12px; color: var(--text-muted); max-width: 460px; text-align: right;">
+      💡 Calcula: <b>quanto vende em 45 dias − (estoque essência + pedido aberto + compras em andamento + estoque PA convertido)</b>.<br>
+      <span style="color: var(--text-dim);">Estoque de segurança fixo de 45 dias, independente de lead time ou produção.</span>
     </div>
   </div>
 
@@ -1566,27 +1669,20 @@
       <input type="file" id="andamentoFile" accept=".xlsx,.xls,.csv" style="display:none">
     </div>
 
-    <h2 style="font-size: 16px; margin: 22px 0 10px 0; color: var(--text-muted);">OPs em andamento — reservas ativas de insumo</h2>
+    <div class="toolbar" style="margin: 22px 0 12px 0;">
+      <input type="text" class="search-input" id="andamentoSearch" placeholder="Buscar produto, SKU…">
+      <select class="search-input" id="andamentoFiltroData" style="width: 200px;">
+        <option value="todas">Todas as datas</option>
+      </select>
+      <div style="flex: 1;"></div>
+      <div style="font-size: 11px; color: var(--text-muted);" id="andamentoResumo">—</div>
+    </div>
     <div id="andamentoListaWrap">
       <div id="andamentoEmpty" class="empty">
         <div class="empty-title">Nenhuma OP em andamento</div>
         <div class="empty-sub">Importe o Excel de OPs liberadas pra fábrica acima.</div>
       </div>
-      <div class="table-wrap hidden" id="andamentoTbl">
-        <table>
-          <thead>
-            <tr>
-              <th class="right" style="width:80px;">SKU</th>
-              <th>Produto</th>
-              <th class="right" style="width:110px;">Qtd reservada</th>
-              <th>Insumos consumidos</th>
-              <th style="width:100px;">Importado</th>
-              <th style="width:130px;"></th>
-            </tr>
-          </thead>
-          <tbody id="andamentoTbody"></tbody>
-        </table>
-      </div>
+      <div class="hidden" id="andamentoGrupos"></div>
     </div>
   </div><!-- /opTab-andamento -->
 
@@ -2173,6 +2269,8 @@ document.querySelectorAll('.nav-item').forEach(b => b.onclick = () => {
   if (v === 'dashboard') renderDashboard();
   if (v === 'mudancas') renderMudancas();
   if (v === 'compartilhados') renderCompartilhados();
+  if (v === 'estoque-pa') renderEstoquePA();
+  if (v === 'estoque-ins') renderEstoqueInsumos();
   if (v === 'essencias') renderEssTable();
   if (v === 'produtos') renderProdTable();
   if (v === 'insumos') renderInsTable();
@@ -2790,8 +2888,9 @@ function computeAnalise() {
       });
     }
 
-    const diasTotal = (ess.leadTime || 0) + (ess.producao || 0) + (ess.cobertura || 0);
-    const demandaPeriodoG = demandaMes * (diasTotal / 30);
+    // Regra: SEMPRE 45 dias de venda como estoque-alvo, independente de lead/produção/cobertura
+    const DIAS_ALVO = 45;
+    const demandaPeriodoG = demandaMes * (DIAS_ALVO / 30);
 
     const estoqueEssG = ess.estoqueG || 0;
     const pedidoG = ess.pedidoAbertoG || 0;
@@ -2804,12 +2903,13 @@ function computeAnalise() {
     const demandaDia = demandaMes / 30;
     const diasCob = demandaDia > 0 ? disponivelG / demandaDia : 999;
 
+    // Status baseado em quanto falta pra cobrir 45 dias
     let status;
     if (usadaPor.length === 0) status = 'problema';
     else if (demandaMes === 0 && (estoqueEssG > 0 || estoquePaEquivalenteG > 0)) status = 'ok';
-    else if (diasCob < (ess.leadTime || 20)) status = 'crit';
-    else if (diasCob < ((ess.leadTime || 20) + (ess.cobertura || 30))) status = 'warn';
-    else status = 'ok';
+    else if (diasCob < 15) status = 'crit';        // menos de 15 dias = crítico
+    else if (diasCob < DIAS_ALVO) status = 'warn'; // entre 15 e 45 dias = atenção
+    else status = 'ok';                              // 45+ dias = OK
 
     out.push({
       sku: ess.sku,
@@ -2873,8 +2973,7 @@ function renderDashboard() {
     if (demandaMes <= 0) return;
     const comprasAtivas = getComprasAtivasPorEss(e.sku);
     const disponivel = (e.estoqueG || 0) + (e.pedidoAbertoG || 0) + comprasAtivas;
-    const diasTotal = (e.leadTime || 20) + (e.producao || 15) + (e.cobertura || 30);
-    const demandaTotal = (demandaMes / 30) * diasTotal;
+    const demandaTotal = (demandaMes / 30) * 45; // sempre 45 dias
     if (disponivel < demandaTotal) essCriticas++;
   });
 
@@ -3011,8 +3110,7 @@ function renderDashboard() {
       if (p.skuEssencia === e.sku) demandaMes += calcGiro(state.venda[p.sku]) * (p.gramasPorUn || 0);
     });
     if (demandaMes <= 0) return;
-    const diasTotal = (e.leadTime || 20) + (e.producao || 15) + (e.cobertura || 30);
-    const demandaTotal = (demandaMes / 30) * diasTotal;
+    const demandaTotal = (demandaMes / 30) * 45; // sempre 45 dias
     const comprasAtivas = getComprasAtivasPorEss(e.sku);
     const disp = (e.estoqueG || 0) + (e.pedidoAbertoG || 0) + comprasAtivas;
     const comprar = Math.max(0, demandaTotal - disp);
@@ -3093,6 +3191,263 @@ function renderDashboard() {
   `).join('') || '<tr><td colspan="4" style="text-align:center; color:var(--text-dim); padding:20px;">Nenhuma OP sugerida no momento</td></tr>';
 }
 
+// ===== RENDER ESTOQUE PA =====
+//
+// Tabela consolidada com Days on Hand por filial.
+// DoH PE = estoque_pe / (venda_mensal / 30)
+// DoH SP = estoque_sp / (venda_mensal / 30)
+//
+// Como a venda do PBI já é nacional (PE + SP somados), o DoH por filial
+// usa a MESMA venda mensal — diferenciamos pelo estoque local apenas.
+// Isso responde "se a filial parar de receber e atender só com o estoque atual,
+// quantos dias dá?".
+
+function renderEstoquePA() {
+  const calcGiro = v => v ? Math.max(v.m3 || 0, v.pico6 || 0) : 0;
+
+  const q = norm(document.getElementById('estPaSearch')?.value || '');
+  const fCurva = document.getElementById('estPaFiltroCurva')?.value || '';
+  const fStatus = document.getElementById('estPaFiltroStatus')?.value || '';
+
+  const linhas = [];
+  state.produtos.forEach(p => {
+    const est = state.estoque[p.sku] || { pe: 0, sp: 0 };
+    const pe = est.pe || 0;
+    const sp = est.sp || 0;
+    const total = pe + sp;
+    const v = state.venda[p.sku];
+    const venMes = calcGiro(v);
+    const ess = state.essencias.find(e => e.sku === p.skuEssencia);
+    const venDia = venMes / 30;
+    const dohPe = venDia > 0 ? pe / venDia : (pe > 0 ? 999 : 0);
+    const dohSp = venDia > 0 ? sp / venDia : (sp > 0 ? 999 : 0);
+    const dohTotal = venDia > 0 ? total / venDia : (total > 0 ? 999 : 0);
+    const curva = getCurvaProduto(p.sku);
+
+    // Filtros
+    if (q) {
+      const match = norm(p.descricao).includes(q) || String(p.sku).includes(q) || norm(ess?.nome || '').includes(q);
+      if (!match) return;
+    }
+    if (fCurva && curva.curva !== fCurva) return;
+    if (fStatus) {
+      let status = 'ok';
+      if (venMes > 0) {
+        if (dohPe < 15 || dohSp < 15) status = 'crit';
+        else if (dohPe < 30 || dohSp < 30) status = 'warn';
+      }
+      if (fStatus !== status) return;
+    }
+
+    linhas.push({ p, pe, sp, total, venMes, dohPe, dohSp, dohTotal, ess, curva: curva.curva });
+  });
+
+  // Ordenar: críticos (DoH menor) primeiro, depois curva A, etc
+  const ordemCurva = { A: 0, B: 1, C: 2, Z: 3 };
+  linhas.sort((a, b) => {
+    const aMin = Math.min(a.dohPe || 999, a.dohSp || 999);
+    const bMin = Math.min(b.dohPe || 999, b.dohSp || 999);
+    if (aMin < 30 && bMin < 30) return aMin - bMin; // ambos críticos: por DoH
+    if (aMin < 30) return -1;
+    if (bMin < 30) return 1;
+    return ordemCurva[a.curva] - ordemCurva[b.curva] || b.venMes - a.venMes;
+  });
+
+  // KPIs
+  const totalProds = state.produtos.length;
+  const critPe = linhas.filter(l => l.dohPe < 15 && l.venMes > 0).length;
+  const critSp = linhas.filter(l => l.dohSp < 15 && l.venMes > 0).length;
+  const okCount = linhas.filter(l => l.dohTotal >= 30).length;
+  const semVenda = linhas.filter(l => l.venMes === 0).length;
+  const volumeTotal = linhas.reduce((s, l) => s + l.total, 0);
+
+  document.getElementById('estPaKpis').innerHTML = `
+    <div class="kpi">
+      <div class="kpi-label">Produtos exibidos</div>
+      <div class="kpi-value">${linhas.length}</div>
+      <div class="kpi-sub">De ${totalProds} cadastrados</div>
+    </div>
+    <div class="kpi critical">
+      <div class="kpi-label">PE crítico</div>
+      <div class="kpi-value">${critPe}</div>
+      <div class="kpi-sub">DoH &lt; 15 dias</div>
+    </div>
+    <div class="kpi critical">
+      <div class="kpi-label">SP crítico</div>
+      <div class="kpi-value">${critSp}</div>
+      <div class="kpi-sub">DoH &lt; 15 dias</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Estoque total</div>
+      <div class="kpi-value" style="font-size: 24px;">${volumeTotal.toLocaleString('pt-BR')}</div>
+      <div class="kpi-sub">Unidades em PE+SP</div>
+    </div>
+  `;
+
+  // Tabela
+  const tbody = document.getElementById('estPaTbody');
+  if (linhas.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; color:var(--text-dim); padding:30px;">Nenhum produto com esse filtro.</td></tr>`;
+  } else {
+    tbody.innerHTML = linhas.map(l => {
+      const dohCelula = (doh, est) => {
+        if (l.venMes === 0) return `<span style="color:var(--text-dim)">—</span>`;
+        const cor = doh < 15 ? 'var(--critical)' : doh < 30 ? 'var(--warn)' : doh >= 999 ? 'var(--text-dim)' : 'var(--text-muted)';
+        const fw = doh < 15 ? '700' : 'normal';
+        const txt = doh >= 999 ? '∞' : Math.round(doh);
+        return `<span class="mono" style="color:${cor}; font-weight:${fw}">${txt}</span>`;
+      };
+      return `
+        <tr>
+          <td class="right">${refSku(l.p.sku, 'produto')}</td>
+          <td>${badgeCurva(l.curva)}</td>
+          <td>${refNome(l.p.sku, l.p.descricao, 'produto')}</td>
+          <td class="right mono">${l.pe.toLocaleString('pt-BR')}</td>
+          <td class="right">${dohCelula(l.dohPe, l.pe)}</td>
+          <td class="right mono">${l.sp.toLocaleString('pt-BR')}</td>
+          <td class="right">${dohCelula(l.dohSp, l.sp)}</td>
+          <td class="right mono"><b>${l.total.toLocaleString('pt-BR')}</b></td>
+          <td class="right mono" style="color:var(--text-muted)">${l.venMes > 0 ? Math.round(l.venMes).toLocaleString('pt-BR') : '<span style="color:var(--text-dim)">0</span>'}</td>
+          <td class="right">${dohCelula(l.dohTotal, l.total)}</td>
+        </tr>`;
+    }).join('');
+  }
+
+  document.getElementById('estPaResumo').textContent =
+    linhas.length === totalProds ? `${totalProds} produtos` : `${linhas.length} de ${totalProds} visíveis`;
+}
+
+// ===== RENDER ESTOQUE INSUMOS =====
+//
+// Tabela consolidada de todos os insumos com DoH calculado da demanda agregada.
+
+function renderEstoqueInsumos() {
+  const calcGiro = v => v ? Math.max(v.m3 || 0, v.pico6 || 0) : 0;
+
+  const q = norm(document.getElementById('estInsSearch')?.value || '');
+  const fCategoria = document.getElementById('estInsFiltroCategoria')?.value || '';
+  const fStatus = document.getElementById('estInsFiltroStatus')?.value || '';
+
+  // Index reverso: insumoSku → demanda mensal agregada (e quantos produtos usam)
+  const demandaPorSku = {}; // sku -> { demandaMes, produtosUsam }
+  Object.entries(state.engenharia || {}).forEach(([prodSkuStr, bom]) => {
+    const prodSku = parseInt(prodSkuStr);
+    const giro = calcGiro(state.venda[prodSku]);
+    (bom || []).forEach(b => {
+      if (!demandaPorSku[b.sku]) demandaPorSku[b.sku] = { demandaMes: 0, produtosUsam: 0 };
+      demandaPorSku[b.sku].demandaMes += giro * (b.qtd || 0);
+      demandaPorSku[b.sku].produtosUsam++;
+    });
+  });
+
+  // Popula categorias do select (primeira vez)
+  const catSel = document.getElementById('estInsFiltroCategoria');
+  if (catSel.options.length <= 1) {
+    const cats = new Set();
+    Object.values(state.insumos || {}).forEach(i => { if (i.categoria) cats.add(i.categoria); });
+    Array.from(cats).sort().forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c; opt.textContent = c;
+      catSel.appendChild(opt);
+    });
+  }
+
+  // Coletar todos os insumos
+  const linhas = [];
+  Object.entries(state.insumos || {}).forEach(([skuStr, ins]) => {
+    const sku = parseInt(skuStr);
+    const d = demandaPorSku[sku] || { demandaMes: 0, produtosUsam: 0 };
+    const estoque = ins.estoque || 0;
+    const demandaDia = d.demandaMes / 30;
+    const doh = demandaDia > 0 ? estoque / demandaDia : (estoque > 0 ? 999 : 0);
+
+    // Filtros
+    if (q) {
+      const match = norm(ins.nome || '').includes(q) || String(sku).includes(q) || norm(ins.categoria || '').includes(q);
+      if (!match) return;
+    }
+    if (fCategoria && ins.categoria !== fCategoria) return;
+
+    let status;
+    if (d.demandaMes === 0) status = 'parado';
+    else if (doh < 15) status = 'crit';
+    else if (doh < 45) status = 'warn';
+    else status = 'ok';
+
+    if (fStatus && fStatus !== status) return;
+
+    linhas.push({ sku, ins, estoque, demandaMes: d.demandaMes, produtosUsam: d.produtosUsam, doh, status });
+  });
+
+  // Ordenar: críticos primeiro
+  const ordemStatus = { crit: 0, warn: 1, ok: 2, parado: 3 };
+  linhas.sort((a, b) => {
+    if (ordemStatus[a.status] !== ordemStatus[b.status]) return ordemStatus[a.status] - ordemStatus[b.status];
+    return a.doh - b.doh;
+  });
+
+  // KPIs
+  const totalIns = Object.keys(state.insumos || {}).length;
+  const criticos = linhas.filter(l => l.status === 'crit').length;
+  const atencao = linhas.filter(l => l.status === 'warn').length;
+  const okCount = linhas.filter(l => l.status === 'ok').length;
+  const semDemanda = linhas.filter(l => l.status === 'parado').length;
+
+  document.getElementById('estInsKpis').innerHTML = `
+    <div class="kpi">
+      <div class="kpi-label">Insumos exibidos</div>
+      <div class="kpi-value">${linhas.length}</div>
+      <div class="kpi-sub">De ${totalIns} cadastrados</div>
+    </div>
+    <div class="kpi critical">
+      <div class="kpi-label">Críticos</div>
+      <div class="kpi-value">${criticos}</div>
+      <div class="kpi-sub">DoH &lt; 15 dias</div>
+    </div>
+    <div class="kpi warn">
+      <div class="kpi-label">Atenção</div>
+      <div class="kpi-value">${atencao}</div>
+      <div class="kpi-sub">DoH 15-45 dias</div>
+    </div>
+    <div class="kpi ok">
+      <div class="kpi-label">OK</div>
+      <div class="kpi-value">${okCount}</div>
+      <div class="kpi-sub">DoH ≥ 45 dias</div>
+    </div>
+  `;
+
+  // Tabela
+  const tbody = document.getElementById('estInsTbody');
+  if (linhas.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:var(--text-dim); padding:30px;">Nenhum insumo com esse filtro.</td></tr>`;
+  } else {
+    tbody.innerHTML = linhas.map(l => {
+      const statusBadge =
+        l.status === 'crit' ? '<span class="badge badge-crit">🚨 CRÍTICO</span>' :
+        l.status === 'warn' ? '<span class="badge badge-warn">⚠ ATENÇÃO</span>' :
+        l.status === 'ok' ? '<span class="badge badge-ok">✓ OK</span>' :
+        '<span style="font-size: 10px; color: var(--text-dim);">💤 sem demanda</span>';
+      const dohTxt = l.status === 'parado' ? '—' : (l.doh >= 999 ? '∞' : Math.round(l.doh));
+      const dohCor = l.status === 'crit' ? 'var(--critical)' : l.status === 'warn' ? 'var(--warn)' : 'var(--text-muted)';
+      return `
+        <tr>
+          <td class="right">${refSku(l.sku, 'insumo')}</td>
+          <td>${refNome(l.sku, l.ins.nome, 'insumo')}</td>
+          <td style="font-size: 12px; color: var(--text-muted);">${l.ins.categoria || '—'}</td>
+          <td class="right mono"><b>${l.estoque.toLocaleString('pt-BR')}</b></td>
+          <td style="font-size: 11px; color: var(--text-dim);">${l.ins.unidade || 'UN'}</td>
+          <td class="right mono">${l.produtosUsam}</td>
+          <td class="right mono">${l.demandaMes > 0 ? Math.round(l.demandaMes).toLocaleString('pt-BR') : '<span style="color:var(--text-dim)">—</span>'}</td>
+          <td class="right mono" style="color: ${dohCor}; font-weight: ${l.status === 'crit' ? '700' : 'normal'}">${dohTxt}</td>
+          <td>${statusBadge}</td>
+        </tr>`;
+    }).join('');
+  }
+
+  document.getElementById('estInsResumo').textContent =
+    linhas.length === totalIns ? `${totalIns} insumos` : `${linhas.length} de ${totalIns} visíveis`;
+}
+
 // ===== RENDER INSUMOS COMPARTILHADOS =====
 function renderCompartilhados() {
   _renderInsumosVitaisLegacy(); // popula vitais (granel/auto/yes) usando lógica antiga
@@ -3139,9 +3494,12 @@ function renderCompartilhados() {
     if (!item.isVital) todos.push(item);
   });
 
-  // Aba "Todos compartilhados"
-  todos.sort((a, b) => b.usadoEm - a.usadoEm);
-  document.getElementById('compTodosTbody').innerHTML = todos.map(t => {
+  // Aba "Todos compartilhados" — com filtro de busca
+  const qTodos = norm(document.getElementById('compTodosSearch')?.value || '');
+  let todosFiltrados = todos.slice();
+  if (qTodos) todosFiltrados = todosFiltrados.filter(t => norm(t.nome).includes(qTodos) || String(t.sku).includes(qTodos));
+  todosFiltrados.sort((a, b) => b.usadoEm - a.usadoEm);
+  document.getElementById('compTodosTbody').innerHTML = todosFiltrados.map(t => {
     const statusBadge = t.diasCob < 15 ? '<span class="badge badge-crit">🚨 CRÍTICO</span>'
       : t.diasCob < 45 ? '<span class="badge badge-warn">⚠ ATENÇÃO</span>'
       : '<span class="badge badge-ok">✓ OK</span>';
@@ -3155,11 +3513,14 @@ function renderCompartilhados() {
         <td class="right ${t.diasCob < 15 ? 'days-low' : t.diasCob < 45 ? 'days-med' : ''} mono">${t.diasCob >= 999 ? '∞' : Math.round(t.diasCob)}</td>
         <td>${statusBadge}</td>
       </tr>`;
-  }).join('') || '<tr><td colspan="7" style="text-align:center; color:var(--text-dim); padding:20px;">Sem insumos compartilhados não-vitais</td></tr>';
+  }).join('') || `<tr><td colspan="7" style="text-align:center; color:var(--text-dim); padding:20px;">${qTodos ? 'Nada encontrado pra "' + qTodos + '"' : 'Sem insumos compartilhados não-vitais'}</td></tr>`;
 
-  // Aba "Essências compartilhadas"
-  essList.sort((a, b) => b.usadoEm - a.usadoEm);
-  document.getElementById('compEssTbody').innerHTML = essList.map(t => `
+  // Aba "Essências compartilhadas" — com filtro de busca
+  const qEss = norm(document.getElementById('compEssSearch')?.value || '');
+  let essFiltradas = essList.slice();
+  if (qEss) essFiltradas = essFiltradas.filter(t => norm(t.nome).includes(qEss) || String(t.sku).includes(qEss) || norm(t.fornecedor || '').includes(qEss));
+  essFiltradas.sort((a, b) => b.usadoEm - a.usadoEm);
+  document.getElementById('compEssTbody').innerHTML = essFiltradas.map(t => `
     <tr>
       <td class="right">${refSku(t.sku, 'essencia')}</td>
       <td>${refNome(t.sku, t.nome, 'essencia')}</td>
@@ -3169,7 +3530,7 @@ function renderCompartilhados() {
       <td class="right mono">${Math.round(t.demandaMes).toLocaleString('pt-BR')}</td>
       <td class="right ${t.diasCob < 15 ? 'days-low' : t.diasCob < 45 ? 'days-med' : ''} mono">${t.diasCob >= 999 ? '∞' : Math.round(t.diasCob)}</td>
     </tr>
-  `).join('') || '<tr><td colspan="7" style="text-align:center; color:var(--text-dim); padding:20px;">Sem essências compartilhadas</td></tr>';
+  `).join('') || `<tr><td colspan="7" style="text-align:center; color:var(--text-dim); padding:20px;">${qEss ? 'Nada encontrado pra "' + qEss + '"' : 'Sem essências compartilhadas'}</td></tr>`;
 
   // KPIs do módulo
   const totalCompartilhados = Object.keys(usoPorInsumo).filter(k => usoPorInsumo[k].length >= 2).length;
@@ -3274,13 +3635,25 @@ function _renderInsumosVitaisLegacy() {
   const autoLinhas = INSUMOS_VITAIS.embalagemAuto.map(calcInsumoVital);
   const yesLinhas = INSUMOS_VITAIS.embalagemYes.map(calcInsumoVital);
 
+  // Filtro de busca em vitais (nome ou SKU)
+  const qVitais = norm(document.getElementById('compVitaisSearch')?.value || '');
+  const aplicarFiltro = (linhas) => {
+    if (!qVitais) return linhas;
+    return linhas.filter(l => norm(l.nome || '').includes(qVitais) || String(l.sku || '').includes(qVitais));
+  };
+
+  const granelF = aplicarFiltro(granelLinhas);
+  const autoF = aplicarFiltro(autoLinhas);
+  const yesF = aplicarFiltro(yesLinhas);
+
   // IDs novos: compGranelTbody, compAutoTbody, compYesTbody (módulo Insumos Compartilhados)
   const gEl = document.getElementById('compGranelTbody');
   const aEl = document.getElementById('compAutoTbody');
   const yEl = document.getElementById('compYesTbody');
-  if (gEl) gEl.innerHTML = granelLinhas.map(renderRow).join('');
-  if (aEl) aEl.innerHTML = autoLinhas.map(renderRow).join('');
-  if (yEl) yEl.innerHTML = yesLinhas.map(renderRow).join('');
+  const vazio = (n) => `<tr><td colspan="7" style="text-align:center; color:var(--text-dim); padding:14px; font-size:12px;">${qVitais ? 'Nada encontrado pra "' + qVitais + '"' : 'Sem itens'}</td></tr>`;
+  if (gEl) gEl.innerHTML = granelF.length ? granelF.map(renderRow).join('') : vazio();
+  if (aEl) aEl.innerHTML = autoF.length ? autoF.map(renderRow).join('') : vazio();
+  if (yEl) yEl.innerHTML = yesF.length ? yesF.map(renderRow).join('') : vazio();
 
   // Handlers de "X prod." pra mostrar quais produtos usam
   document.querySelectorAll('[data-show-vital-uses]').forEach(a => {
@@ -5277,45 +5650,138 @@ function renderOPLista() {
 function renderAndamento() {
   const lista = state.opsEmProducao || [];
   const empty = document.getElementById('andamentoEmpty');
-  const tbl = document.getElementById('andamentoTbl');
+  const gruposWrap = document.getElementById('andamentoGrupos');
+  const filtroDataEl = document.getElementById('andamentoFiltroData');
+
   if (lista.length === 0) {
     empty.classList.remove('hidden');
-    tbl.classList.add('hidden');
+    gruposWrap.classList.add('hidden');
+    document.getElementById('andamentoResumo').textContent = '—';
     return;
   }
   empty.classList.add('hidden');
-  tbl.classList.remove('hidden');
+  gruposWrap.classList.remove('hidden');
 
-  const tbody = document.getElementById('andamentoTbody');
-  tbody.innerHTML = lista.map(r => {
-    const prod = state.produtos.find(p => p.sku === r.produtoSku);
-    const nome = prod ? prod.descricao : r.produtoNome || '(produto não cadastrado)';
-    const bom = state.engenharia[r.produtoSku] || [];
-    // Mostrar resumo dos insumos consumidos
-    const consumoStr = bom.slice(0, 3).map(b => {
-      const insRef = state.essencias.find(e => e.sku === b.sku) || state.insumos[b.sku];
-      const nomeIns = (insRef?.nome || b.nome || `[${b.sku}]`).substring(0, 18);
-      const consumo = (b.qtd || 0) * (r.qtdReservada || 0);
-      return `<span style="font-size:11px; color:var(--text-muted)">${nomeIns}: ${Math.round(consumo).toLocaleString('pt-BR')}${b.unidade === 'G' ? 'g' : 'un'}</span>`;
-    }).join(' · ');
-    const maisStr = bom.length > 3 ? ` <span style="color:var(--text-dim); font-size:11px">+${bom.length - 3}</span>` : '';
-    const data = new Date(r.importadoEm).toLocaleDateString('pt-BR');
+  // Aplicar filtros: busca e data
+  const q = norm(document.getElementById('andamentoSearch')?.value || '');
+  const filtroData = filtroDataEl?.value || 'todas';
 
-    return `
-      <tr>
-        <td class="right">${refSku(r.produtoSku, 'produto')}</td>
-        <td>${prod ? refNome(r.produtoSku, nome, 'produto') : `<span style="color:var(--warn)">⚠ ${nome}</span>`}</td>
-        <td class="right mono"><b>${(r.qtdReservada || 0).toLocaleString('pt-BR')}</b></td>
-        <td>${consumoStr || '<span style="color:var(--text-dim); font-size:11px">sem engenharia</span>'}${maisStr}</td>
-        <td style="font-size:11px; color:var(--text-muted)">${data}</td>
-        <td>
-          <button class="btn btn-sm" data-concluir-op="${r.id}" title="Marcar como concluída (libera reserva)">✓ Concluir</button>
-          <button class="btn btn-sm btn-danger" data-del-andamento="${r.id}" title="Remover sem concluir">×</button>
-        </td>
-      </tr>`;
-  }).join('');
+  // Agrupa por data (yyyy-mm-dd da importação)
+  const grupos = {}; // key: 'yyyy-mm-dd' -> array de OPs
+  lista.forEach(r => {
+    const data = (r.importadoEm || '').slice(0, 10);
+    if (!grupos[data]) grupos[data] = [];
+    grupos[data].push(r);
+  });
 
-  tbody.querySelectorAll('[data-concluir-op]').forEach(b => b.onclick = async () => {
+  // Popula select de filtro de data (preservando seleção atual)
+  const datasOrdenadas = Object.keys(grupos).sort().reverse();
+  const valorAtual = filtroDataEl.value;
+  filtroDataEl.innerHTML = '<option value="todas">Todas as datas</option>' +
+    datasOrdenadas.map(d => {
+      const dt = new Date(d);
+      const hoje = new Date(); hoje.setHours(0,0,0,0);
+      const dias = Math.round((hoje - dt) / 86400000);
+      let label = dt.toLocaleDateString('pt-BR');
+      if (dias === 0) label += ' (hoje)';
+      else if (dias === 1) label += ' (ontem)';
+      else if (dias > 0 && dias < 30) label += ` (${dias}d atrás)`;
+      return `<option value="${d}" ${d === valorAtual ? 'selected' : ''}>${label} · ${grupos[d].length}</option>`;
+    }).join('');
+
+  // Filtra grupos
+  let datasFiltradas = datasOrdenadas;
+  if (filtroData !== 'todas') datasFiltradas = datasOrdenadas.filter(d => d === filtroData);
+
+  // Filtra OPs por busca dentro de cada grupo
+  const aplicarBusca = (ops) => {
+    if (!q) return ops;
+    return ops.filter(r => {
+      const prod = state.produtos.find(p => p.sku === r.produtoSku);
+      const nome = prod ? prod.descricao : (r.produtoNome || '');
+      return norm(nome).includes(q) || String(r.produtoSku).includes(q);
+    });
+  };
+
+  let totalVisiveis = 0;
+  let html = '';
+  datasFiltradas.forEach(data => {
+    const opsDoDia = aplicarBusca(grupos[data]);
+    if (opsDoDia.length === 0) return;
+    totalVisiveis += opsDoDia.length;
+
+    const dt = new Date(data);
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    const dias = Math.round((hoje - dt) / 86400000);
+    let labelData = dt.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+    if (dias === 0) labelData = '📅 Hoje';
+    else if (dias === 1) labelData = '📅 Ontem';
+    else if (dias > 1 && dias < 7) labelData = `📅 ${dt.toLocaleDateString('pt-BR', { weekday: 'long' })} — ${dias} dias atrás`;
+    else labelData = `📅 ${dt.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}`;
+
+    const totalUn = opsDoDia.reduce((s, o) => s + (o.qtdReservada || 0), 0);
+
+    html += `
+      <div style="margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 14px; background: var(--bg-elevated); border: 1px solid var(--border); border-bottom: none; border-radius: 8px 8px 0 0;">
+          <div style="font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent);">${labelData}</div>
+          <div style="font-size: 11px; color: var(--text-muted);">${opsDoDia.length} OP(s) · ${totalUn.toLocaleString('pt-BR')} un totais</div>
+        </div>
+        <div class="table-wrap" style="border-radius: 0 0 8px 8px;">
+          <table>
+            <thead>
+              <tr>
+                <th class="right" style="width:80px;">SKU</th>
+                <th>Produto</th>
+                <th class="right" style="width:110px;">Qtd</th>
+                <th>Insumos consumidos</th>
+                <th style="width:130px;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              ${opsDoDia.map(r => {
+                const prod = state.produtos.find(p => p.sku === r.produtoSku);
+                const nome = prod ? prod.descricao : r.produtoNome || '(produto não cadastrado)';
+                const bom = state.engenharia[r.produtoSku] || [];
+                const consumoStr = bom.slice(0, 3).map(b => {
+                  const insRef = state.essencias.find(e => e.sku === b.sku) || state.insumos[b.sku];
+                  const nomeIns = (insRef?.nome || b.nome || `[${b.sku}]`).substring(0, 18);
+                  const consumo = (b.qtd || 0) * (r.qtdReservada || 0);
+                  return `<span style="font-size:11px; color:var(--text-muted)">${nomeIns}: ${Math.round(consumo).toLocaleString('pt-BR')}${b.unidade === 'G' ? 'g' : 'un'}</span>`;
+                }).join(' · ');
+                const maisStr = bom.length > 3 ? ` <span style="color:var(--text-dim); font-size:11px">+${bom.length - 3}</span>` : '';
+                return `
+                  <tr>
+                    <td class="right">${refSku(r.produtoSku, 'produto')}</td>
+                    <td>${prod ? refNome(r.produtoSku, nome, 'produto') : `<span style="color:var(--warn)">⚠ ${nome}</span>`}</td>
+                    <td class="right mono"><b>${(r.qtdReservada || 0).toLocaleString('pt-BR')}</b></td>
+                    <td>${consumoStr || '<span style="color:var(--text-dim); font-size:11px">sem engenharia</span>'}${maisStr}</td>
+                    <td>
+                      <button class="btn btn-sm" data-concluir-op="${r.id}" title="Marcar como concluída (libera reserva)">✓ Concluir</button>
+                      <button class="btn btn-sm btn-danger" data-del-andamento="${r.id}" title="Remover sem concluir">×</button>
+                    </td>
+                  </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>`;
+  });
+
+  if (totalVisiveis === 0) {
+    html = `<div class="empty"><div class="empty-title">Nenhuma OP encontrada com esse filtro</div></div>`;
+  }
+  gruposWrap.innerHTML = html;
+
+  // Resumo no header da tabela
+  const totalGeral = lista.length;
+  document.getElementById('andamentoResumo').innerHTML =
+    totalVisiveis === totalGeral
+      ? `${totalGeral} OP(s) em andamento · agrupadas em ${datasOrdenadas.length} dia(s)`
+      : `${totalVisiveis} de ${totalGeral} OP(s) visíveis`;
+
+  // Bind handlers
+  gruposWrap.querySelectorAll('[data-concluir-op]').forEach(b => b.onclick = async () => {
     const id = b.dataset.concluirOp;
     const op = state.opsEmProducao.find(x => x.id === id);
     if (!op) return;
@@ -5325,13 +5791,21 @@ function renderAndamento() {
     await saveEntity('opsEmProducao');
     renderOPView();
   });
-  tbody.querySelectorAll('[data-del-andamento]').forEach(b => b.onclick = async () => {
+  gruposWrap.querySelectorAll('[data-del-andamento]').forEach(b => b.onclick = async () => {
     if (!confirm('Remover esta OP em andamento sem concluir?\n\nIsso vai liberar a reserva, mas o estoque real pode não estar atualizado.')) return;
     state.opsEmProducao = state.opsEmProducao.filter(x => x.id !== b.dataset.delAndamento);
     await saveEntity('opsEmProducao');
     renderOPView();
   });
 }
+
+// Bind dos filtros de busca e data
+document.addEventListener('DOMContentLoaded', () => {
+  const inp = document.getElementById('andamentoSearch');
+  const sel = document.getElementById('andamentoFiltroData');
+  if (inp) inp.oninput = () => renderAndamento();
+  if (sel) sel.onchange = () => renderAndamento();
+});
 
 // ===== TABS DO MÓDULO OP =====
 document.querySelectorAll('[data-op-tab]').forEach(btn => {
@@ -7257,6 +7731,29 @@ document.addEventListener('keydown', (e) => {
   document.querySelectorAll('[data-template-import]').forEach(btn => {
     btn.onclick = () => baixarTemplateImport(btn.dataset.templateImport);
   });
+
+  // Bind dos filtros das novas views (busca + filtros)
+  const bindLive = (id, fn) => { const el = document.getElementById(id); if (el) el.oninput = fn; };
+  const bindChange = (id, fn) => { const el = document.getElementById(id); if (el) el.onchange = fn; };
+
+  // OPs em andamento
+  bindLive('andamentoSearch', renderAndamento);
+  bindChange('andamentoFiltroData', renderAndamento);
+
+  // Insumos Compartilhados / Vitais
+  bindLive('compVitaisSearch', renderCompartilhados);
+  bindLive('compTodosSearch', renderCompartilhados);
+  bindLive('compEssSearch', renderCompartilhados);
+
+  // Estoque PA
+  bindLive('estPaSearch', renderEstoquePA);
+  bindChange('estPaFiltroCurva', renderEstoquePA);
+  bindChange('estPaFiltroStatus', renderEstoquePA);
+
+  // Estoque Insumos
+  bindLive('estInsSearch', renderEstoqueInsumos);
+  bindChange('estInsFiltroCategoria', renderEstoqueInsumos);
+  bindChange('estInsFiltroStatus', renderEstoqueInsumos);
 
   // ===== SYNC: bind dos handlers =====
   const cfg = state.syncConfig || {};
