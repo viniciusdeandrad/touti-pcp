@@ -11375,6 +11375,162 @@
       "observacoes": "",
       "status": "aberta",
       "criadoEm": "2026-05-28T14:08:00.845Z"
+    },
+    {
+      "id": "COMP-1780234205581-3328",
+      "essenciaSku": 3328,
+      "essenciaNome": "ILLICIT",
+      "qtdComprada": 25000,
+      "fornecedor": "Symrise",
+      "dataPedido": "2026-05-31",
+      "dataPrevistaEntrega": "2026-06-30",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-31T13:30:05.581Z"
+    },
+    {
+      "id": "COMP-1780234220156-3966",
+      "essenciaSku": 3966,
+      "essenciaNome": "PARFUM INTENSE",
+      "qtdComprada": 50000,
+      "fornecedor": "Symrise",
+      "dataPedido": "2026-05-31",
+      "dataPrevistaEntrega": "2026-06-30",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-31T13:30:20.156Z"
+    },
+    {
+      "id": "COMP-1780234228965-5182",
+      "essenciaSku": 5182,
+      "essenciaNome": "HUGO MMEN II",
+      "qtdComprada": 50000,
+      "fornecedor": "Symrise",
+      "dataPedido": "2026-05-31",
+      "dataPrevistaEntrega": "2026-06-30",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-31T13:30:28.965Z"
+    },
+    {
+      "id": "COMP-1780234236114-3327",
+      "essenciaSku": 3327,
+      "essenciaNome": "STURDY",
+      "qtdComprada": 75000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-31",
+      "dataPrevistaEntrega": "2026-06-30",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-31T13:30:36.114Z"
+    },
+    {
+      "id": "COMP-1780234262251-2318",
+      "essenciaSku": 2318,
+      "essenciaNome": "MADEMOISELLE CAP LPV",
+      "qtdComprada": 100000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-31",
+      "dataPrevistaEntrega": "2026-06-30",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-31T13:31:02.251Z"
+    },
+    {
+      "id": "COMP-1780234270502-2739",
+      "essenciaSku": 2739,
+      "essenciaNome": "UNO",
+      "qtdComprada": 100000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-31",
+      "dataPrevistaEntrega": "2026-06-30",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-31T13:31:10.502Z"
+    },
+    {
+      "id": "COMP-1780234280182-3034",
+      "essenciaSku": 3034,
+      "essenciaNome": "GOLD ANIMALIC",
+      "qtdComprada": 60000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-31",
+      "dataPrevistaEntrega": "2026-06-30",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-31T13:31:20.182Z"
+    },
+    {
+      "id": "COMP-1780234308057-484",
+      "essenciaSku": 484,
+      "essenciaNome": "FANTASIA",
+      "qtdComprada": 60000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-31",
+      "dataPrevistaEntrega": "2026-06-30",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-31T13:31:48.057Z"
+    },
+    {
+      "id": "COMP-1780234316766-3136",
+      "essenciaSku": 3136,
+      "essenciaNome": "HACIVAT",
+      "qtdComprada": 60000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-31",
+      "dataPrevistaEntrega": "2026-06-30",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-31T13:31:56.766Z"
+    },
+    {
+      "id": "COMP-1780234325446-502",
+      "essenciaSku": 502,
+      "essenciaNome": "EROS",
+      "qtdComprada": 60000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-31",
+      "dataPrevistaEntrega": "2026-06-30",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-31T13:32:05.446Z"
+    },
+    {
+      "id": "COMP-1780234335548-2478",
+      "essenciaSku": 2478,
+      "essenciaNome": "VERY GOOD WOMAN",
+      "qtdComprada": 60000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-31",
+      "dataPrevistaEntrega": "2026-06-30",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-31T13:32:15.548Z"
+    },
+    {
+      "id": "COMP-1780234345214-438",
+      "essenciaSku": 438,
+      "essenciaNome": "ESFERA WOMEN",
+      "qtdComprada": 60000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-31",
+      "dataPrevistaEntrega": "2026-06-30",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-31T13:32:25.214Z"
+    },
+    {
+      "id": "COMP-1780234355349-3035",
+      "essenciaSku": 3035,
+      "essenciaNome": "LIBRE INTENSE LPV",
+      "qtdComprada": 60000,
+      "fornecedor": "Vollmens",
+      "dataPedido": "2026-05-31",
+      "dataPrevistaEntrega": "2026-06-30",
+      "observacoes": "",
+      "status": "aberta",
+      "criadoEm": "2026-05-31T13:32:35.349Z"
     }
   ],
   "snapshots": [
@@ -67316,5 +67472,5 @@
     "essencias": "2026-05-31T13:28:08.441Z",
     "insumos": "2026-05-31T13:28:13.355Z"
   },
-  "exportedAt": "2026-05-31T13:28:16.145Z"
+  "exportedAt": "2026-05-31T13:33:32.731Z"
 }
