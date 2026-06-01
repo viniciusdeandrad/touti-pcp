@@ -2379,6 +2379,42 @@
       "gramasPorUn": 6.9,
       "qtdPorCaixa": null,
       "linha": "Manual"
+    },
+    {
+      "sku": 4832,
+      "descricao": "TESTER - MY SOUL",
+      "categoria": "Tester",
+      "skuEssencia": 4274,
+      "gramasPorUn": 28,
+      "qtdPorCaixa": 6,
+      "linha": "Manual"
+    },
+    {
+      "sku": 4831,
+      "descricao": "TESTER - VIP 46",
+      "categoria": "Tester",
+      "skuEssencia": 905,
+      "gramasPorUn": 18,
+      "qtdPorCaixa": 6,
+      "linha": "Manual"
+    },
+    {
+      "sku": 4833,
+      "descricao": "TESTER - VISCA EL BARÇA",
+      "categoria": "Tester",
+      "skuEssencia": 4044,
+      "gramasPorUn": 17,
+      "qtdPorCaixa": 6,
+      "linha": "Manual"
+    },
+    {
+      "sku": 1654,
+      "descricao": "TESTER - VIP 04",
+      "categoria": "Tester",
+      "skuEssencia": 394,
+      "gramasPorUn": 20,
+      "qtdPorCaixa": 6,
+      "linha": "Manual"
     }
   ],
   "estoque": {
@@ -83717,5 +83753,5 @@
     "insumos": "2026-05-31T18:15:27.068Z",
     "vendaSellOut": "2026-05-31T18:15:22.523Z"
   },
-  "exportedAt": "2026-05-31T18:36:31.064Z"
+  "exportedAt": "2026-06-01T18:48:12.386Z"
 }
