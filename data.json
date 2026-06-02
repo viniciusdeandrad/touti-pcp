@@ -11085,6 +11085,21 @@
         "tipo": "RÓTULO"
       }
     ],
+    "4832": [
+      {
+        "sku": 4274,
+        "nome": "BLOOMING BOUQUET",
+        "qtd": 28,
+        "unidade": "G",
+        "tipo": "ESSÊNCIA"
+      },
+      {
+        "sku": 4715,
+        "qtd": 1,
+        "unidade": "UN",
+        "tipo": "FRASCO"
+      }
+    ],
     "4954": [
       {
         "sku": 5202,
@@ -22573,5 +22588,5 @@
     "insumos": "2026-06-01T18:52:59.396Z",
     "vendaSellOut": "2026-06-01T18:52:52.067Z"
   },
-  "exportedAt": "2026-06-01T18:55:21.189Z"
+  "exportedAt": "2026-06-02T10:44:03.803Z"
 }
