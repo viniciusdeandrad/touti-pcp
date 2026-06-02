@@ -4035,9 +4035,8 @@ function exportarTopVendedores(topN = 20) {
       'Rank', 'SKU', 'Produto', 'Curva', 'Empresa',
       'SKU Essência', 'Essência', 'Fornecedor',
       'g/produto',
-      'Estoque PE (un)', 'Estoque SP (un)', 'Total PA (un)',
+      'Estoque PE (un)', 'DoH PE (dias)', 'Estoque SP (un)', 'DoH SP (dias)', 'Total PA (un)',
       'M1 (un/mês)', 'M3 (un/mês)', 'M6 (un/mês)', 'Pico6 (un/mês)',
-      'DoH (dias)',
       'Essência p/ 45d (kg)', 'Essência p/ 90d (kg)',
     ]
   ];
@@ -4051,7 +4050,10 @@ function exportarTopVendedores(topN = 20) {
     const sp = est.sp || 0;
     const total = pe + sp;
     const venDia = l.m3 / 30;
-    const doh = venDia > 0 ? total / venDia : '∞';
+    // DoH por CD: como a venda é nacional, calcula com base na venda total
+    // (responde: "se a filial parar de receber, quantos dias dura?")
+    const dohPe = venDia > 0 ? Math.round(pe / venDia) : (pe > 0 ? '∞' : 0);
+    const dohSp = venDia > 0 ? Math.round(sp / venDia) : (sp > 0 ? '∞' : 0);
     const gPorUn = p.gramasPorUn || 0;
     // Necessidade de essência: venda mensal × g/un × (dias/30) → em gramas → /1000 = kg
     const essPara45d = (l.m3 * gPorUn * (45 / 30)) / 1000;
@@ -4069,9 +4071,8 @@ function exportarTopVendedores(topN = 20) {
       ess?.nome || '(não cadastrada)',
       ess?.fornecedor || '—',
       gPorUn,
-      pe, sp, total,
+      pe, dohPe, sp, dohSp, total,
       Math.round(l.m1), Math.round(l.m3), Math.round(l.m6), Math.round(l.pico6),
-      typeof doh === 'number' ? Math.round(doh) : doh,
       Math.round(essPara45d * 10) / 10,
       Math.round(essPara90d * 10) / 10,
     ]);
@@ -4126,15 +4127,14 @@ function exportarTopVendedores(topN = 20) {
     { wch: 6 }, { wch: 8 }, { wch: 35 }, { wch: 7 }, { wch: 8 },
     { wch: 12 }, { wch: 25 }, { wch: 14 },
     { wch: 10 },
-    { wch: 14 }, { wch: 14 }, { wch: 14 },
+    { wch: 14 }, { wch: 11 }, { wch: 14 }, { wch: 11 }, { wch: 14 },
     { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 14 },
-    { wch: 12 },
     { wch: 18 }, { wch: 18 },
   ];
 
-  // Mesclar primeira linha (título)
+  // Mesclar primeira linha (título) — agora 20 colunas (0 a 19)
   ws['!merges'] = ws['!merges'] || [];
-  ws['!merges'].push({ s: { r: 0, c: 0 }, e: { r: 0, c: 18 } });
+  ws['!merges'].push({ s: { r: 0, c: 0 }, e: { r: 0, c: 19 } });
 
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, `Top ${topN} ${filtroEmp.substring(0, 15)}`);
