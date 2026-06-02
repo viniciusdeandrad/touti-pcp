@@ -1036,6 +1036,7 @@
         <option value="abc">Curva ABC</option>
       </select>
       <div style="flex: 1;"></div>
+      <button class="btn btn-gold btn-sm" id="btnExportarTopVendedores" title="Exportar planilha com info completa dos top vendedores: essência, estoque, gramatura, métricas">📥 Exportar Top 20</button>
       <span style="font-size: 11px; color: var(--text-muted);" id="vendasResumo">—</span>
     </div>
 
@@ -3994,6 +3995,153 @@ function _renderVendasRanking(lista) {
   }
   document.getElementById('vendasResumo').textContent =
     filtrada.length === lista.length ? `${lista.length} produtos` : `${filtrada.length} de ${lista.length} visíveis`;
+}
+
+// ===== EXPORTAR TOP 20 VENDEDORES =====
+//
+// Gera planilha XLSX com info completa pra decisão de compra de essência:
+// SKU/nome/curva/empresa, essência usada, gramatura, estoque PA, métricas de venda,
+// e cálculo de essência necessária pra cobrir 45 ou 90 dias.
+//
+// Usa o filtro de empresa atual (Touti/Yes/Ambas) e ordena por M3 (média 3 meses)
+// porque é mais estável que M1 (que pode ter sido atípico).
+
+function exportarTopVendedores(topN = 20) {
+  const calcGiro = v => v ? (v.m3 || 0) : 0; // M3 é a métrica de ranking
+
+  // Lista filtrada por empresa, com venda > 0
+  const lista = produtosFiltrados()
+    .map(p => {
+      const v = state.venda[p.sku] || {};
+      return { p, m1: v.m1 || 0, m3: v.m3 || 0, m6: v.m6 || 0, pico6: v.pico6 || 0 };
+    })
+    .filter(l => l.m3 > 0)
+    .sort((a, b) => b.m3 - a.m3)
+    .slice(0, topN);
+
+  if (lista.length === 0) {
+    alert('Nenhum produto com vendas pra exportar.');
+    return;
+  }
+
+  // Cabeçalho
+  const filtroEmp = state.filtroEmpresa === 'ambas' ? 'Touti + Yes' : state.filtroEmpresa;
+  const rows = [
+    [`TOP ${topN} CAMPEÕES DE VENDA — ${filtroEmp}`],
+    [`Gerado em: ${new Date().toLocaleString('pt-BR')}`],
+    [`Ordenado por: M3 (média 3 meses)`],
+    [],
+    [
+      'Rank', 'SKU', 'Produto', 'Curva', 'Empresa',
+      'SKU Essência', 'Essência', 'Fornecedor',
+      'g/produto',
+      'Estoque PE (un)', 'Estoque SP (un)', 'Total PA (un)',
+      'M1 (un/mês)', 'M3 (un/mês)', 'M6 (un/mês)', 'Pico6 (un/mês)',
+      'DoH (dias)',
+      'Essência p/ 45d (kg)', 'Essência p/ 90d (kg)',
+    ]
+  ];
+
+  // Linhas
+  lista.forEach((l, idx) => {
+    const p = l.p;
+    const ess = state.essencias.find(e => e.sku === p.skuEssencia);
+    const est = state.estoque[p.sku] || { pe: 0, sp: 0 };
+    const pe = est.pe || 0;
+    const sp = est.sp || 0;
+    const total = pe + sp;
+    const venDia = l.m3 / 30;
+    const doh = venDia > 0 ? total / venDia : '∞';
+    const gPorUn = p.gramasPorUn || 0;
+    // Necessidade de essência: venda mensal × g/un × (dias/30) → em gramas → /1000 = kg
+    const essPara45d = (l.m3 * gPorUn * (45 / 30)) / 1000;
+    const essPara90d = (l.m3 * gPorUn * (90 / 30)) / 1000;
+    const curva = getCurvaProduto(p.sku).curva;
+    const empresa = getEmpresaProduto(p);
+
+    rows.push([
+      idx + 1,
+      p.sku,
+      p.descricao,
+      curva,
+      empresa,
+      p.skuEssencia || '—',
+      ess?.nome || '(não cadastrada)',
+      ess?.fornecedor || '—',
+      gPorUn,
+      pe, sp, total,
+      Math.round(l.m1), Math.round(l.m3), Math.round(l.m6), Math.round(l.pico6),
+      typeof doh === 'number' ? Math.round(doh) : doh,
+      Math.round(essPara45d * 10) / 10,
+      Math.round(essPara90d * 10) / 10,
+    ]);
+  });
+
+  // Totais por essência (consolidado pra ajudar na compra)
+  rows.push([]);
+  rows.push(['CONSOLIDADO POR ESSÊNCIA (entre os top ' + topN + ')']);
+  rows.push([
+    'SKU Essência', 'Essência', 'Fornecedor',
+    'Produtos no top', 'Demanda mensal (g)', 'p/ 45d (kg)', 'p/ 90d (kg)',
+    'Estoque atual (kg)', 'Pedido aberto (kg)', 'Compras em andamento (kg)',
+  ]);
+
+  // Agregação
+  const porEss = {};
+  lista.forEach(l => {
+    const sku = l.p.skuEssencia;
+    if (!sku) return;
+    if (!porEss[sku]) {
+      const ess = state.essencias.find(e => e.sku === sku);
+      porEss[sku] = {
+        sku, nome: ess?.nome || '?', fornecedor: ess?.fornecedor || '—',
+        produtosNoTop: 0, demandaMensalG: 0,
+        estoqueG: ess?.estoqueG || 0,
+        pedidoG: ess?.pedidoAbertoG || 0,
+        comprasG: getComprasAtivasPorEss(sku),
+      };
+    }
+    porEss[sku].produtosNoTop++;
+    porEss[sku].demandaMensalG += l.m3 * (l.p.gramasPorUn || 0);
+  });
+
+  Object.values(porEss).sort((a, b) => b.demandaMensalG - a.demandaMensalG).forEach(e => {
+    const para45 = (e.demandaMensalG * 45 / 30) / 1000;
+    const para90 = (e.demandaMensalG * 90 / 30) / 1000;
+    rows.push([
+      e.sku, e.nome, e.fornecedor,
+      e.produtosNoTop,
+      Math.round(e.demandaMensalG),
+      Math.round(para45 * 10) / 10,
+      Math.round(para90 * 10) / 10,
+      Math.round(e.estoqueG / 1000 * 10) / 10,
+      Math.round(e.pedidoG / 1000 * 10) / 10,
+      Math.round(e.comprasG / 1000 * 10) / 10,
+    ]);
+  });
+
+  // Gera XLSX
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [
+    { wch: 6 }, { wch: 8 }, { wch: 35 }, { wch: 7 }, { wch: 8 },
+    { wch: 12 }, { wch: 25 }, { wch: 14 },
+    { wch: 10 },
+    { wch: 14 }, { wch: 14 }, { wch: 14 },
+    { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 14 },
+    { wch: 12 },
+    { wch: 18 }, { wch: 18 },
+  ];
+
+  // Mesclar primeira linha (título)
+  ws['!merges'] = ws['!merges'] || [];
+  ws['!merges'].push({ s: { r: 0, c: 0 }, e: { r: 0, c: 18 } });
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, `Top ${topN} ${filtroEmp.substring(0, 15)}`);
+
+  const empresaStr = state.filtroEmpresa === 'ambas' ? 'touti_yes' : state.filtroEmpresa.toLowerCase();
+  const dataStr = new Date().toISOString().slice(0, 10);
+  XLSX.writeFile(wb, `top${topN}_campeoes_${empresaStr}_${dataStr}.xlsx`);
 }
 
 function _renderVendasProduto() {
@@ -8766,6 +8914,9 @@ document.addEventListener('keydown', (e) => {
   bindChange('vendasFiltroTendencia', renderVendas);
   bindChange('vendasOrdem', renderVendas);
   bindChange('vendasProdutoSelect', renderVendas);
+  // Botão de exportar top 20
+  const btnExportTop = document.getElementById('btnExportarTopVendedores');
+  if (btnExportTop) btnExportTop.onclick = () => exportarTopVendedores(20);
   // Toggle Sell-In / Sell-Out na Visão Geral
   document.querySelectorAll('[data-vendas-fonte]').forEach(btn => {
     btn.onclick = () => {
