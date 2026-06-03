@@ -1094,7 +1094,7 @@
 <!-- ===== VIEW: ESTOQUE PA ===== -->
 <div id="view-estoque-pa" class="view hidden">
   <h1 class="page-title">Estoque PA</h1>
-  <p class="page-sub">Visão consolidada do estoque de produto acabado nas filiais, com <b>Days on Hand</b> por CD calculado a partir da venda mensal.</p>
+  <p class="page-sub">Visão consolidada do estoque de produto acabado nas filiais. <b>DoH PE e DoH SP</b> usam o cálculo do Power BI (venda alocada por filial). <b>DoH Geral</b> usa venda nacional consolidada (PE+SP).</p>
 
   <div class="kpis" id="estPaKpis"></div>
 
@@ -1130,7 +1130,7 @@
           <th class="right" style="width: 70px;" title="Days on Hand em SP: estoque ÷ (venda mensal ÷ 30)">DoH SP</th>
           <th class="right" style="width: 90px;">Total</th>
           <th class="right" style="width: 90px;">Venda/mês</th>
-          <th class="right" style="width: 80px;">DoH total</th>
+          <th class="right" style="width: 80px;" title="Days on Hand Geral: estoque total (PE+SP) ÷ (venda mensal ÷ 30). Quantos dias o estoque atual cobre da demanda total.">DoH Geral</th>
         </tr>
       </thead>
       <tbody id="estPaTbody"></tbody>
@@ -4111,7 +4111,7 @@ function exportarTopVendedores(topN = 20) {
       'Rank', 'SKU', 'Produto', 'Curva', 'Empresa',
       'SKU Essência', 'Essência', 'Fornecedor',
       'g/produto',
-      'Estoque PE (un)', 'DoH PE (dias)', 'Estoque SP (un)', 'DoH SP (dias)', 'Total PA (un)',
+      'Estoque PE (un)', 'DoH PE (dias)', 'Estoque SP (un)', 'DoH SP (dias)', 'Total PA (un)', 'DoH Geral (dias)',
       'M1 (un/mês)', 'M3 (un/mês)', 'M6 (un/mês)', 'Pico6 (un/mês)',
       'Essência p/ 45d (kg)', 'Essência p/ 90d (kg)',
     ]
@@ -4126,10 +4126,16 @@ function exportarTopVendedores(topN = 20) {
     const sp = est.sp || 0;
     const total = pe + sp;
     const venDia = l.m3 / 30;
-    // DoH por CD: como a venda é nacional, calcula com base na venda total
-    // (responde: "se a filial parar de receber, quantos dias dura?")
-    const dohPe = venDia > 0 ? Math.round(pe / venDia) : (pe > 0 ? '∞' : 0);
-    const dohSp = venDia > 0 ? Math.round(sp / venDia) : (sp > 0 ? '∞' : 0);
+    // DoH PE/SP: usa o valor do PBI quando disponível (venda alocada por filial),
+    // senão cai pro cálculo consolidado como fallback.
+    const dohPe = (est.diasPePbi != null && est.diasPePbi >= 0)
+      ? Math.round(est.diasPePbi)
+      : (venDia > 0 ? Math.round(pe / venDia) : (pe > 0 ? '∞' : 0));
+    const dohSp = (est.diasSpPbi != null && est.diasSpPbi >= 0)
+      ? Math.round(est.diasSpPbi)
+      : (venDia > 0 ? Math.round(sp / venDia) : (sp > 0 ? '∞' : 0));
+    // DoH geral: estoque total (PE+SP) dividido pela venda diária nacional
+    const dohGeral = venDia > 0 ? Math.round(total / venDia) : (total > 0 ? '∞' : 0);
     const gPorUn = p.gramasPorUn || 0;
     // Necessidade de essência: venda mensal × g/un × (dias/30) → em gramas → /1000 = kg
     const essPara45d = (l.m3 * gPorUn * (45 / 30)) / 1000;
@@ -4147,7 +4153,7 @@ function exportarTopVendedores(topN = 20) {
       ess?.nome || '(não cadastrada)',
       ess?.fornecedor || '—',
       gPorUn,
-      pe, dohPe, sp, dohSp, total,
+      pe, dohPe, sp, dohSp, total, dohGeral,
       Math.round(l.m1), Math.round(l.m3), Math.round(l.m6), Math.round(l.pico6),
       Math.round(essPara45d * 10) / 10,
       Math.round(essPara90d * 10) / 10,
@@ -4203,14 +4209,14 @@ function exportarTopVendedores(topN = 20) {
     { wch: 6 }, { wch: 8 }, { wch: 35 }, { wch: 7 }, { wch: 8 },
     { wch: 12 }, { wch: 25 }, { wch: 14 },
     { wch: 10 },
-    { wch: 14 }, { wch: 11 }, { wch: 14 }, { wch: 11 }, { wch: 14 },
+    { wch: 14 }, { wch: 11 }, { wch: 14 }, { wch: 11 }, { wch: 14 }, { wch: 14 },
     { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 14 },
     { wch: 18 }, { wch: 18 },
   ];
 
-  // Mesclar primeira linha (título) — agora 20 colunas (0 a 19)
+  // Mesclar primeira linha (título) — agora 21 colunas (0 a 20)
   ws['!merges'] = ws['!merges'] || [];
-  ws['!merges'].push({ s: { r: 0, c: 0 }, e: { r: 0, c: 19 } });
+  ws['!merges'].push({ s: { r: 0, c: 0 }, e: { r: 0, c: 20 } });
 
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, `Top ${topN} ${filtroEmp.substring(0, 15)}`);
@@ -4389,8 +4395,15 @@ function renderEstoquePA() {
     const venMes = calcGiro(v);
     const ess = state.essencias.find(e => e.sku === p.skuEssencia);
     const venDia = venMes / 30;
-    const dohPe = venDia > 0 ? pe / venDia : (pe > 0 ? 999 : 0);
-    const dohSp = venDia > 0 ? sp / venDia : (sp > 0 ? 999 : 0);
+    // DoH por filial: USA O VALOR VINDO DO PBI (que considera venda por filial, mais preciso)
+    // Cálculo consolidado é só fallback quando o PBI não trouxe.
+    const dohPe = (est.diasPePbi != null && est.diasPePbi >= 0)
+      ? est.diasPePbi
+      : (venDia > 0 ? pe / venDia : (pe > 0 ? 999 : 0));
+    const dohSp = (est.diasSpPbi != null && est.diasSpPbi >= 0)
+      ? est.diasSpPbi
+      : (venDia > 0 ? sp / venDia : (sp > 0 ? 999 : 0));
+    // DoH geral: precisa ser consolidado mesmo (usa venda total)
     const dohTotal = venDia > 0 ? total / venDia : (total > 0 ? 999 : 0);
     const curva = getCurvaProduto(p.sku);
 
