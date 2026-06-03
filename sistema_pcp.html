@@ -1612,8 +1612,40 @@
     <div class="kpi">
       <div class="kpi-label">Caixas fechadas</div>
       <div class="kpi-value" id="tKpiCaixas">—</div>
-      <div class="kpi-sub">Total para a carreta</div>
+      <div class="kpi-sub">Total a carregar</div>
     </div>
+    <div class="kpi" style="background: rgba(201,168,97,0.06); border-color: rgba(201,168,97,0.3);">
+      <div class="kpi-label">Pallets totais</div>
+      <div class="kpi-value" id="tKpiPallets">—</div>
+      <div class="kpi-sub">Calculado por linha de produto</div>
+    </div>
+  </div>
+
+  <!-- ===== CARD DE LOGÍSTICA ===== -->
+  <div class="card" style="padding: 18px; margin: 18px 0;" id="cardLogistica">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+      <h3 style="margin: 0; font-size: 15px; color: var(--accent); letter-spacing: 0.04em; text-transform: uppercase;">🚛 Planejamento Logístico</h3>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <label style="font-size: 11px; color: var(--text-muted);">Veículo desejado:</label>
+        <select class="search-input" id="tVeiculoSel" style="width: 220px;">
+          <option value="carreta" selected>Carreta — 28 pallets</option>
+          <option value="carreta_ls">Carreta LS — 32 pallets</option>
+          <option value="bitrem">Bitrem / Rodotrem — 36 pallets</option>
+          <option value="truck">Truck (toco) — 14 pallets</option>
+          <option value="vuc">3/4 (VUC) — 8 pallets</option>
+          <option value="fiorino">HR / Fiorino — 2 pallets</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="logisticaResumo" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;"></div>
+
+    <div id="logisticaBreakdown" style="margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border);">
+      <div style="font-size: 11px; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px;">Distribuição por linha (caixas / pallets)</div>
+      <div id="logisticaPorLinha" style="display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px;"></div>
+    </div>
+
+    <div id="logisticaSugestao" style="margin-top: 12px; font-size: 13px;"></div>
   </div>
 
   <div class="tabs">
@@ -2219,7 +2251,7 @@ function normalizaFornecedor(f) {
 }
 
 // Normaliza categoria — tenta mapear pelas 7 opções válidas. Se não bater, retorna vazio.
-const CATEGORIAS_VALIDAS = ['Corpo', 'Care', '100ml', 'Regular', 'Body Splash', '30ml', 'Papelaria'];
+const CATEGORIAS_VALIDAS = ['Corpo', 'Care', '100ml', 'Regular', 'Body Splash', '30ml', 'Papelaria', 'Special / Licenciados', 'Memórias', 'Special Yes'];
 function normalizaCategoria(c, descricao) {
   // Se já está em uma das 7 categorias, mantém
   if (CATEGORIAS_VALIDAS.includes(c)) return c;
@@ -2341,6 +2373,50 @@ function produtosFiltrados() {
   if (f === 'ambas') return state.produtos;
   return state.produtos.filter(p => getEmpresaProduto(p) === f);
 }
+
+// ===== PALETIZAÇÃO =====
+//
+// Quantas caixas cabem em 1 pallet, calculado por heurística baseada no nome/linha.
+// Pode ser sobrescrito por produto via campo p.caixasPorPallet.
+//
+// Regras (baseadas no que o Vinicius confirmou):
+//   - Linha 50ML (ml=50)        → 54 cx / pallet
+//   - Licenciados (clubes, marcas) → 25 cx / pallet
+//   - Colônia Yes (desodorante)   → 28 cx / pallet
+//   - Resto                       → 40 cx / pallet (default conservador)
+
+function getCaixasPorPalletProd(prod) {
+  if (!prod) return 40;
+  // Override manual ganha sempre
+  if (typeof prod.caixasPorPallet === 'number' && prod.caixasPorPallet > 0) {
+    return prod.caixasPorPallet;
+  }
+  const desc = String(prod.descricao || '').toUpperCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  // Yes (desodorante colônia)
+  if (desc.startsWith('DESODORANTE COLONIA')) return 28;
+  // Sandalo / Extreme Black (Yes linha colônia também)
+  if (desc.includes('EXTREME BLACK') || desc.includes('SANDALO')) return 28;
+  // Licenciados — categorias específicas
+  const cat = String(prod.categoria || '').toUpperCase();
+  if (cat.includes('SPECIAL') || cat.includes('LICENCIAD') || cat.includes('MEMORIA')) return 25;
+  // Linha 50ml: marcadores comuns no nome
+  if (/\b50\s*ML\b/.test(desc) || /\b50ML\b/.test(desc)) return 54;
+  // Fit / Vip 100ml costumam ser 40 (padrão Touti)
+  return 40;
+}
+
+// ===== VEÍCULOS LOGÍSTICOS (benchmarks Brasil) =====
+// Fonte: padrões da ABOL/CNT, capacidade média de transporte rodoviário urbano e interestadual.
+// Pallets considerados são PBR (1,00 × 1,20m); valores são típicos, podem variar com modelo do veículo.
+const VEICULOS_LOGISTICA = [
+  { id: 'bitrem',    nome: 'Bitrem / Rodotrem',       pallets: 36, capacidadeTon: 37, baKm: 19.0, custo: 'altíssimo' },
+  { id: 'carreta_ls', nome: 'Carreta LS (Long Spider)', pallets: 32, capacidadeTon: 30, baKm: 17.0, custo: 'alto' },
+  { id: 'carreta',   nome: 'Carreta',                   pallets: 28, capacidadeTon: 26, baKm: 14.8, custo: 'alto' },
+  { id: 'truck',     nome: 'Truck (toco)',              pallets: 14, capacidadeTon: 7,  baKm: 7.5,  custo: 'médio' },
+  { id: 'vuc',       nome: '3/4 (VUC)',                 pallets: 8,  capacidadeTon: 3.5, baKm: 5.0,  custo: 'baixo' },
+  { id: 'fiorino',   nome: 'HR / Fiorino',              pallets: 2,  capacidadeTon: 1,   baKm: 3.0,  custo: 'mínimo' },
+];
 
 function getLinhaProduto(prod) {
   const termos = (state.linhaAutoTermos && state.linhaAutoTermos.length) ? state.linhaAutoTermos : LINHA_AUTO_DEFAULT;
@@ -7941,6 +8017,55 @@ function computeTransferencia() {
   return out;
 }
 
+// ===== SUGESTÃO DE COMBINAÇÃO DE VEÍCULOS =====
+//
+// Avalia 2 cenários: simples (1 tipo de veículo) e híbrido (mistura grandes + menor).
+// Retorna texto HTML com a melhor combinação e aviso se for muito subutilizado.
+
+function sugerirCombinacaoVeiculos(totalPallets) {
+  if (totalPallets === 0) return 'Nada a transportar.';
+
+  const cenarios = [];
+  VEICULOS_LOGISTICA.forEach(v => {
+    const n = Math.ceil(totalPallets / v.pallets);
+    const cap = n * v.pallets;
+    const aprov = (totalPallets / cap) * 100;
+    cenarios.push({ veiculo: v, n, aprov, sobra: cap - totalPallets });
+  });
+
+  const hibridos = [];
+  if (totalPallets > 14) {
+    for (const grande of VEICULOS_LOGISTICA.filter(v => v.pallets >= 14)) {
+      const ncgrande = Math.floor(totalPallets / grande.pallets);
+      if (ncgrande === 0) continue;
+      const resto = totalPallets - ncgrande * grande.pallets;
+      if (resto === 0) continue;
+      const menor = VEICULOS_LOGISTICA.slice().reverse().find(v => v.pallets >= resto);
+      if (menor && menor.pallets < grande.pallets) {
+        const cap = ncgrande * grande.pallets + menor.pallets;
+        const aprov = (totalPallets / cap) * 100;
+        hibridos.push({
+          desc: `${ncgrande}× ${grande.nome} + 1× ${menor.nome}`,
+          cap, aprov, sobra: cap - totalPallets,
+        });
+      }
+    }
+  }
+
+  const melhorSimples = cenarios.slice().sort((a, b) => b.aprov - a.aprov)[0];
+  const melhorHibrido = hibridos.sort((a, b) => b.aprov - a.aprov)[0];
+
+  let txt = `<b>Cenário simples</b>: ${melhorSimples.n}× ${melhorSimples.veiculo.nome} — ${melhorSimples.aprov.toFixed(0)}% aproveitamento · sobra ${melhorSimples.sobra} pallets`;
+  if (melhorHibrido && melhorHibrido.aprov > melhorSimples.aprov + 5) {
+    txt += `<br><b>Cenário híbrido (melhor)</b>: ${melhorHibrido.desc} — ${melhorHibrido.aprov.toFixed(0)}% aproveitamento · sobra ${melhorHibrido.sobra} pallets`;
+  }
+  if (melhorSimples.aprov < 70 && totalPallets < 28) {
+    const faltam = 28 - totalPallets;
+    txt += `<br><span style="color: var(--warn);">⚠ Falta ${faltam} pallet(s) pra fechar carreta. Vale acumular mais 1-2 dias?</span>`;
+  }
+  return txt;
+}
+
 function renderTransferencia() {
   const hasData = Object.keys(state.estoque).length > 0;
   document.getElementById('noDataMsgT').classList.toggle('hidden', hasData);
@@ -7959,6 +8084,101 @@ function renderTransferencia() {
   document.getElementById('tKpiTransf').textContent = totalT.toLocaleString('pt-BR');
   const totalCx = [...crit, ...equ].reduce((s, r) => s + (r.caixas || 0), 0);
   document.getElementById('tKpiCaixas').textContent = totalCx.toLocaleString('pt-BR');
+
+  // ===== CÁLCULO DE PALLETS POR PRODUTO =====
+  // Para cada produto a transferir, calcula:
+  //   pallets_fracionados = caixas / caixas_por_pallet  (decimal)
+  // Total de pallets do envio = soma desses fracionados (depois arredonda pra cima global,
+  // já que pallets de mesma "linha" podem ser misturados em obra, mas se quiser ser conservador
+  // pode somar ceil de cada produto)
+  let totalPalletsFracionado = 0;
+  const porLinha = {}; // linha → { caixas, palletsFracionado, qtdProdutos }
+  [...crit, ...equ].forEach(r => {
+    const prod = state.produtos.find(p => p.sku === r.sku);
+    const cxPorPallet = getCaixasPorPalletProd(prod);
+    const palletsProd = (r.caixas || 0) / cxPorPallet;
+    totalPalletsFracionado += palletsProd;
+    r._cxPorPallet = cxPorPallet;
+    r._palletsFracionado = palletsProd;
+    // Agrupa por "linha" do paletizador (não confundir com linha-de-produção)
+    const tipoPallet = cxPorPallet === 28 ? 'Colônia Yes (28cx/p)'
+      : cxPorPallet === 25 ? 'Licenciados (25cx/p)'
+      : cxPorPallet === 54 ? 'Linha 50ml (54cx/p)'
+      : `Padrão (${cxPorPallet}cx/p)`;
+    if (!porLinha[tipoPallet]) porLinha[tipoPallet] = { caixas: 0, palletsFrac: 0, qtd: 0 };
+    porLinha[tipoPallet].caixas += r.caixas || 0;
+    porLinha[tipoPallet].palletsFrac += palletsProd;
+    porLinha[tipoPallet].qtd++;
+  });
+
+  // Total final de pallets: ceil do total fracionado (pallets podem ser otimizados com mix)
+  const totalPalletsRealistico = Math.ceil(totalPalletsFracionado);
+  document.getElementById('tKpiPallets').textContent = totalPalletsRealistico.toLocaleString('pt-BR');
+
+  // ===== RENDER CARD LOGÍSTICO =====
+  const veiculoId = document.getElementById('tVeiculoSel')?.value || 'carreta';
+  const veiculo = VEICULOS_LOGISTICA.find(v => v.id === veiculoId) || VEICULOS_LOGISTICA[2];
+  const veiculosNecessarios = Math.ceil(totalPalletsRealistico / veiculo.pallets);
+  const palletsUltimo = totalPalletsRealistico % veiculo.pallets;
+  const ultimoCheio = palletsUltimo === 0 && totalPalletsRealistico > 0;
+  const aproveitamentoUltimo = palletsUltimo === 0
+    ? (totalPalletsRealistico > 0 ? 100 : 0)
+    : Math.round((palletsUltimo / veiculo.pallets) * 100);
+  const aproveitamentoMedio = veiculosNecessarios > 0
+    ? Math.round((totalPalletsRealistico / (veiculosNecessarios * veiculo.pallets)) * 100)
+    : 0;
+
+  document.getElementById('logisticaResumo').innerHTML = `
+    <div>
+      <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em;">Pallets totais</div>
+      <div style="font-size: 28px; font-weight: 600; color: var(--accent); margin-top: 2px;">${totalPalletsRealistico}</div>
+      <div style="font-size: 11px; color: var(--text-dim);">${totalPalletsFracionado.toFixed(1)} sem otimizar mix</div>
+    </div>
+    <div>
+      <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em;">${veiculo.nome}(s) necessários</div>
+      <div style="font-size: 28px; font-weight: 600; margin-top: 2px;">${veiculosNecessarios}</div>
+      <div style="font-size: 11px; color: var(--text-dim);">${veiculo.pallets} pallets/veículo · ${veiculo.capacidadeTon}t</div>
+    </div>
+    <div>
+      <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em;">Último veículo</div>
+      <div style="font-size: 28px; font-weight: 600; color: ${ultimoCheio ? 'var(--ok)' : aproveitamentoUltimo < 50 ? 'var(--warn)' : 'var(--text)'}; margin-top: 2px;">${ultimoCheio ? '✓' : palletsUltimo + ' pal'}</div>
+      <div style="font-size: 11px; color: var(--text-dim);">${ultimoCheio ? 'Cheio (100%)' : aproveitamentoUltimo + '% ocupado'}</div>
+    </div>
+    <div>
+      <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em;">Aproveitamento</div>
+      <div style="font-size: 28px; font-weight: 600; color: ${aproveitamentoMedio > 85 ? 'var(--ok)' : aproveitamentoMedio > 60 ? 'var(--warn)' : 'var(--critical)'}; margin-top: 2px;">${aproveitamentoMedio}%</div>
+      <div style="font-size: 11px; color: var(--text-dim);">Ocupação média da frota</div>
+    </div>
+  `;
+
+  // Distribuição por linha
+  const porLinhaArr = Object.entries(porLinha).sort((a, b) => b[1].palletsFrac - a[1].palletsFrac);
+  document.getElementById('logisticaPorLinha').innerHTML = porLinhaArr.length === 0
+    ? '<span style="color: var(--text-dim); font-size: 12px;">Nenhuma transferência sugerida</span>'
+    : porLinhaArr.map(([tipo, d]) => `
+      <div style="background: var(--bg-card); padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border-soft); flex: 1; min-width: 200px;">
+        <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">${tipo}</div>
+        <div style="font-size: 16px; font-weight: 600;">${Math.ceil(d.palletsFrac)} <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">pallets</span></div>
+        <div style="font-size: 11px; color: var(--text-dim);">${d.caixas.toLocaleString('pt-BR')} cx · ${d.qtd} produto(s)</div>
+      </div>
+    `).join('');
+
+  // Sugestão inteligente
+  let sugestao = '';
+  if (totalPalletsRealistico === 0) {
+    sugestao = '<span style="color: var(--text-dim);">Sem produtos pra transferir.</span>';
+  } else {
+    // Encontra a melhor combinação de veículos (puramente capacidade, não custo)
+    const melhorCombo = sugerirCombinacaoVeiculos(totalPalletsRealistico);
+    sugestao = `
+      <div style="background: var(--bg-card); padding: 10px 14px; border-radius: 6px; border-left: 3px solid var(--accent);">
+        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">💡 Sugestão de frota ideal</div>
+        <div style="font-size: 13px;">${melhorCombo}</div>
+      </div>
+    `;
+  }
+  document.getElementById('logisticaSugestao').innerHTML = sugestao;
+
 
   document.getElementById('tCnt-all').textContent = all.length;
   document.getElementById('tCnt-crit').textContent = crit.length;
@@ -8037,6 +8257,8 @@ document.querySelectorAll('th[data-tsort]').forEach(th => th.onclick = () => {
 ['tParamCritico','tParamEqual','tParamPeMin','tParamSpAlvo','tParamVenda','tParamFonteDias'].forEach(id => {
   document.getElementById(id).addEventListener('change', renderTransferencia);
 });
+const tVeiculoSel = document.getElementById('tVeiculoSel');
+if (tVeiculoSel) tVeiculoSel.addEventListener('change', renderTransferencia);
 document.getElementById('tBtnExport').onclick = () => {
   let rows = state._transf || [];
   if (state.tFilter === 'crit') rows = rows.filter(r => r.status === 'crit');
