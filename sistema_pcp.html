@@ -4149,14 +4149,19 @@ function exportarTopVendedores(topN = 20) {
       p.descricao,
       curva,
       empresa,
-      p.skuEssencia || '—',
+      p.skuEssencia || '',
       ess?.nome || '(não cadastrada)',
-      ess?.fornecedor || '—',
+      ess?.fornecedor || '',
       gPorUn,
-      pe, dohPe, sp, dohSp, total, dohGeral,
+      pe,
+      typeof dohPe === 'number' ? dohPe : null,
+      sp,
+      typeof dohSp === 'number' ? dohSp : null,
+      total,
+      typeof dohGeral === 'number' ? dohGeral : null,
       Math.round(l.m1), Math.round(l.m3), Math.round(l.m6), Math.round(l.pico6),
-      Math.round(essPara45d * 10) / 10,
-      Math.round(essPara90d * 10) / 10,
+      Number(essPara45d.toFixed(2)),
+      Number(essPara90d.toFixed(2)),
     ]);
   });
 
@@ -4177,7 +4182,7 @@ function exportarTopVendedores(topN = 20) {
     if (!porEss[sku]) {
       const ess = state.essencias.find(e => e.sku === sku);
       porEss[sku] = {
-        sku, nome: ess?.nome || '?', fornecedor: ess?.fornecedor || '—',
+        sku, nome: ess?.nome || '?', fornecedor: ess?.fornecedor || '',
         produtosNoTop: 0, demandaMensalG: 0,
         estoqueG: ess?.estoqueG || 0,
         pedidoG: ess?.pedidoAbertoG || 0,
@@ -4188,19 +4193,22 @@ function exportarTopVendedores(topN = 20) {
     porEss[sku].demandaMensalG += l.m3 * (l.p.gramasPorUn || 0);
   });
 
+  const consolidadoLinhas = [];
   Object.values(porEss).sort((a, b) => b.demandaMensalG - a.demandaMensalG).forEach(e => {
     const para45 = (e.demandaMensalG * 45 / 30) / 1000;
     const para90 = (e.demandaMensalG * 90 / 30) / 1000;
-    rows.push([
+    const linha = [
       e.sku, e.nome, e.fornecedor,
       e.produtosNoTop,
       Math.round(e.demandaMensalG),
-      Math.round(para45 * 10) / 10,
-      Math.round(para90 * 10) / 10,
-      Math.round(e.estoqueG / 1000 * 10) / 10,
-      Math.round(e.pedidoG / 1000 * 10) / 10,
-      Math.round(e.comprasG / 1000 * 10) / 10,
-    ]);
+      Number(para45.toFixed(2)),
+      Number(para90.toFixed(2)),
+      Number((e.estoqueG / 1000).toFixed(2)),
+      Number((e.pedidoG / 1000).toFixed(2)),
+      Number((e.comprasG / 1000).toFixed(2)),
+    ];
+    rows.push(linha);
+    consolidadoLinhas.push(linha);
   });
 
   // Gera XLSX
@@ -4214,9 +4222,46 @@ function exportarTopVendedores(topN = 20) {
     { wch: 18 }, { wch: 18 },
   ];
 
-  // Mesclar primeira linha (título) — agora 21 colunas (0 a 20)
+  // Mesclar primeira linha (título) — 21 colunas (0 a 20)
   ws['!merges'] = ws['!merges'] || [];
   ws['!merges'].push({ s: { r: 0, c: 0 }, e: { r: 0, c: 20 } });
+
+  // Aplicar formato numérico nas células de dados
+  // Linha do header é 4 (índice 4 = 5ª linha). Dados começam na linha 5 (idx 5).
+  const fmt0 = '#,##0';      // inteiros com separador de milhar
+  const fmtDec = '#,##0.00'; // 2 casas decimais
+  const headerRowIdx = 4;
+  const dataStartIdx = 5;
+  for (let i = 0; i < lista.length; i++) {
+    const r = dataStartIdx + i;
+    // Colunas inteiras (separador de milhar, sem decimais)
+    // B=1 SKU, F=5 SKU Ess, I=8 g/produto, J=9 PE, K=10 dohPE, L=11 SP, M=12 dohSP, N=13 Total, O=14 dohGeral, P-S=15-18 m1-pico6
+    [1, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18].forEach(c => {
+      const ref = XLSX.utils.encode_cell({ r, c });
+      if (ws[ref] && typeof ws[ref].v === 'number') ws[ref].z = fmt0;
+    });
+    // Colunas decimais: T=19, U=20 (essência kg)
+    [19, 20].forEach(c => {
+      const ref = XLSX.utils.encode_cell({ r, c });
+      if (ws[ref] && typeof ws[ref].v === 'number') ws[ref].z = fmtDec;
+    });
+  }
+
+  // Consolidado: começa 3 linhas depois do último item (vazia + título + cabeçalho)
+  const consolidadoStart = dataStartIdx + lista.length + 3;
+  for (let i = 0; i < consolidadoLinhas.length; i++) {
+    const r = consolidadoStart + i;
+    // A=0 SKU, D=3 produtos, E=4 demanda → inteiros
+    [0, 3, 4].forEach(c => {
+      const ref = XLSX.utils.encode_cell({ r, c });
+      if (ws[ref] && typeof ws[ref].v === 'number') ws[ref].z = fmt0;
+    });
+    // F,G,H,I,J=5-9 → decimais
+    [5, 6, 7, 8, 9].forEach(c => {
+      const ref = XLSX.utils.encode_cell({ r, c });
+      if (ws[ref] && typeof ws[ref].v === 'number') ws[ref].z = fmtDec;
+    });
+  }
 
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, `Top ${topN} ${filtroEmp.substring(0, 15)}`);
@@ -5393,20 +5438,42 @@ function exportarSimulacao() {
   precisamComprar.forEach(r => {
     rows.push([
       r.sku, r.nome, r.fornecedor, r.produtosUsando,
-      (r.disponivelG / 1000).toFixed(1),
-      (r.demandaPeriodoG / 1000).toFixed(1),
-      r.comprarKg.toFixed(1),
-      r.usdKg.toFixed(2),
-      r.totalUSD.toFixed(2),
+      Number((r.disponivelG / 1000).toFixed(2)),
+      Number((r.demandaPeriodoG / 1000).toFixed(2)),
+      Number(r.comprarKg.toFixed(2)),
+      Number(r.usdKg.toFixed(2)),
+      Number(r.totalUSD.toFixed(2)),
     ]);
   });
   rows.push([]);
   const totalKg = precisamComprar.reduce((s, r) => s + r.comprarKg, 0);
   const totalUSD = precisamComprar.reduce((s, r) => s + r.totalUSD, 0);
-  rows.push(['', '', '', 'TOTAL', '', '', totalKg.toFixed(1), '', totalUSD.toFixed(2)]);
+  rows.push(['', '', '', 'TOTAL', '', '', Number(totalKg.toFixed(2)), '', Number(totalUSD.toFixed(2))]);
 
   const ws = XLSX.utils.aoa_to_sheet(rows);
   ws['!cols'] = [{ wch: 8 }, { wch: 30 }, { wch: 14 }, { wch: 16 }, { wch: 16 }, { wch: 18 }, { wch: 14 }, { wch: 10 }, { wch: 14 }];
+
+  // Aplicar formato numérico nas células de número (linha 4 em diante, colunas D em diante)
+  // Formato pt-BR: ponto = separador de milhar, vírgula = decimal. "#,##0.00" no XLSX vira "#.##0,00" no Excel pt-BR.
+  const fmt2dec = '#,##0.00';
+  const fmt0dec = '#,##0';
+  for (let r = 4; r < 4 + precisamComprar.length; r++) {
+    // D (col 3) = produtos usam → inteiro
+    const cellD = XLSX.utils.encode_cell({ r, c: 3 });
+    if (ws[cellD]) ws[cellD].z = fmt0dec;
+    // E, F, G, H, I (cols 4-8) = números decimais
+    for (let c = 4; c <= 8; c++) {
+      const ref = XLSX.utils.encode_cell({ r, c });
+      if (ws[ref]) ws[ref].z = fmt2dec;
+    }
+  }
+  // Linha de totais
+  const linhaTotal = 4 + precisamComprar.length + 1;
+  ['G', 'I'].forEach(col => {
+    const ref = col + (linhaTotal + 1);
+    if (ws[ref]) ws[ref].z = fmt2dec;
+  });
+
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, `Simulação ${_simDiasAtual}d`);
   XLSX.writeFile(wb, `simulacao_cobertura_${_simDiasAtual}dias.xlsx`);
@@ -6581,23 +6648,39 @@ function exportarOPsExcel(ops, linha) {
     dados.push([o.descricao, o.sku, o.qtdProduzir]);
   });
   const ws = XLSX.utils.aoa_to_sheet(dados);
-  // Ajusta largura
   ws['!cols'] = [{ wch: 50 }, { wch: 18 }, { wch: 20 }];
+  // Formato numérico nas colunas B e C
+  const fmt0 = '#,##0';
+  for (let r = 1; r <= ops.length; r++) {
+    ['B', 'C'].forEach(col => {
+      const ref = col + (r + 1);
+      if (ws[ref] && typeof ws[ref].v === 'number') ws[ref].z = fmt0;
+    });
+  }
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'OPs');
 
-  // Adiciona uma aba "detalhe" com info extra (linha, score, limitador)
+  // Aba "detalhe"
   const detalhe = [['SKU', 'Produto', 'Linha', 'Qtd a produzir', 'Estoque PA atual', 'Venda/mês', 'Pode produzir', 'Score', 'Limitador']];
   ops.forEach(o => {
     detalhe.push([
       o.sku, o.descricao, o.linha, o.qtdProduzir,
       o.estoquePA, Math.round(o.venMes), o.podeProduzir,
-      o.score.toFixed(3),
-      o.limitador ? `${o.limitador.nome} (${o.limitador.sku})` : '—',
+      Number(o.score.toFixed(3)),
+      o.limitador ? `${o.limitador.nome} (${o.limitador.sku})` : '',
     ]);
   });
   const ws2 = XLSX.utils.aoa_to_sheet(detalhe);
   ws2['!cols'] = [{wch:8},{wch:50},{wch:14},{wch:16},{wch:16},{wch:14},{wch:16},{wch:10},{wch:30}];
+  // Formato: A=SKU, D=qtd, E=estoque, F=venda, G=pode (inteiros) · H=score (3 dec)
+  for (let r = 1; r <= ops.length; r++) {
+    ['A', 'D', 'E', 'F', 'G'].forEach(col => {
+      const ref = col + (r + 1);
+      if (ws2[ref] && typeof ws2[ref].v === 'number') ws2[ref].z = fmt0;
+    });
+    const refH = 'H' + (r + 1);
+    if (ws2[refH] && typeof ws2[refH].v === 'number') ws2[refH].z = '0.000';
+  }
   XLSX.utils.book_append_sheet(wb, ws2, 'Detalhe');
 
   const data = new Date().toISOString().slice(0,10);
