@@ -1437,7 +1437,7 @@
   <div class="toolbar">
     <input type="text" class="search-input" id="searchAnalise" placeholder="Buscar essência (nome, SKU ou fornecedor)…">
     <div style="display: flex; gap: 8px;">
-      <button class="btn" id="btnExportCSV">📋 Exportar CSV</button>
+      <button class="btn" id="btnExportCSV">📥 Exportar Excel</button>
     </div>
   </div>
 
@@ -3305,19 +3305,28 @@ function computeAnalise() {
 
       // Estoque PA convertido em essência equivalente (PE + SP somados)
       const est = state.estoque[p.sku] || { pe: 0, sp: 0 };
-      const estPa = (est.pe || 0) + (est.sp || 0);
+      const estoquePe = est.pe || 0;
+      const estoqueSp = est.sp || 0;
+      const estPa = estoquePe + estoqueSp;
       const estPaEqG = estPa * gPerUn;
       estoquePaEquivalenteG += estPaEqG;
 
       produtosDetalhe.push({
         sku: p.sku,
         descricao: p.descricao,
-        categoria: p.categoria,
+        categoria: p.categoria || '',
+        empresa: getEmpresaProduto(p),
+        curva: getCurvaProduto(p.sku).curva,
         giro,
         gPerUn,
         demandaG: demandaProd,
+        estoquePe,
+        estoqueSp,
         estoquePaUn: estPa,
         estoquePaEqG: estPaEqG,
+        m1: v?.m1 || 0,
+        m3: v?.m3 || 0,
+        m6: v?.m6 || 0,
       });
     }
 
@@ -5619,16 +5628,37 @@ function calcularSimulacaoCobertura(dias) {
     let demandaMensalG = 0;
     let paEquivG = 0;
     let produtosUsando = 0;
+    const produtosDetalhe = []; // info de cada produto pra aba de detalhe
     produtosFiltrados().forEach(p => {
       if (p.skuEssencia !== ess.sku) return;
-      const giro = calcGiro(state.venda[p.sku]);
+      const v = state.venda[p.sku];
+      const giro = calcGiro(v);
       if (giro <= 0) return;
       const gramasPorUn = p.gramasPorUn || 0;
       if (gramasPorUn <= 0) return;
       demandaMensalG += giro * gramasPorUn;
       const est = state.estoque[p.sku] || { pe: 0, sp: 0 };
-      paEquivG += ((est.pe || 0) + (est.sp || 0)) * gramasPorUn;
+      const estoquePe = est.pe || 0;
+      const estoqueSp = est.sp || 0;
+      const estoqueTotal = estoquePe + estoqueSp;
+      paEquivG += estoqueTotal * gramasPorUn;
       produtosUsando++;
+      // Guarda info do produto pra aba "Detalhe"
+      produtosDetalhe.push({
+        sku: p.sku,
+        descricao: p.descricao,
+        categoria: p.categoria || '',
+        empresa: getEmpresaProduto(p),
+        curva: getCurvaProduto(p.sku).curva,
+        gramasPorUn,
+        estoquePe,
+        estoqueSp,
+        estoqueTotal,
+        m1: v?.m1 || 0,
+        m3: v?.m3 || 0,
+        m6: v?.m6 || 0,
+        demandaMensalG: giro * gramasPorUn,
+      });
     });
 
     if (demandaMensalG <= 0) return; // pula essências sem demanda
@@ -5654,6 +5684,7 @@ function calcularSimulacaoCobertura(dias) {
       demandaPeriodoG,
       comprarG, comprarKg,
       usdKg, totalUSD,
+      produtosDetalhe,  // array com info de cada produto
     });
   });
 
@@ -5748,7 +5779,58 @@ function exportarSimulacao() {
   });
 
   const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, `Simulação ${_simDiasAtual}d`);
+  XLSX.utils.book_append_sheet(wb, ws, `Resumo ${_simDiasAtual}d`);
+
+  // ===== ABA 2: DETALHE POR PRODUTO =====
+  // Mostra quais produtos justificam o consumo de cada essência (SKU, nome, estoque, vendas M1/M3/M6)
+  const detalheRows = [
+    ['DETALHE POR PRODUTO — ' + _simDiasAtual + ' DIAS'],
+    ['Mostra os produtos que usam cada essência da aba Resumo. Use o SKU da essência pra cruzar.'],
+    [],
+    [
+      'SKU Essência', 'Essência', 'SKU Produto', 'Produto', 'Categoria',
+      'Empresa', 'Curva',
+      'g/un', 'Estoque PE', 'Estoque SP', 'Estoque Total',
+      'M1 (un/mês)', 'M3 (un/mês)', 'M6 (un/mês)',
+      'Demanda essência (g/mês)',
+    ],
+  ];
+  precisamComprar.forEach(r => {
+    // Ordena produtos por demanda decrescente (maior consumidor primeiro)
+    const ordenados = (r.produtosDetalhe || []).slice().sort((a, b) => b.demandaMensalG - a.demandaMensalG);
+    ordenados.forEach(p => {
+      detalheRows.push([
+        r.sku, r.nome,
+        p.sku, p.descricao, p.categoria,
+        p.empresa, p.curva,
+        p.gramasPorUn,
+        p.estoquePe, p.estoqueSp, p.estoqueTotal,
+        Math.round(p.m1), Math.round(p.m3), Math.round(p.m6),
+        Math.round(p.demandaMensalG),
+      ]);
+    });
+  });
+
+  const wsDet = XLSX.utils.aoa_to_sheet(detalheRows);
+  wsDet['!cols'] = [
+    { wch: 12 }, { wch: 28 }, { wch: 10 }, { wch: 38 }, { wch: 14 },
+    { wch: 8 }, { wch: 7 },
+    { wch: 8 }, { wch: 11 }, { wch: 11 }, { wch: 13 },
+    { wch: 13 }, { wch: 13 }, { wch: 13 },
+    { wch: 22 },
+  ];
+
+  // Formato numérico no detalhe (colunas: SKU Ess, SKU Prod, g/un, estoques, vendas, demanda)
+  const totalDetalheRows = detalheRows.length - 4;
+  for (let r = 4; r < 4 + totalDetalheRows; r++) {
+    [0, 2, 7, 8, 9, 10, 11, 12, 13, 14].forEach(c => {
+      const ref = XLSX.utils.encode_cell({ r, c });
+      if (wsDet[ref] && typeof wsDet[ref].v === 'number') wsDet[ref].z = fmt0dec;
+    });
+  }
+
+  XLSX.utils.book_append_sheet(wb, wsDet, 'Detalhe por produto');
+
   XLSX.writeFile(wb, `simulacao_cobertura_${_simDiasAtual}dias.xlsx`);
 }
 
@@ -8251,24 +8333,120 @@ document.getElementById('restoreFile').onchange = async e => {
 // ===== EXPORT CSV =====
 document.getElementById('btnExportCSV').onclick = () => {
   const rows = state._analise || [];
-  const lines = ['SKU;Essência;Fornecedor;Estoque(g);Pedido aberto(g);PA equivalente(g);Disponível total(g);Demanda período(g);Comprar(g);Comprar(kg);Dias cob;Status'];
+  if (rows.length === 0) {
+    alert('Nada pra exportar — a análise ainda não foi gerada.');
+    return;
+  }
+
+  // ===== ABA 1: RESUMO POR ESSÊNCIA =====
+  const resumo = [
+    ['COMPRA DE ESSÊNCIAS — ' + new Date().toLocaleString('pt-BR')],
+    ['Cálculo: 45 dias de venda + 25% buffer de segurança'],
+    [],
+    ['SKU', 'Essência', 'Fornecedor',
+     'Estoque (g)', 'Pedido aberto (g)', 'Compras em andamento (g)', 'PA equivalente (g)',
+     'Disponível total (g)', 'Demanda período (g)',
+     'Comprar (g)', 'Comprar (kg)', 'Dias cobertura', 'Status', 'Produtos que usam'],
+  ];
   rows.forEach(r => {
-    lines.push([
-      r.sku, `"${r.nome}"`, `"${r.fornecedor || ''}"`,
-      Math.round(r.estoqueG), Math.round(r.pedidoAbertoG), Math.round(r.estoquePaEquivalenteG || 0),
-      Math.round(r.disponivelG || 0), Math.round(r.demandaG),
-      Math.round(r.comprarG), r.comprarKg.toFixed(2),
-      Math.round(r.diasCob),
-      r.status === 'crit' ? 'Comprar JÁ' : r.status === 'warn' ? 'Atenção' : r.status === 'problema' ? 'Sem produtos' : 'OK'
-    ].join(';'));
+    const statusTxt = r.status === 'crit' ? 'Comprar JÁ' : r.status === 'warn' ? 'Atenção' : r.status === 'problema' ? 'Sem produtos' : 'OK';
+    resumo.push([
+      r.sku, r.nome, r.fornecedor || '',
+      Math.round(r.estoqueG || 0),
+      Math.round(r.pedidoAbertoG || 0),
+      Math.round(r.comprasAtivasG || 0),
+      Math.round(r.estoquePaEquivalenteG || 0),
+      Math.round(r.disponivelG || 0),
+      Math.round(r.demandaG || 0),
+      Math.round(r.comprarG || 0),
+      Number((r.comprarKg || 0).toFixed(2)),
+      r.diasCob >= 999 ? null : Math.round(r.diasCob),
+      statusTxt,
+      r.qtdProdutos || (r.produtosDetalhe?.length || 0),
+    ]);
   });
-  const blob = new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `compra_essencias_${new Date().toISOString().slice(0,10)}.csv`;
-  a.click();
-  URL.revokeObjectURL(url);
+
+  const wsResumo = XLSX.utils.aoa_to_sheet(resumo);
+  wsResumo['!cols'] = [
+    { wch: 8 }, { wch: 30 }, { wch: 14 },
+    { wch: 12 }, { wch: 14 }, { wch: 18 }, { wch: 16 },
+    { wch: 16 }, { wch: 16 },
+    { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 14 }, { wch: 16 },
+  ];
+
+  // Formato numérico nas linhas de dados
+  const fmt0 = '#,##0';
+  const fmt2 = '#,##0.00';
+  for (let i = 0; i < rows.length; i++) {
+    const r = 4 + i;
+    // Cols numéricas inteiras (A=0 SKU, D-J=3-9, L=11, N=13)
+    [0, 3, 4, 5, 6, 7, 8, 9, 11, 13].forEach(c => {
+      const ref = XLSX.utils.encode_cell({ r, c });
+      if (wsResumo[ref] && typeof wsResumo[ref].v === 'number') wsResumo[ref].z = fmt0;
+    });
+    // Col K=10 (comprar kg) → decimais
+    const refK = XLSX.utils.encode_cell({ r, c: 10 });
+    if (wsResumo[refK] && typeof wsResumo[refK].v === 'number') wsResumo[refK].z = fmt2;
+  }
+
+  // Merge título
+  wsResumo['!merges'] = wsResumo['!merges'] || [];
+  wsResumo['!merges'].push({ s: { r: 0, c: 0 }, e: { r: 0, c: 13 } });
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, wsResumo, 'Resumo');
+
+  // ===== ABA 2: DETALHE POR PRODUTO =====
+  // Pra cada essência, lista os produtos que a usam — com estoque PE/SP, vendas M1/M3/M6, demanda
+  const detalhe = [
+    ['DETALHE POR PRODUTO'],
+    ['Mostra todos os produtos que consomem cada essência. Cruze pelo SKU da Essência com a aba Resumo.'],
+    [],
+    [
+      'SKU Essência', 'Essência',
+      'SKU Produto', 'Produto', 'Categoria', 'Empresa', 'Curva',
+      'g/un',
+      'Estoque PE', 'Estoque SP', 'Estoque Total',
+      'M1 (un/mês)', 'M3 (un/mês)', 'M6 (un/mês)',
+      'Demanda essência (g/mês)',
+    ],
+  ];
+  rows.forEach(r => {
+    const prodOrdenados = (r.produtosDetalhe || []).slice().sort((a, b) => b.demandaG - a.demandaG);
+    prodOrdenados.forEach(p => {
+      detalhe.push([
+        r.sku, r.nome,
+        p.sku, p.descricao, p.categoria, p.empresa, p.curva,
+        p.gPerUn,
+        p.estoquePe, p.estoqueSp, p.estoquePaUn,
+        Math.round(p.m1), Math.round(p.m3), Math.round(p.m6),
+        Math.round(p.demandaG),
+      ]);
+    });
+  });
+
+  const wsDet = XLSX.utils.aoa_to_sheet(detalhe);
+  wsDet['!cols'] = [
+    { wch: 12 }, { wch: 28 },
+    { wch: 10 }, { wch: 38 }, { wch: 14 }, { wch: 8 }, { wch: 7 },
+    { wch: 8 },
+    { wch: 11 }, { wch: 11 }, { wch: 13 },
+    { wch: 13 }, { wch: 13 }, { wch: 13 },
+    { wch: 22 },
+  ];
+
+  // Formato numérico no detalhe
+  const totalDetalheRows = detalhe.length - 4;
+  for (let r = 4; r < 4 + totalDetalheRows; r++) {
+    [0, 2, 7, 8, 9, 10, 11, 12, 13, 14].forEach(c => {
+      const ref = XLSX.utils.encode_cell({ r, c });
+      if (wsDet[ref] && typeof wsDet[ref].v === 'number') wsDet[ref].z = fmt0;
+    });
+  }
+
+  XLSX.utils.book_append_sheet(wb, wsDet, 'Detalhe por produto');
+
+  XLSX.writeFile(wb, `compra_essencias_${new Date().toISOString().slice(0,10)}.xlsx`);
 };
 
 // ===== EVENTS GERAIS =====
