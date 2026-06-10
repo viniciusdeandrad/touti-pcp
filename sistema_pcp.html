@@ -674,6 +674,12 @@
         <line x1="3" y1="18" x2="21" y2="18"/>
       </svg>
     </button>
+    <button class="burger hidden" id="btnVoltarNav" aria-label="Voltar" title="Voltar (Alt+←)" style="margin-left: 4px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"/>
+        <polyline points="12 19 5 12 12 5"/>
+      </svg>
+    </button>
     <div class="logo"><span class="logo-mark">◆</span>PCP / S&amp;OP</div>
     <div class="breadcrumb">Sistema de Planejamento</div>
   </div>
@@ -1176,6 +1182,7 @@
     <table>
       <thead>
         <tr>
+          <th style="width: 32px;"></th>
           <th class="right" style="width: 70px;">SKU</th>
           <th style="width: 50px;">Curva</th>
           <th>Produto</th>
@@ -3133,7 +3140,96 @@ function parseInsumos(rows) {
 // Permite que qualquer parte do sistema possa "abrir" outro módulo focado em algo específico.
 // Usado para que clicar em uma essência, produto ou insumo navegue para o cadastro/edição correspondente.
 
+// ===== HISTÓRICO DE NAVEGAÇÃO =====
+//
+// Stack de views visitadas. Permite "voltar" pra view anterior preservando
+// filtros sempre que possível (search inputs principais).
+//
+// Quando o usuário clica num SKU/nome → navega pra outra aba, mas se quiser
+// voltar pra de onde veio (ex: Estoque PA), aperta o botão "← Voltar" ou Alt+←.
+
+const _navHistory = [];
+const _NAV_HISTORY_MAX = 20;
+let _navSilenceNextPush = false; // flag pra evitar empilhar quando estamos voltando
+
+// Captura o estado atual da view (qual view + filtros principais) pra restaurar depois
+function _snapshotViewAtual() {
+  const active = document.querySelector('.nav-item.active');
+  if (!active) return null;
+  const view = active.dataset.view;
+  // Captura valores dos search inputs comuns (cada view tem o seu)
+  const filtros = {};
+  const inputs = [
+    'searchAnalise', 'searchEss', 'searchProd', 'searchIns',
+    'compartilhadosSearch', 'vendasSearch',
+    'estoquePaSearch', 'estoqueInsSearch',
+    'opSearch', 'transferenciaSearch',
+  ];
+  inputs.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.value) filtros[id] = el.value;
+  });
+  return { view, filtros, scrollY: window.scrollY };
+}
+
+// Empilha o estado atual (chamado ANTES de navegar pra outra view)
+function _pushNavHistory() {
+  if (_navSilenceNextPush) {
+    _navSilenceNextPush = false;
+    return;
+  }
+  const snap = _snapshotViewAtual();
+  if (!snap) return;
+  // Não duplica: se o último é da mesma view, atualiza em vez de empilhar
+  const ultimo = _navHistory[_navHistory.length - 1];
+  if (ultimo && ultimo.view === snap.view) {
+    _navHistory[_navHistory.length - 1] = snap;
+  } else {
+    _navHistory.push(snap);
+    if (_navHistory.length > _NAV_HISTORY_MAX) _navHistory.shift();
+  }
+  _atualizarBotaoVoltar();
+}
+
+// Volta pra view anterior (chamado pelo botão ou atalho)
+function voltarNav() {
+  if (_navHistory.length === 0) return;
+  const alvo = _navHistory.pop();
+  _navSilenceNextPush = true; // pra essa navegação NÃO ser empilhada
+  const btn = document.querySelector(`.nav-item[data-view="${alvo.view}"]`);
+  if (btn) btn.click();
+  // Restaura filtros depois do render
+  setTimeout(() => {
+    Object.entries(alvo.filtros).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.value = val;
+        el.dispatchEvent(new Event('input'));
+        el.dispatchEvent(new Event('change'));
+      }
+    });
+    setTimeout(() => window.scrollTo({ top: alvo.scrollY || 0, behavior: 'smooth' }), 200);
+    _atualizarBotaoVoltar();
+  }, 100);
+}
+
+function _atualizarBotaoVoltar() {
+  const btn = document.getElementById('btnVoltarNav');
+  if (!btn) return;
+  if (_navHistory.length > 0) {
+    btn.classList.remove('hidden');
+    const ultimo = _navHistory[_navHistory.length - 1];
+    // Nome amigável da view anterior
+    const navItem = document.querySelector(`.nav-item[data-view="${ultimo.view}"]`);
+    const label = navItem ? navItem.textContent.trim().substring(2).trim() : ultimo.view;
+    btn.title = `Voltar para ${label} (Alt+←)`;
+  } else {
+    btn.classList.add('hidden');
+  }
+}
+
 function abrirAba(viewName) {
+  _pushNavHistory(); // registra a aba atual antes de trocar
   const btn = document.querySelector(`.nav-item[data-view="${viewName}"]`);
   if (btn) btn.click();
 }
@@ -4795,7 +4891,7 @@ function renderEstoquePA() {
   // Tabela
   const tbody = document.getElementById('estPaTbody');
   if (linhas.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; color:var(--text-dim); padding:30px;">Nenhum produto com esse filtro.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; color:var(--text-dim); padding:30px;">Nenhum produto com esse filtro.</td></tr>`;
   } else {
     tbody.innerHTML = linhas.map(l => {
       const dohCelula = (doh, est) => {
@@ -4805,8 +4901,13 @@ function renderEstoquePA() {
         const txt = doh >= 999 ? '∞' : Math.round(doh);
         return `<span class="mono" style="color:${cor}; font-weight:${fw}">${txt}</span>`;
       };
-      return `
-        <tr>
+      const expandKey = 'epa' + l.p.sku;
+      const isOpen = state.expanded?.has(expandKey);
+      const arrow = isOpen ? '▼' : '▶';
+      // Linha principal
+      const linhaPrincipal = `
+        <tr data-sku="${l.p.sku}">
+          <td style="text-align:center; cursor:pointer; color:var(--accent); font-size:11px;" onclick="toggleEpaExpand(${l.p.sku})" title="Expandir detalhes">${arrow}</td>
           <td class="right">${refSku(l.p.sku, 'produto')}</td>
           <td>${badgeCurva(l.curva)}</td>
           <td>${refNome(l.p.sku, l.p.descricao, 'produto')}</td>
@@ -4818,11 +4919,89 @@ function renderEstoquePA() {
           <td class="right mono" style="color:var(--text-muted)">${l.venMes > 0 ? Math.round(l.venMes).toLocaleString('pt-BR') : '<span style="color:var(--text-dim)">0</span>'}</td>
           <td class="right">${dohCelula(l.dohTotal, l.total)}</td>
         </tr>`;
+      // Linha de detalhe (só renderiza se expandido)
+      if (!isOpen) return linhaPrincipal;
+
+      // Conteúdo do detalhe: engenharia + essência
+      const eng = state.engenharia[l.p.sku];
+      const ess = l.ess;
+      let detalheHtml = '';
+      if (ess) {
+        const estoqueEss = ess.estoqueG || 0;
+        const pedido = ess.pedidoAbertoG || 0;
+        detalheHtml += `
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 12px;">
+            <div>
+              <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Essência</div>
+              <div style="font-size: 13px;"><b>${ess.nome}</b> <span style="color: var(--text-muted);">(${ess.sku})</span></div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">${ess.fornecedor || 'sem fornecedor'} · ${l.p.gramasPorUn || 0}g por unidade</div>
+            </div>
+            <div>
+              <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Disponibilidade essência</div>
+              <div style="font-size: 13px;"><b>${Math.round(estoqueEss / 1000 * 10) / 10} kg</b> em estoque · <span style="color: var(--accent);">${Math.round(pedido / 1000 * 10) / 10} kg</span> pedido</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+                <a href="#" class="sku-link" onclick="abrirEssencia(${ess.sku}); return false;">Ver essência completa →</a>
+              </div>
+            </div>
+          </div>`;
+      } else {
+        detalheHtml += `<div style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px;">Sem essência vinculada a esse produto.</div>`;
+      }
+
+      if (eng && Object.keys(eng).length > 0) {
+        const insumos = Object.entries(eng).map(([insumoSku, qtd]) => {
+          const ins = state.insumos.find(i => i.sku === Number(insumoSku));
+          const estIns = ins?.estoque || 0;
+          return { sku: insumoSku, nome: ins?.nome || '(sem cadastro)', qtdPorUn: qtd, estIns };
+        });
+        detalheHtml += `
+          <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Engenharia · ${insumos.length} insumo(s) por unidade</div>
+          <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <th style="text-align: left; padding: 4px 8px; color: var(--text-muted); font-weight: normal;">SKU</th>
+                <th style="text-align: left; padding: 4px 8px; color: var(--text-muted); font-weight: normal;">Insumo</th>
+                <th style="text-align: right; padding: 4px 8px; color: var(--text-muted); font-weight: normal;">Qtd/un</th>
+                <th style="text-align: right; padding: 4px 8px; color: var(--text-muted); font-weight: normal;">Estoque insumo</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${insumos.map(i => `
+                <tr>
+                  <td style="padding: 4px 8px;">${refSku(i.sku, 'insumo')}</td>
+                  <td style="padding: 4px 8px;">${refNome(i.sku, i.nome, 'insumo')}</td>
+                  <td class="mono" style="text-align: right; padding: 4px 8px;">${i.qtdPorUn}</td>
+                  <td class="mono" style="text-align: right; padding: 4px 8px; color: ${i.estIns < 100 ? 'var(--critical)' : 'var(--text-muted)'};">${Math.round(i.estIns).toLocaleString('pt-BR')}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>`;
+      } else {
+        detalheHtml += `<div style="font-size: 12px; color: var(--text-dim);">Sem engenharia cadastrada — <a href="#" class="sku-link" onclick="abrirProduto(${l.p.sku}); return false;">configurar agora →</a></div>`;
+      }
+
+      const linhaDetalhe = `
+        <tr class="detail-row" style="background: rgba(212, 165, 89, 0.04);">
+          <td></td>
+          <td colspan="10" style="padding: 14px 18px;">
+            ${detalheHtml}
+          </td>
+        </tr>`;
+      return linhaPrincipal + linhaDetalhe;
     }).join('');
   }
 
   document.getElementById('estPaResumo').textContent =
     linhas.length === totalProds ? `${totalProds} produtos` : `${linhas.length} de ${totalProds} visíveis`;
+}
+
+// Toggle expansão da linha do Estoque PA
+function toggleEpaExpand(sku) {
+  if (!state.expanded) state.expanded = new Set();
+  const key = 'epa' + sku;
+  if (state.expanded.has(key)) state.expanded.delete(key);
+  else state.expanded.add(key);
+  renderEstoquePA();
 }
 
 // ===== RENDER ESTOQUE INSUMOS =====
@@ -9588,7 +9767,16 @@ document.addEventListener('keydown', (e) => {
     e.preventDefault();
     abrirBusca();
   }
+  // Alt + Esquerda = voltar pra view anterior
+  if (e.altKey && e.key === 'ArrowLeft') {
+    e.preventDefault();
+    voltarNav();
+  }
 });
+
+// Botão "Voltar" no header
+const btnVoltarNav = document.getElementById('btnVoltarNav');
+if (btnVoltarNav) btnVoltarNav.onclick = voltarNav;
 
 // ===== INIT =====
 (async () => {
