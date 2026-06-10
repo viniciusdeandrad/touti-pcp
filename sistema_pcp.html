@@ -928,6 +928,7 @@
     <button class="tab active" data-vendas-tab="visao">📊 Visão geral</button>
     <button class="tab" data-vendas-tab="ranking">🏆 Ranking de produtos</button>
     <button class="tab" data-vendas-tab="produto">🔍 Detalhe por produto</button>
+    <button class="tab" data-vendas-tab="cauda">🛑 Fundo de cauda</button>
   </div>
 
   <!-- TAB: VISÃO GERAL -->
@@ -1062,6 +1063,60 @@
   </div>
 
   <!-- TAB: DETALHE POR PRODUTO -->
+  <!-- TAB: FUNDO DE CAUDA (PRODUTOS DE BAIXA VENDA) -->
+  <div id="vendasTab-cauda" class="vendas-tab hidden">
+    <div class="card" style="padding: 18px; margin-bottom: 16px; background: rgba(225,29,42,0.03); border-color: rgba(225,29,42,0.2);">
+      <h3 style="margin: 0 0 8px; font-size: 14px; color: var(--critical); letter-spacing: 0.04em; text-transform: uppercase;">🛑 Candidatos a SKU Rationalization</h3>
+      <p style="margin: 0; font-size: 12px; color: var(--text-muted); line-height: 1.6;">
+        Produtos que combinam <b>baixo volume</b> com sinais de <b>desaceleração</b> e/ou <b>estoque encalhado</b>. O sistema atribui uma <b>nota de risco</b> baseada em 4 critérios. Use isso pra fundamentar conversas de descontinuação ou redução de portfolio — mas a decisão final é estratégica e exige contexto (lançamento, sazonalidade, contrato com franqueado, etc).
+      </p>
+    </div>
+
+    <div class="kpis" id="caudaKpis"></div>
+
+    <div class="toolbar" style="margin: 18px 0 12px;">
+      <input type="text" class="search-input" id="caudaSearch" placeholder="Buscar produto, SKU…">
+      <div>
+        <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">VOLUME MÁXIMO (un/mês)</label>
+        <input type="number" id="caudaMaxVolume" class="search-input" value="500" min="0" style="width: 140px;">
+      </div>
+      <div>
+        <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">NOTA MÍNIMA DE RISCO</label>
+        <select id="caudaNotaMin" class="search-input" style="width: 140px;">
+          <option value="0">Mostrar todos</option>
+          <option value="1">≥ 1 ponto</option>
+          <option value="2" selected>≥ 2 pontos</option>
+          <option value="3">≥ 3 pontos (alta)</option>
+          <option value="4">= 4 pontos (máxima)</option>
+        </select>
+      </div>
+      <div style="flex: 1;"></div>
+      <button class="btn btn-gold btn-sm" id="btnExportarCauda">📥 Exportar Excel</button>
+      <span style="font-size: 11px; color: var(--text-muted);" id="caudaResumo">—</span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="right" style="width: 70px;">SKU</th>
+            <th style="width: 50px;">Curva</th>
+            <th>Produto</th>
+            <th style="width: 90px;">Categoria</th>
+            <th class="right" style="width: 80px;" title="Vendas último mês">M1</th>
+            <th class="right" style="width: 80px;" title="Média 3 meses">M3</th>
+            <th class="right" style="width: 80px;" title="Média 6 meses">M6</th>
+            <th class="right" style="width: 90px;" title="Estoque total PE+SP">Estoque</th>
+            <th class="right" style="width: 80px;" title="Days on Hand: dias que o estoque cobre da venda atual">DoH</th>
+            <th style="width: 280px;" title="Critérios que somam pontos de risco">Critérios</th>
+            <th class="right" style="width: 80px;" title="Pontuação de risco (0-4 pontos)">Risco</th>
+          </tr>
+        </thead>
+        <tbody id="caudaTbody"></tbody>
+      </table>
+    </div>
+  </div>
+
   <div id="vendasTab-produto" class="vendas-tab hidden">
     <div class="toolbar" style="margin: 14px 0;">
       <select class="search-input" id="vendasProdutoSelect" style="width: 100%; max-width: 600px;">
@@ -1343,8 +1398,8 @@
     <button class="btn btn-gold" id="btnSimularCobertura" style="margin-left: 14px;">🔮 Simular cobertura</button>
     <div style="flex: 1;"></div>
     <div style="font-size: 12px; color: var(--text-muted); max-width: 460px; text-align: right;">
-      💡 Calcula: <b>quanto vende em 45 dias − (estoque essência + pedido aberto + compras em andamento + estoque PA convertido)</b>.<br>
-      <span style="color: var(--text-dim);">Estoque de segurança fixo de 45 dias, independente de lead time ou produção.</span>
+      💡 Calcula: <b>(venda em 45 dias × 1,25) − (estoque essência + pedido aberto + compras em andamento + estoque PA convertido)</b>.<br>
+      <span style="color: var(--text-dim);">Estoque-alvo: 45 dias de venda + 25% de buffer de segurança.</span>
     </div>
   </div>
 
@@ -1462,7 +1517,7 @@
 <div class="modal-backdrop" id="modalSimular">
   <div class="modal" style="max-width: 1100px;">
     <div class="modal-title">🔮 Simulação de Cobertura</div>
-    <div class="modal-sub">Calcula quanto você precisaria comprar de cada essência pra cobrir um período determinado de venda. Considera estoque atual + pedidos abertos + compras em andamento + PA equivalente.</div>
+    <div class="modal-sub">Calcula quanto comprar pra cobrir o período escolhido <b>+ 25% de buffer de segurança</b>. Considera estoque atual + pedidos abertos + compras em andamento + PA equivalente.</div>
 
     <div style="display: flex; gap: 8px; align-items: center; margin: 18px 0 12px; flex-wrap: wrap;">
       <span style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-right: 8px;">Cobertura desejada:</span>
@@ -1847,11 +1902,11 @@
   <div class="card" style="padding: 18px; margin: 20px 0;">
     <h3 style="margin: 0 0 8px 0; font-size: 15px;">🤖 Gerar OP automaticamente por capacidade</h3>
     <p style="margin: 0 0 14px 0; color: var(--text-muted); font-size: 13px;">
-      Gera a sequência de OPs ordenada por <b>maior venda × menor estoque PA</b>. Cada OP visa <b>cobertura de 30 dias</b> do produto. O algoritmo respeita a capacidade diária da linha × dias planejados, e desconta os insumos consumidos a cada OP pra evitar conflito entre produtos que compartilham embalagem/essência.
+      Gera a sequência de OPs ordenada por <b>maior venda × menor estoque PA</b>. Cada OP visa a <b>cobertura alvo</b> configurada abaixo. O algoritmo respeita a capacidade diária da linha × dias planejados, e desconta os insumos consumidos a cada OP pra evitar conflito entre produtos que compartilham embalagem/essência.
     </p>
 
     <!-- Configuração de capacidade -->
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 6px; margin-bottom: 14px;">
+    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 6px; margin-bottom: 14px;">
       <div>
         <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">DIAS DE PLANEJAMENTO</label>
         <input type="number" id="opDias" class="search-input" value="5" min="1" max="30" style="width: 100%;">
@@ -1865,6 +1920,10 @@
         <input type="number" id="opCapManual" class="search-input" value="4000" min="0" style="width: 100%;">
       </div>
       <div>
+        <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;" title="Cobertura desejada por produto. OP só é gerada se estoque atual + OP &lt; alvo">COBERTURA ALVO (dias)</label>
+        <input type="number" id="opCoberturaAlvo" class="search-input" value="30" min="0" max="365" style="width: 100%;">
+      </div>
+      <div>
         <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">MÉTRICA DE VENDA</label>
         <select id="opVendaMetrica" class="search-input" style="width: 100%;">
           <option value="pico6_m3">MAX(M3, pico 6M)</option>
@@ -1874,6 +1933,14 @@
           <option value="m1">Último mês</option>
         </select>
       </div>
+    </div>
+
+    <!-- Modo agressivo (sem trava de cobertura) -->
+    <div style="margin-bottom: 14px; padding: 10px 14px; background: rgba(225,29,42,0.05); border-left: 3px solid var(--critical); border-radius: 4px;">
+      <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px;">
+        <input type="checkbox" id="opModoAgressivo" style="width: 16px; height: 16px;">
+        <span><b>Modo agressivo</b> — ignora a cobertura alvo e gera OPs até preencher 100% da capacidade. Útil pra ganhar gordura ou aproveitar uma janela ociosa.</span>
+      </label>
     </div>
 
     <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
@@ -3254,9 +3321,13 @@ function computeAnalise() {
       });
     }
 
-    // Regra: SEMPRE 45 dias de venda como estoque-alvo, independente de lead/produção/cobertura
+    // Regra: 45 dias de venda + buffer de segurança de 25%
+    // Sempre usa M3 como base do buffer (média estável dos últimos 3 meses).
+    // O buffer entra SÓ na demanda do período (cálculo de compra), não na demanda
+    // mensal — assim o DoH continua refletindo a venda real.
     const DIAS_ALVO = 45;
-    const demandaPeriodoG = demandaMes * (DIAS_ALVO / 30);
+    const BUFFER_SEGURANCA = 0.25; // 25%
+    const demandaPeriodoG = demandaMes * (DIAS_ALVO / 30) * (1 + BUFFER_SEGURANCA);
 
     const estoqueEssG = ess.estoqueG || 0;
     const pedidoG = ess.pedidoAbertoG || 0;
@@ -3727,6 +3798,7 @@ function renderVendas() {
   const activeTab = document.querySelector('[data-vendas-tab].active')?.dataset.vendasTab || 'visao';
   if (activeTab === 'visao') _renderVendasVisao(lista);
   else if (activeTab === 'ranking') _renderVendasRanking(lista);
+  else if (activeTab === 'cauda') _renderVendasCauda(lista);
   else if (activeTab === 'produto') _renderVendasProduto();
 }
 
@@ -4113,7 +4185,7 @@ function exportarTopVendedores(topN = 20) {
       'g/produto',
       'Estoque PE (un)', 'DoH PE (dias)', 'Estoque SP (un)', 'DoH SP (dias)', 'Total PA (un)', 'DoH Geral (dias)',
       'M1 (un/mês)', 'M3 (un/mês)', 'M6 (un/mês)', 'Pico6 (un/mês)',
-      'Essência p/ 45d (kg)', 'Essência p/ 90d (kg)',
+      'Essência p/ 45d +25% (kg)', 'Essência p/ 90d +25% (kg)',
     ]
   ];
 
@@ -4138,8 +4210,9 @@ function exportarTopVendedores(topN = 20) {
     const dohGeral = venDia > 0 ? Math.round(total / venDia) : (total > 0 ? '∞' : 0);
     const gPorUn = p.gramasPorUn || 0;
     // Necessidade de essência: venda mensal × g/un × (dias/30) → em gramas → /1000 = kg
-    const essPara45d = (l.m3 * gPorUn * (45 / 30)) / 1000;
-    const essPara90d = (l.m3 * gPorUn * (90 / 30)) / 1000;
+    // Necessidade de essência com 25% de buffer: venda mensal × g/un × (dias/30) × 1.25 → em gramas → /1000 = kg
+    const essPara45d = (l.m3 * gPorUn * (45 / 30) * 1.25) / 1000;
+    const essPara90d = (l.m3 * gPorUn * (90 / 30) * 1.25) / 1000;
     const curva = getCurvaProduto(p.sku).curva;
     const empresa = getEmpresaProduto(p);
 
@@ -4170,7 +4243,7 @@ function exportarTopVendedores(topN = 20) {
   rows.push(['CONSOLIDADO POR ESSÊNCIA (entre os top ' + topN + ')']);
   rows.push([
     'SKU Essência', 'Essência', 'Fornecedor',
-    'Produtos no top', 'Demanda mensal (g)', 'p/ 45d (kg)', 'p/ 90d (kg)',
+    'Produtos no top', 'Demanda mensal (g)', 'p/ 45d +25% (kg)', 'p/ 90d +25% (kg)',
     'Estoque atual (kg)', 'Pedido aberto (kg)', 'Compras em andamento (kg)',
   ]);
 
@@ -4195,8 +4268,9 @@ function exportarTopVendedores(topN = 20) {
 
   const consolidadoLinhas = [];
   Object.values(porEss).sort((a, b) => b.demandaMensalG - a.demandaMensalG).forEach(e => {
-    const para45 = (e.demandaMensalG * 45 / 30) / 1000;
-    const para90 = (e.demandaMensalG * 90 / 30) / 1000;
+    // Mesma regra: demanda do período + 25% buffer
+    const para45 = (e.demandaMensalG * 45 / 30 * 1.25) / 1000;
+    const para90 = (e.demandaMensalG * 90 / 30 * 1.25) / 1000;
     const linha = [
       e.sku, e.nome, e.fornecedor,
       e.produtosNoTop,
@@ -4269,6 +4343,203 @@ function exportarTopVendedores(topN = 20) {
   const empresaStr = state.filtroEmpresa === 'ambas' ? 'touti_yes' : state.filtroEmpresa.toLowerCase();
   const dataStr = new Date().toISOString().slice(0, 10);
   XLSX.writeFile(wb, `top${topN}_campeoes_${empresaStr}_${dataStr}.xlsx`);
+}
+
+// ===== FUNDO DE CAUDA — Candidatos a SKU rationalization =====
+//
+// Pontuação de risco (0-4 pontos): cada critério que se aplica soma 1 ponto.
+//
+//   1 ponto: Volume baixo — M3 abaixo do limiar definido pelo usuário
+//   1 ponto: Em queda     — M3 < M6 em mais de 10%
+//   1 ponto: Curva C ou Z — segmento de baixo giro
+//   1 ponto: Estoque encalhado — DoH > 180 dias (ou ∞ com estoque > 0)
+//
+// 4 pontos = candidato forte a descontinuação. Mas o sistema NÃO decide — apenas
+// destaca. Produtos novos, sazonais ou estratégicos vão aparecer aqui e precisam
+// de contexto humano pra interpretação.
+
+function _calcularCriteriosCauda(l, limiarVolume) {
+  const criterios = [];
+  let pontos = 0;
+
+  // Critério 1: Volume baixo
+  if (l.m3 < limiarVolume) {
+    pontos++;
+    criterios.push('📉 Baixo volume');
+  }
+
+  // Critério 2: Em queda (M3 vs M6)
+  if (l.m6 > 0 && l.m3 < l.m6 * 0.90) {
+    pontos++;
+    criterios.push('↓ Em queda');
+  }
+
+  // Critério 3: Curva C ou Z
+  if (l.curva === 'C' || l.curva === 'Z') {
+    pontos++;
+    criterios.push('🔻 Curva ' + l.curva);
+  }
+
+  // Critério 4: Estoque encalhado (DoH alto ou estoque sem venda)
+  const est = state.estoque[l.p.sku] || { pe: 0, sp: 0 };
+  const total = (est.pe || 0) + (est.sp || 0);
+  const venDia = l.m3 / 30;
+  const doh = venDia > 0 ? total / venDia : (total > 0 ? 9999 : 0);
+  if (doh > 180) {
+    pontos++;
+    criterios.push('📦 Encalhado');
+  }
+
+  return { pontos, criterios, doh, total };
+}
+
+function _renderVendasCauda(lista) {
+  const q = norm(document.getElementById('caudaSearch')?.value || '');
+  const limiarVolume = parseInt(document.getElementById('caudaMaxVolume')?.value || '500');
+  const notaMin = parseInt(document.getElementById('caudaNotaMin')?.value || '2');
+
+  // Calcula pontuação pra todos
+  const comScore = lista.map(l => {
+    const c = _calcularCriteriosCauda(l, limiarVolume);
+    return { ...l, _pontos: c.pontos, _criterios: c.criterios, _doh: c.doh, _estoqueTotal: c.total };
+  });
+
+  // KPIs gerais — quantos têm cada pontuação
+  const totais = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 };
+  comScore.forEach(l => { totais[l._pontos] = (totais[l._pontos] || 0) + 1; });
+  const estoqueParado = comScore.filter(l => l._pontos >= 2).reduce((s, l) => s + l._estoqueTotal, 0);
+
+  document.getElementById('caudaKpis').innerHTML = `
+    <div class="kpi critical">
+      <div class="kpi-label">Risco máximo</div>
+      <div class="kpi-value">${totais[4] || 0}</div>
+      <div class="kpi-sub">4/4 pontos · candidatos fortes</div>
+    </div>
+    <div class="kpi warn">
+      <div class="kpi-label">Risco alto</div>
+      <div class="kpi-value">${totais[3] || 0}</div>
+      <div class="kpi-sub">3/4 pontos · avaliar</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Risco médio</div>
+      <div class="kpi-value">${totais[2] || 0}</div>
+      <div class="kpi-sub">2/4 pontos · monitorar</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Estoque parado</div>
+      <div class="kpi-value">${Math.round(estoqueParado).toLocaleString('pt-BR')}</div>
+      <div class="kpi-sub">Un. nos produtos com risco ≥ 2</div>
+    </div>
+  `;
+
+  // Filtrar
+  let filtrada = comScore.filter(l => l._pontos >= notaMin);
+  if (q) filtrada = filtrada.filter(l => norm(l.p.descricao).includes(q) || String(l.p.sku).includes(q));
+
+  // Ordenar: maior risco primeiro, depois maior estoque parado, depois menor venda
+  filtrada.sort((a, b) => {
+    if (a._pontos !== b._pontos) return b._pontos - a._pontos;
+    if (a._estoqueTotal !== b._estoqueTotal) return b._estoqueTotal - a._estoqueTotal;
+    return a.m3 - b.m3;
+  });
+
+  const tbody = document.getElementById('caudaTbody');
+  if (filtrada.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; color:var(--text-dim); padding:30px;">Nenhum produto com esse filtro.</td></tr>`;
+  } else {
+    tbody.innerHTML = filtrada.map(l => {
+      const corPontos = l._pontos >= 4 ? 'var(--critical)' : l._pontos >= 3 ? 'var(--warn)' : l._pontos >= 2 ? 'var(--accent)' : 'var(--text-muted)';
+      const dohTxt = l._doh >= 9999 ? '∞' : l._doh > 999 ? '999+' : Math.round(l._doh);
+      const dohCor = l._doh > 180 ? 'var(--warn)' : 'var(--text-muted)';
+      return `
+        <tr>
+          <td class="right">${refSku(l.p.sku, 'produto')}</td>
+          <td>${badgeCurva(l.curva)}</td>
+          <td>${refNome(l.p.sku, l.p.descricao, 'produto')}</td>
+          <td style="font-size: 11px; color: var(--text-muted);">${l.p.categoria || '—'}</td>
+          <td class="right mono">${Math.round(l.m1).toLocaleString('pt-BR')}</td>
+          <td class="right mono">${Math.round(l.m3).toLocaleString('pt-BR')}</td>
+          <td class="right mono" style="color:var(--text-muted)">${Math.round(l.m6).toLocaleString('pt-BR')}</td>
+          <td class="right mono">${Math.round(l._estoqueTotal).toLocaleString('pt-BR')}</td>
+          <td class="right mono" style="color: ${dohCor}; font-weight: ${l._doh > 180 ? '600' : 'normal'};">${dohTxt}</td>
+          <td style="font-size: 11px;">${l._criterios.join(' · ')}</td>
+          <td class="right" style="font-size: 14px; font-weight: 700; color: ${corPontos};">${l._pontos}/4</td>
+        </tr>`;
+    }).join('');
+  }
+
+  document.getElementById('caudaResumo').textContent = `${filtrada.length} de ${lista.length} produtos`;
+}
+
+// Exportar lista do fundo de cauda pra Excel
+function exportarFundoCauda() {
+  const lista = _calcularPerformance();
+  const limiarVolume = parseInt(document.getElementById('caudaMaxVolume')?.value || '500');
+  const notaMin = parseInt(document.getElementById('caudaNotaMin')?.value || '2');
+
+  const comScore = lista.map(l => {
+    const c = _calcularCriteriosCauda(l, limiarVolume);
+    return { ...l, _pontos: c.pontos, _criterios: c.criterios, _doh: c.doh, _estoqueTotal: c.total };
+  }).filter(l => l._pontos >= notaMin);
+
+  if (comScore.length === 0) {
+    alert('Nenhum produto na lista de cauda com o filtro atual.');
+    return;
+  }
+
+  comScore.sort((a, b) => b._pontos - a._pontos || b._estoqueTotal - a._estoqueTotal);
+
+  const filtroEmp = state.filtroEmpresa === 'ambas' ? 'Touti + Yes' : state.filtroEmpresa;
+  const rows = [
+    [`FUNDO DE CAUDA — Candidatos a SKU Rationalization — ${filtroEmp}`],
+    [`Gerado em: ${new Date().toLocaleString('pt-BR')}`],
+    [`Critérios: volume máx ${limiarVolume} un/mês · nota mínima ${notaMin}/4`],
+    [],
+    [
+      'SKU', 'Produto', 'Curva', 'Empresa', 'Categoria',
+      'M1 (un)', 'M3 (un)', 'M6 (un)',
+      'Estoque (un)', 'DoH (dias)',
+      'Critérios', 'Nota de risco',
+    ],
+  ];
+
+  comScore.forEach(l => {
+    const empresa = getEmpresaProduto(l.p);
+    rows.push([
+      l.p.sku, l.p.descricao, l.curva, empresa, l.p.categoria || '',
+      Math.round(l.m1), Math.round(l.m3), Math.round(l.m6),
+      Math.round(l._estoqueTotal),
+      l._doh >= 9999 ? null : Math.round(l._doh),
+      l._criterios.join(' · '),
+      l._pontos,
+    ]);
+  });
+
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [
+    { wch: 8 }, { wch: 40 }, { wch: 8 }, { wch: 10 }, { wch: 14 },
+    { wch: 10 }, { wch: 10 }, { wch: 10 },
+    { wch: 12 }, { wch: 10 },
+    { wch: 40 }, { wch: 12 },
+  ];
+
+  // Formato numérico
+  const fmt0 = '#,##0';
+  for (let i = 0; i < comScore.length; i++) {
+    const r = 5 + i; // linhas a partir do header
+    [0, 5, 6, 7, 8, 9, 11].forEach(c => {
+      const ref = XLSX.utils.encode_cell({ r, c });
+      if (ws[ref] && typeof ws[ref].v === 'number') ws[ref].z = fmt0;
+    });
+  }
+
+  ws['!merges'] = ws['!merges'] || [];
+  ws['!merges'].push({ s: { r: 0, c: 0 }, e: { r: 0, c: 11 } });
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Fundo de cauda');
+  const dataStr = new Date().toISOString().slice(0, 10);
+  XLSX.writeFile(wb, `fundo_cauda_${dataStr}.xlsx`);
 }
 
 function _renderVendasProduto() {
@@ -5362,7 +5633,9 @@ function calcularSimulacaoCobertura(dias) {
 
     if (demandaMensalG <= 0) return; // pula essências sem demanda
 
-    const demandaPeriodoG = (demandaMensalG / 30) * dias;
+    // Mesma regra: demanda do período + 25% buffer de segurança
+    const BUFFER_SEGURANCA = 0.25;
+    const demandaPeriodoG = (demandaMensalG / 30) * dias * (1 + BUFFER_SEGURANCA);
     const estoqueG = ess.estoqueG || 0;
     const pedidoG = ess.pedidoAbertoG || 0;
     const comprasAtivasG = getComprasAtivasPorEss(ess.sku);
@@ -5655,7 +5928,7 @@ function _renderAnaliseInner() {
     `;
     if (isExp) {
       html += `<tr class="detail-row"><td colspan="15">
-        <div class="detail-title">Composição · ${r.qtdProdutos} produto(s) · estoque-alvo de ${r.diasTotal} dias de venda</div>
+        <div class="detail-title">Composição · ${r.qtdProdutos} produto(s) · estoque-alvo de ${r.diasTotal} dias + 25% buffer</div>
         <div style="display:grid; grid-template-columns: 2fr 90px 60px 110px 80px 110px; gap:6px 12px; font-size:12px; padding:6px 0;">
           <div class="h">PRODUTO</div>
           <div class="h" style="text-align:right">GIRO/MÊS</div>
@@ -5673,7 +5946,7 @@ function _renderAnaliseInner() {
           ).join('')}
         </div>
         <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-muted);">
-          <b>Cálculo:</b> Demanda/mês = ${fmt(r.demandaMesG)}g · Demanda no período (${r.diasTotal}d) = ${fmt(r.demandaG)}g
+          <b>Cálculo:</b> Demanda/mês = ${fmt(r.demandaMesG)}g · Demanda no período (${r.diasTotal}d + 25% buffer) = ${fmt(r.demandaG)}g
           &nbsp;|&nbsp;
           <b>Disponível:</b> ${fmt(r.estoqueG)}g essência + ${fmt(r.pedidoAbertoG)}g pedido + ${fmt(r.estoquePaEquivalenteG)}g PA eq. = ${fmt(r.disponivelG)}g
           ${r.comprarG > 0 ? `&nbsp;|&nbsp; <b style="color: var(--danger)">Faltam ${fmt(r.comprarG)}g (${fmt(r.comprarKg, 1)} kg) → COMPRAR</b>` : '&nbsp;|&nbsp; <b style="color: var(--ok)">Cobertura OK</b>'}
@@ -6350,6 +6623,7 @@ function getComprasAtivasPorEss(skuEss) {
 function gerarOPsCascata(linhaFiltro, opcoes) {
   opcoes = opcoes || {};
   const coberturaAlvoDias = opcoes.coberturaAlvoDias || 30;
+  const modoAgressivo = !!opcoes.modoAgressivo;
   const dias = opcoes.dias || 5;
   const capacidadeDiaria = opcoes.capacidadeDiaria || (linhaFiltro === 'Automática' ? 25000 : 4000);
   let capacidadeRestante = capacidadeDiaria * dias;
@@ -6501,12 +6775,18 @@ function gerarOPsCascata(linhaFiltro, opcoes) {
 
     // Qtd alvo: cobertura desejada (30d default) menos o que já tem em estoque PA
     const venDia = c.venMes / 30;
-    const necessidade = Math.max(0, Math.ceil(venDia * coberturaAlvoDias) - c.estoquePA);
-    if (necessidade < 1) {
-      // Cobertura já está OK — guarda esse candidato pra SEGUNDA PASSADA
-      // (depois que os críticos forem atendidos, esses preenchem a capacidade restante)
-      paraSegundaPassada.push({ ...c, podeProduzir, limitador });
-      continue;
+    let necessidade;
+    if (modoAgressivo) {
+      // Modo agressivo: ignora cobertura atual, sempre tenta produzir 1 mês de venda
+      necessidade = Math.max(1, Math.ceil(c.venMes));
+    } else {
+      necessidade = Math.max(0, Math.ceil(venDia * coberturaAlvoDias) - c.estoquePA);
+      if (necessidade < 1) {
+        // Cobertura já está OK — guarda esse candidato pra SEGUNDA PASSADA
+        // (depois que os críticos forem atendidos, esses preenchem a capacidade restante)
+        paraSegundaPassada.push({ ...c, podeProduzir, limitador });
+        continue;
+      }
     }
 
     // Qtd da OP: limitada por insumo, cobertura E capacidade
@@ -7447,20 +7727,26 @@ function handlerGerarOP(linha) {
   const dias = parseInt(document.getElementById('opDias').value) || 5;
   const capAuto = parseInt(document.getElementById('opCapAuto').value) || 25000;
   const capManual = parseInt(document.getElementById('opCapManual').value) || 4000;
+  const coberturaAlvoDias = parseInt(document.getElementById('opCoberturaAlvo').value) || 30;
+  const modoAgressivo = document.getElementById('opModoAgressivo').checked;
   const capacidadeDiaria = linha === 'Automática' ? capAuto : capManual;
 
   const resultado = gerarOPsCascata(linha, {
     dias,
     capacidadeDiaria,
-    coberturaAlvoDias: 30,
+    coberturaAlvoDias,
+    modoAgressivo,
   });
   const { ops, pulados, capacidadeTotal, capacidadeUsada, capacidadeRestante, opsCriticas, opsPreenchimento } = resultado;
   const wrap = document.getElementById('opAutoResult');
 
   if (!ops || ops.length === 0) {
+    const dica = modoAgressivo
+      ? 'No modo agressivo, isso sugere que não há produtos com engenharia E insumo disponível.'
+      : `Cobertura alvo: ${coberturaAlvoDias}d. Possíveis causas: produtos sem engenharia, estoque de insumos zerado, ou todos os produtos já têm cobertura ≥ ${coberturaAlvoDias} dias. Tente o <b>Modo agressivo</b> pra ignorar a verificação de cobertura.`;
     wrap.innerHTML = `<div class="alert alert-warn">
       ⚠ Nenhuma OP gerada para <b>L. ${linha}</b>.<br>
-      <span style="font-size:12px">Possíveis causas: produtos sem engenharia, estoque de insumos zerado, ou todos os produtos já têm cobertura ≥ 30 dias.</span>
+      <span style="font-size:12px">${dica}</span>
     </div>`;
     return;
   }
@@ -9251,6 +9537,12 @@ document.addEventListener('keydown', (e) => {
   bindChange('vendasMesBase', renderVendas);
   bindChange('vendasHistTopN', renderVendas);
   bindChange('vendasHistBase', renderVendas);
+  // Fundo de cauda
+  bindLive('caudaSearch', renderVendas);
+  bindChange('caudaMaxVolume', renderVendas);
+  bindChange('caudaNotaMin', renderVendas);
+  const btnExpCauda = document.getElementById('btnExportarCauda');
+  if (btnExpCauda) btnExpCauda.onclick = exportarFundoCauda;
 
   // ===== SYNC: bind dos handlers =====
   const cfg = state.syncConfig || {};
